@@ -5,11 +5,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "questions")
 data class QuestionEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey val id: Long,
     val category: String,
     val difficulty: String,
     val question: String,
-    val idealAnswer: String,
-    val bookmarked: Boolean,
+    val answer: String,
+    val explanation: String,
     val tags: String,
+    val isBookmarked: Boolean,
 )

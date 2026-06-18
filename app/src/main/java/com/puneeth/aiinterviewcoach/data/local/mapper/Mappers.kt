@@ -2,6 +2,11 @@ package com.puneeth.aiinterviewcoach.data.local.mapper
 
 import com.puneeth.aiinterviewcoach.data.local.entity.InterviewSessionEntity
 import com.puneeth.aiinterviewcoach.data.local.entity.QuestionEntity
+import com.puneeth.aiinterviewcoach.data.local.model.CategorySummaryRow
+import com.puneeth.aiinterviewcoach.data.local.model.ProgressSummaryRow
+import com.puneeth.aiinterviewcoach.domain.model.CategoryProgress
+import com.puneeth.aiinterviewcoach.domain.model.CategorySummary
+import com.puneeth.aiinterviewcoach.domain.model.DifficultyProgress
 import com.puneeth.aiinterviewcoach.domain.model.InterviewCategory
 import com.puneeth.aiinterviewcoach.domain.model.InterviewDifficulty
 import com.puneeth.aiinterviewcoach.domain.model.InterviewMessage
@@ -12,12 +17,30 @@ import com.puneeth.aiinterviewcoach.domain.model.SessionFeedback
 
 fun QuestionEntity.toDomain(): PracticeQuestion = PracticeQuestion(
     id = id,
-    category = InterviewCategory.valueOf(category),
-    difficulty = InterviewDifficulty.valueOf(difficulty),
+    category = InterviewCategory.fromTitle(category),
+    difficulty = InterviewDifficulty.fromTitle(difficulty),
     question = question,
-    idealAnswer = idealAnswer,
-    bookmarked = bookmarked,
+    answer = answer,
+    explanation = explanation,
     tags = tags.split(",").filter { it.isNotBlank() },
+    isBookmarked = isBookmarked,
+)
+
+fun CategorySummaryRow.toDomain(): CategorySummary = CategorySummary(
+    category = InterviewCategory.fromTitle(category),
+    questionCount = questionCount,
+)
+
+fun ProgressSummaryRow.toCategoryProgress(): CategoryProgress = CategoryProgress(
+    category = InterviewCategory.fromTitle(dimension),
+    completedCount = completedCount,
+    totalCount = totalCount,
+)
+
+fun ProgressSummaryRow.toDifficultyProgress(): DifficultyProgress = DifficultyProgress(
+    difficulty = InterviewDifficulty.fromTitle(dimension),
+    completedCount = completedCount,
+    totalCount = totalCount,
 )
 
 fun InterviewSession.toEntity(): InterviewSessionEntity = InterviewSessionEntity(

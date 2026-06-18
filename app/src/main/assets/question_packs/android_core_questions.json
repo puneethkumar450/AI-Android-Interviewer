@@ -1,0 +1,244 @@
+[
+  {
+    "id": 1,
+    "category": "Jetpack Compose",
+    "difficulty": "Intermediate",
+    "question": "What is recomposition?",
+    "answer": "Recomposition is the process where Compose re-executes composable functions when observed state changes.",
+    "explanation": "Compose tracks state reads and schedules only the affected composables to run again.",
+    "tags": [
+      "compose",
+      "state"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 2,
+    "category": "Kotlin",
+    "difficulty": "Beginner",
+    "question": "What is the difference between val and var?",
+    "answer": "val creates a read-only reference and var creates a mutable reference.",
+    "explanation": "A val cannot be reassigned after initialization, though the underlying object may still be mutable.",
+    "tags": [
+      "kotlin",
+      "basics"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 3,
+    "category": "Coroutines",
+    "difficulty": "Intermediate",
+    "question": "What is structured concurrency?",
+    "answer": "Structured concurrency ensures child coroutines are bound to a parent scope for predictable cancellation and lifecycle handling.",
+    "explanation": "It avoids leaked work and makes error propagation more manageable in Android lifecycles.",
+    "tags": [
+      "coroutines",
+      "concurrency"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 4,
+    "category": "Flow",
+    "difficulty": "Intermediate",
+    "question": "When would you choose StateFlow over SharedFlow?",
+    "answer": "Use StateFlow for observable state with a current value and SharedFlow for broadcast events or hot streams without a single state snapshot.",
+    "explanation": "StateFlow always has a value and is optimized for UI state modeling.",
+    "tags": [
+      "flow",
+      "stateflow",
+      "sharedflow"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 5,
+    "category": "Android Architecture",
+    "difficulty": "Intermediate",
+    "question": "Why use a repository layer in Android apps?",
+    "answer": "A repository hides data source details and centralizes orchestration between local and remote or local-only sources.",
+    "explanation": "This keeps ViewModels simpler and makes testing easier.",
+    "tags": [
+      "architecture",
+      "repository",
+      "mvvm"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 6,
+    "category": "Hilt",
+    "difficulty": "Beginner",
+    "question": "What problem does Hilt solve?",
+    "answer": "Hilt automates dependency injection setup for Android components.",
+    "explanation": "It reduces manual component wiring and standardizes scoping across the app lifecycle.",
+    "tags": [
+      "hilt",
+      "dependency-injection"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 7,
+    "category": "Room",
+    "difficulty": "Intermediate",
+    "question": "How does Room help compared to raw SQLite APIs?",
+    "answer": "Room provides compile-time query validation, entity mapping, and coroutine/Flow support.",
+    "explanation": "It improves safety and developer productivity while still using SQLite under the hood.",
+    "tags": [
+      "room",
+      "database",
+      "sqlite"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 8,
+    "category": "WorkManager",
+    "difficulty": "Intermediate",
+    "question": "When should WorkManager be used?",
+    "answer": "Use WorkManager for guaranteed deferrable background work that should run even if the app exits.",
+    "explanation": "It is the recommended API for persistent background tasks in modern Android.",
+    "tags": [
+      "workmanager",
+      "background"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 9,
+    "category": "Android Performance",
+    "difficulty": "Intermediate",
+    "question": "What causes jank in Android UI rendering?",
+    "answer": "Jank happens when frame rendering misses the display deadline, often due to main-thread work, overdraw, or expensive layout operations.",
+    "explanation": "Keeping UI work under the frame budget is key to smooth interactions.",
+    "tags": [
+      "performance",
+      "rendering",
+      "jank"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 10,
+    "category": "Android Testing",
+    "difficulty": "Intermediate",
+    "question": "What is the difference between unit tests and instrumentation tests?",
+    "answer": "Unit tests run on the JVM and instrumentation tests run on a device or emulator with Android framework access.",
+    "explanation": "Use unit tests for fast business logic coverage and instrumentation for framework/UI behavior.",
+    "tags": [
+      "testing",
+      "unit-test",
+      "instrumentation"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 11,
+    "category": "System Design",
+    "difficulty": "Advanced",
+    "question": "How would you design an offline-first learning app?",
+    "answer": "Prioritize local storage, deterministic sync boundaries, data versioning, and resilient import or update flows.",
+    "explanation": "Offline-first means the local source of truth drives the UX.",
+    "tags": [
+      "system-design",
+      "offline-first"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 12,
+    "category": "Senior Android",
+    "difficulty": "Expert",
+    "question": "How do you review Android architecture decisions on a senior team?",
+    "answer": "Start with business goals, identify failure modes, compare trade-offs, and align implementation boundaries with team ownership.",
+    "explanation": "Strong senior answers connect technical decisions to maintainability, delivery, and scaling constraints.",
+    "tags": [
+      "senior",
+      "architecture",
+      "leadership"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 13,
+    "category": "Kotlin",
+    "difficulty": "Advanced",
+    "question": "What is the difference between object, companion object, and singleton?",
+    "answer": "object creates a singleton, companion object provides static-like members, and singleton refers to a single instance pattern.",
+    "explanation": "Frequently asked in Android interviews.",
+    "tags": [
+      "kotlin",
+      "object",
+      "singleton"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 14,
+    "category": "Coroutines",
+    "difficulty": "Advanced",
+    "question": "What is CoroutineScope and why is it important?",
+    "answer": "CoroutineScope defines the lifecycle boundary of coroutines and manages cancellation.",
+    "explanation": "Essential for Android lifecycle management.",
+    "tags": [
+      "coroutines",
+      "scope"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 15,
+    "category": "Flow",
+    "difficulty": "Advanced",
+    "question": "What is the difference between cold and hot flows?",
+    "answer": "Cold flows start producing values on collection, while hot flows emit independently of collectors.",
+    "explanation": "Foundation of Flow understanding.",
+    "tags": [
+      "flow",
+      "cold",
+      "hot"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 16,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is state hoisting?",
+    "answer": "State hoisting moves state ownership to a higher-level composable.",
+    "explanation": "Improves testability and reusability.",
+    "tags": [
+      "compose",
+      "state"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 17,
+    "category": "Hilt",
+    "difficulty": "Advanced",
+    "question": "What is the difference between SingletonComponent and ViewModelComponent?",
+    "answer": "SingletonComponent lives for the app lifecycle while ViewModelComponent lives for the ViewModel lifecycle.",
+    "explanation": "Frequently asked DI question.",
+    "tags": [
+      "hilt",
+      "scopes"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 18,
+    "category": "Room",
+    "difficulty": "Advanced",
+    "question": "What are Room transactions and when should they be used?",
+    "answer": "Transactions ensure multiple database operations succeed or fail together.",
+    "explanation": "Important for data consistency.",
+    "tags": [
+      "room",
+      "transactions"
+    ],
+    "isBookmarked": false
+  }
+]

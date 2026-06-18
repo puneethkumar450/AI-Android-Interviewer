@@ -29,10 +29,6 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindInterviewRepository(impl: InterviewRepositoryImpl): InterviewRepository
-
-    @Binds
-    @Singleton
     abstract fun bindProgressRepository(impl: ProgressRepositoryImpl): ProgressRepository
 
     @Binds

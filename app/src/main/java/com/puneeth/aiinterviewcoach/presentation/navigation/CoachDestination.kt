@@ -2,8 +2,11 @@ package com.puneeth.aiinterviewcoach.presentation.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Analytics
+import androidx.compose.material.icons.outlined.Bookmarks
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MenuBook
-import androidx.compose.material.icons.outlined.Psychology
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class CoachDestination(
@@ -11,16 +14,22 @@ sealed class CoachDestination(
     val title: String,
     val icon: ImageVector,
 ) {
-    data object QuestionBank : CoachDestination(
-        route = "question_bank",
-        title = "Question Bank",
-        icon = Icons.Outlined.MenuBook,
+    data object Home : CoachDestination(
+        route = "home",
+        title = "Home",
+        icon = Icons.Outlined.Home,
     )
 
-    data object MockInterview : CoachDestination(
-        route = "mock_interview",
-        title = "AI Mock",
-        icon = Icons.Outlined.Psychology,
+    data object Search : CoachDestination(
+        route = "search",
+        title = "Search",
+        icon = Icons.Outlined.Search,
+    )
+
+    data object Bookmarks : CoachDestination(
+        route = "bookmarks",
+        title = "Bookmarks",
+        icon = Icons.Outlined.Bookmarks,
     )
 
     data object Progress : CoachDestination(
@@ -28,10 +37,30 @@ sealed class CoachDestination(
         title = "Progress",
         icon = Icons.Outlined.Analytics,
     )
+
+    data object Settings : CoachDestination(
+        route = "settings",
+        title = "Settings",
+        icon = Icons.Outlined.Settings,
+    )
+
+    data object Categories : CoachDestination(
+        route = "categories",
+        title = "Categories",
+        icon = Icons.Outlined.MenuBook,
+    )
+
+    data object Questions : CoachDestination(
+        route = "questions?category={category}&difficulty={difficulty}&search={search}&bookmarksOnly={bookmarksOnly}&startId={startId}",
+        title = "Questions",
+        icon = Icons.Outlined.MenuBook,
+    )
 }
 
 val topLevelDestinations = listOf(
-    CoachDestination.QuestionBank,
-    CoachDestination.MockInterview,
+    CoachDestination.Home,
+    CoachDestination.Search,
+    CoachDestination.Bookmarks,
     CoachDestination.Progress,
+    CoachDestination.Settings,
 )

@@ -5,7 +5,8 @@ data class PracticeQuestion(
     val category: InterviewCategory,
     val difficulty: InterviewDifficulty,
     val question: String,
-    val idealAnswer: String,
-    val bookmarked: Boolean,
+    val answer: String,
+    val explanation: String,
     val tags: List<String>,
+    val isBookmarked: Boolean,
 )

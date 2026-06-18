@@ -1,0 +1,12 @@
+package com.puneeth.aiinterviewcoach.data.local.model
+
+data class CategorySummaryRow(
+    val category: String,
+    val questionCount: Int,
+)
+
+data class ProgressSummaryRow(
+    val dimension: String,
+    val completedCount: Int,
+    val totalCount: Int,
+)

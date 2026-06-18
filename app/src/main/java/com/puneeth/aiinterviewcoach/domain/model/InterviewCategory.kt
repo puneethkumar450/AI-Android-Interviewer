@@ -9,5 +9,15 @@ enum class InterviewCategory(val title: String) {
     HILT("Hilt"),
     ROOM("Room"),
     WORKMANAGER("WorkManager"),
+    ANDROID_PERFORMANCE("Android Performance"),
+    ANDROID_TESTING("Android Testing"),
     SYSTEM_DESIGN("System Design"),
+    SENIOR_ANDROID("Senior Android");
+
+    companion object {
+        fun fromTitle(title: String): InterviewCategory {
+            return entries.firstOrNull { it.title.equals(title, ignoreCase = true) }
+                ?: valueOf(title.replace(" ", "_").uppercase())
+        }
+    }
 }

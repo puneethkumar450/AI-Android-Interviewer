@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.puneeth.aiinterviewcoach.data.local.AppDatabase
 import com.puneeth.aiinterviewcoach.data.local.dao.InterviewSessionDao
+import com.puneeth.aiinterviewcoach.data.local.dao.QuestionProgressDao
 import com.puneeth.aiinterviewcoach.data.local.dao.QuestionDao
 import dagger.Module
 import dagger.Provides
@@ -30,4 +31,7 @@ object DatabaseModule {
 
     @Provides
     fun provideInterviewSessionDao(database: AppDatabase): InterviewSessionDao = database.interviewSessionDao()
+
+    @Provides
+    fun provideQuestionProgressDao(database: AppDatabase): QuestionProgressDao = database.questionProgressDao()
 }

@@ -1,0 +1,445 @@
+[
+  {
+    "id": 101,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "Why is state hoisting important in Compose?",
+    "answer": "State hoisting moves state ownership upward so composables stay reusable, testable, and easier to reason about.",
+    "explanation": "It separates stateful and stateless concerns and reduces hidden coupling.",
+    "tags": [
+      "compose",
+      "state-hoisting"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 102,
+    "category": "Kotlin",
+    "difficulty": "Advanced",
+    "question": "What are inline functions useful for?",
+    "answer": "Inline functions reduce overhead for higher-order functions and enable features like reified type parameters.",
+    "explanation": "They are often used in DSLs and generic helper APIs.",
+    "tags": [
+      "kotlin",
+      "inline",
+      "reified"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 103,
+    "category": "Coroutines",
+    "difficulty": "Advanced",
+    "question": "How does SupervisorJob differ from Job?",
+    "answer": "SupervisorJob isolates child failures so one failing child does not cancel its siblings.",
+    "explanation": "This is useful when concurrent tasks should fail independently.",
+    "tags": [
+      "coroutines",
+      "supervisorjob"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 104,
+    "category": "Flow",
+    "difficulty": "Advanced",
+    "question": "What is the purpose of flatMapLatest?",
+    "answer": "flatMapLatest switches to the latest upstream request and cancels the previous one.",
+    "explanation": "It is useful for search, user-driven filtering, and other rapidly changing inputs.",
+    "tags": [
+      "flow",
+      "operators"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 105,
+    "category": "Android Architecture",
+    "difficulty": "Advanced",
+    "question": "What makes a codebase multi-module ready?",
+    "answer": "Clear domain boundaries, limited outward dependencies, stable interfaces, and feature isolation make module extraction straightforward.",
+    "explanation": "Module structure should follow ownership and dependency direction, not arbitrary folders.",
+    "tags": [
+      "architecture",
+      "modules"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 106,
+    "category": "Hilt",
+    "difficulty": "Advanced",
+    "question": "How do you choose Hilt scopes correctly?",
+    "answer": "Scope dependencies to the narrowest lifecycle that matches their usage to avoid leaks and stale state.",
+    "explanation": "Examples include SingletonComponent, ActivityRetainedComponent, and ViewModelComponent.",
+    "tags": [
+      "hilt",
+      "scoping"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 107,
+    "category": "Room",
+    "difficulty": "Advanced",
+    "question": "How would you handle Room migrations safely?",
+    "answer": "Use explicit migration steps, verify schema changes in tests, and preserve data transformations carefully.",
+    "explanation": "Migrations should be treated as production data changes, not just compile-time updates.",
+    "tags": [
+      "room",
+      "migration"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 108,
+    "category": "WorkManager",
+    "difficulty": "Advanced",
+    "question": "What are unique work chains for?",
+    "answer": "Unique work chains prevent duplicate jobs and let you define replacement or append behavior.",
+    "explanation": "They are useful for periodic sync and user-triggered work deduplication.",
+    "tags": [
+      "workmanager",
+      "unique-work"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 109,
+    "category": "Android Performance",
+    "difficulty": "Expert",
+    "question": "How do you investigate a startup regression?",
+    "answer": "Measure cold and warm startup, inspect traces, identify blocking initialization, and defer non-critical work.",
+    "explanation": "Reliable performance work starts with baselines and instrumentation, not assumptions.",
+    "tags": [
+      "performance",
+      "startup"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 110,
+    "category": "Android Testing",
+    "difficulty": "Advanced",
+    "question": "How do you keep Android tests reliable in CI?",
+    "answer": "Reduce shared state, control async behavior, use test doubles carefully, and separate unit, integration, and UI concerns.",
+    "explanation": "Flaky tests usually indicate timing, dependency, or environment issues.",
+    "tags": [
+      "testing",
+      "ci",
+      "flaky-tests"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 111,
+    "category": "System Design",
+    "difficulty": "Expert",
+    "question": "What trade-offs exist in storing large offline content packs locally?",
+    "answer": "You need to balance install size, import speed, update strategy, indexing cost, and migration complexity.",
+    "explanation": "Local-first design shifts many concerns from network availability to storage lifecycle management.",
+    "tags": [
+      "system-design",
+      "storage",
+      "offline"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 112,
+    "category": "Senior Android",
+    "difficulty": "Expert",
+    "question": "How do you prioritize tech debt in a mature Android app?",
+    "answer": "Rank debt by user impact, delivery drag, incident risk, and opportunity to simplify future work.",
+    "explanation": "Senior prioritization requires clarity about trade-offs, ownership, and timing.",
+    "tags": [
+      "senior",
+      "tech-debt",
+      "prioritization"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 113,
+    "category": "Kotlin",
+    "difficulty": "Advanced",
+    "question": "What is the difference between inline, noinline, and crossinline?",
+    "answer": "inline inlines lambdas, noinline prevents inlining for specific lambdas, and crossinline prevents non-local returns.",
+    "explanation": "Commonly asked alongside higher-order functions and reified generics.",
+    "tags": [
+      "kotlin",
+      "inline",
+      "crossinline",
+      "noinline"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 114,
+    "category": "Kotlin",
+    "difficulty": "Advanced",
+    "question": "What are reified type parameters and why are they useful?",
+    "answer": "Reified type parameters preserve generic type information at runtime inside inline functions.",
+    "explanation": "They eliminate the need to pass Class<T> references.",
+    "tags": [
+      "kotlin",
+      "reified",
+      "generics"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 115,
+    "category": "Coroutines",
+    "difficulty": "Expert",
+    "question": "How does coroutine cancellation propagate through a hierarchy?",
+    "answer": "Cancellation propagates from parent to children unless a SupervisorJob is used.",
+    "explanation": "Critical for Android lifecycle management.",
+    "tags": [
+      "coroutines",
+      "cancellation"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 116,
+    "category": "Coroutines",
+    "difficulty": "Expert",
+    "question": "What is the difference between launch and async?",
+    "answer": "launch returns a Job and is used for fire-and-forget work, while async returns Deferred and produces a result.",
+    "explanation": "Classic Android interview question.",
+    "tags": [
+      "coroutines",
+      "launch",
+      "async"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 117,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is the difference between remember and rememberSaveable?",
+    "answer": "remember survives recomposition while rememberSaveable survives configuration changes by saving state.",
+    "explanation": "One of the most frequently asked Compose questions.",
+    "tags": [
+      "compose",
+      "state"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 118,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What causes unnecessary recompositions and how do you avoid them?",
+    "answer": "Unstable parameters, broad state observation, and incorrect state ownership can trigger extra recompositions.",
+    "explanation": "Performance-focused Compose interviews often include this topic.",
+    "tags": [
+      "compose",
+      "performance",
+      "recomposition"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 119,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "Explain LaunchedEffect, SideEffect, DisposableEffect, and rememberCoroutineScope.",
+    "answer": "Each side-effect API serves a different lifecycle and execution purpose within Compose.",
+    "explanation": "Frequently asked in senior Compose interviews.",
+    "tags": [
+      "compose",
+      "side-effects"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 120,
+    "category": "Android Architecture",
+    "difficulty": "Expert",
+    "question": "MVVM vs MVI: when would you choose one over the other?",
+    "answer": "MVVM provides flexibility while MVI enforces a strict unidirectional state flow.",
+    "explanation": "Common architecture discussion for senior Android roles.",
+    "tags": [
+      "architecture",
+      "mvvm",
+      "mvi"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 121,
+    "category": "Senior Android",
+    "difficulty": "Expert",
+    "question": "How would you reduce application startup time?",
+    "answer": "Measure startup metrics, defer non-critical initialization, optimize dependency graphs, and remove blocking work from the main thread.",
+    "explanation": "Common Staff and Senior Android topic.",
+    "tags": [
+      "startup",
+      "performance"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 122,
+    "category": "Senior Android",
+    "difficulty": "Expert",
+    "question": "How would you investigate a memory leak in Android?",
+    "answer": "Use LeakCanary, heap dumps, lifecycle analysis, and object reference tracing.",
+    "explanation": "Frequently asked senior-level Android question.",
+    "tags": [
+      "memory",
+      "leaks",
+      "performance"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 123,
+    "category": "Kotlin",
+    "difficulty": "Expert",
+    "question": "What is type erasure and how do reified types solve it?",
+    "answer": "Type erasure removes generic type information at runtime. Reified types preserve type information inside inline functions.",
+    "explanation": "Common senior Kotlin topic.",
+    "tags": [
+      "kotlin",
+      "generics",
+      "reified"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 124,
+    "category": "Coroutines",
+    "difficulty": "Expert",
+    "question": "What is CoroutineExceptionHandler and when should it be used?",
+    "answer": "CoroutineExceptionHandler handles uncaught coroutine exceptions at the root coroutine level.",
+    "explanation": "Exception handling is a common interview topic.",
+    "tags": [
+      "coroutines",
+      "exceptions"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 125,
+    "category": "Coroutines",
+    "difficulty": "Expert",
+    "question": "What is the difference between withContext and async?",
+    "answer": "withContext switches context and returns a result, while async creates a concurrent coroutine returning Deferred.",
+    "explanation": "Frequently asked Android interview question.",
+    "tags": [
+      "coroutines",
+      "async",
+      "withcontext"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 126,
+    "category": "Flow",
+    "difficulty": "Advanced",
+    "question": "What does collectLatest do?",
+    "answer": "collectLatest cancels the previous collector block when a new value arrives.",
+    "explanation": "Commonly used in search and UI updates.",
+    "tags": [
+      "flow",
+      "collectlatest"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 127,
+    "category": "Flow",
+    "difficulty": "Expert",
+    "question": "What are shareIn and stateIn operators?",
+    "answer": "shareIn converts a cold flow to SharedFlow while stateIn converts a cold flow to StateFlow.",
+    "explanation": "Frequently asked in modern Android interviews.",
+    "tags": [
+      "flow",
+      "sharein",
+      "statein"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 128,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What is derivedStateOf and when should it be used?",
+    "answer": "derivedStateOf optimizes recompositions by calculating derived values only when dependencies change.",
+    "explanation": "Important for Compose performance.",
+    "tags": [
+      "compose",
+      "performance"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 129,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How does Compose determine whether a composable should recompose?",
+    "answer": "Compose tracks state reads and invalidates affected composables when observed state changes.",
+    "explanation": "Core Compose interview topic.",
+    "tags": [
+      "compose",
+      "recomposition"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 130,
+    "category": "Android Architecture",
+    "difficulty": "Expert",
+    "question": "What is Unidirectional Data Flow?",
+    "answer": "Data flows in a single direction from state to UI and user actions flow back as events.",
+    "explanation": "Widely used in modern Android architecture.",
+    "tags": [
+      "architecture",
+      "udf"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 131,
+    "category": "Android Architecture",
+    "difficulty": "Expert",
+    "question": "What are the advantages of Clean Architecture?",
+    "answer": "It improves separation of concerns, testability, maintainability, and scalability.",
+    "explanation": "Common architecture question.",
+    "tags": [
+      "architecture",
+      "clean-architecture"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 132,
+    "category": "Android Performance",
+    "difficulty": "Expert",
+    "question": "What causes ANRs and how do you debug them?",
+    "answer": "ANRs occur when the main thread is blocked too long. Use traces, profiler data, and logs to investigate.",
+    "explanation": "Very frequent senior Android topic.",
+    "tags": [
+      "performance",
+      "anr"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 133,
+    "category": "System Design",
+    "difficulty": "Expert",
+    "question": "How would you design a WhatsApp-like chat application?",
+    "answer": "Consider messaging architecture, synchronization, delivery guarantees, offline storage, scalability, and encryption.",
+    "explanation": "Common mobile system design interview question.",
+    "tags": [
+      "system-design",
+      "chat"
+    ],
+    "isBookmarked": false
+  }
+]

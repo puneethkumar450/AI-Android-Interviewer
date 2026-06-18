@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.puneeth.aiinterviewcoach.data.local.entity.QuestionEntity
+import com.puneeth.aiinterviewcoach.data.local.model.CategorySummaryRow
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -12,11 +13,16 @@ interface QuestionDao {
     @Query(
         """
         SELECT * FROM questions
-        WHERE (:searchQuery = '' OR question LIKE '%' || :searchQuery || '%' OR idealAnswer LIKE '%' || :searchQuery || '%')
+        WHERE (:searchQuery = '' 
+            OR question LIKE '%' || :searchQuery || '%' 
+            OR answer LIKE '%' || :searchQuery || '%' 
+            OR explanation LIKE '%' || :searchQuery || '%'
+            OR category LIKE '%' || :searchQuery || '%'
+            OR tags LIKE '%' || :searchQuery || '%')
         AND (:category IS NULL OR category = :category)
         AND (:difficulty IS NULL OR difficulty = :difficulty)
-        AND (:bookmarksOnly = 0 OR bookmarked = 1)
-        ORDER BY bookmarked DESC, question ASC
+        AND (:bookmarksOnly = 0 OR isBookmarked = 1)
+        ORDER BY isBookmarked DESC, category ASC, question ASC
         """,
     )
     fun observeQuestions(
@@ -26,7 +32,35 @@ interface QuestionDao {
         bookmarksOnly: Boolean,
     ): Flow<List<QuestionEntity>>
 
-    @Query("UPDATE questions SET bookmarked = NOT bookmarked WHERE id = :questionId")
+    @Query("SELECT * FROM questions WHERE id = :questionId")
+    fun observeQuestion(questionId: Long): Flow<QuestionEntity?>
+
+    @Query("SELECT * FROM questions WHERE id = :questionId")
+    suspend fun getQuestion(questionId: Long): QuestionEntity?
+
+    @Query(
+        """
+        SELECT id FROM questions
+        WHERE (:searchQuery = '' 
+            OR question LIKE '%' || :searchQuery || '%' 
+            OR answer LIKE '%' || :searchQuery || '%' 
+            OR explanation LIKE '%' || :searchQuery || '%'
+            OR category LIKE '%' || :searchQuery || '%'
+            OR tags LIKE '%' || :searchQuery || '%')
+        AND (:category IS NULL OR category = :category)
+        AND (:difficulty IS NULL OR difficulty = :difficulty)
+        AND (:bookmarksOnly = 0 OR isBookmarked = 1)
+        ORDER BY category ASC, question ASC
+        """,
+    )
+    suspend fun getQuestionIds(
+        searchQuery: String,
+        category: String?,
+        difficulty: String?,
+        bookmarksOnly: Boolean,
+    ): List<Long>
+
+    @Query("UPDATE questions SET isBookmarked = NOT isBookmarked WHERE id = :questionId")
     suspend fun toggleBookmark(questionId: Long)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -34,4 +68,24 @@ interface QuestionDao {
 
     @Query("SELECT COUNT(*) FROM questions")
     suspend fun count(): Int
+
+    @Query("SELECT COUNT(*) FROM questions WHERE isBookmarked = 1")
+    fun observeBookmarksCount(): Flow<Int>
+
+    @Query("SELECT COUNT(*) FROM questions")
+    fun observeTotalCount(): Flow<Int>
+
+    @Query(
+        """
+        SELECT category, COUNT(*) AS questionCount
+        FROM questions
+        WHERE (:searchQuery = '' OR category LIKE '%' || :searchQuery || '%')
+        GROUP BY category
+        ORDER BY category ASC
+        """,
+    )
+    fun observeCategorySummaries(searchQuery: String): Flow<List<CategorySummaryRow>>
+
+    @Query("SELECT * FROM questions WHERE isBookmarked = 1 ORDER BY category ASC, question ASC")
+    fun observeBookmarkedQuestions(): Flow<List<QuestionEntity>>
 }
