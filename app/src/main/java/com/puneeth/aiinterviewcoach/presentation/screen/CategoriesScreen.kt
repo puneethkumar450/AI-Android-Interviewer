@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,22 +23,32 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.puneeth.aiinterviewcoach.domain.model.InterviewCategory
+import com.puneeth.aiinterviewcoach.presentation.component.CoachTopAppBar
 import com.puneeth.aiinterviewcoach.presentation.viewmodel.CategoriesViewModel
 
 @Composable
 fun CategoriesScreen(
+    onNavigateBack: () -> Unit,
     onOpenCategory: (InterviewCategory) -> Unit,
     viewModel: CategoriesViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        item {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("All Categories", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+    Scaffold(
+        topBar = {
+            CoachTopAppBar(
+                title = "All Categories",
+                onNavigateBack = onNavigateBack,
+            )
+        },
+    ) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            item {
                 OutlinedTextField(
                     value = uiState.searchQuery,
                     onValueChange = viewModel::updateQuery,
@@ -44,12 +56,24 @@ fun CategoriesScreen(
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
-        }
-        items(uiState.categories) { item ->
-            Card(modifier = Modifier.fillMaxWidth().clickable { onOpenCategory(item.category) }) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text(item.category.title, fontWeight = FontWeight.SemiBold)
-                    Text("${item.questionCount} questions")
+            items(uiState.categories) { item ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onOpenCategory(item.category) },
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+                    shape = MaterialTheme.shapes.extraLarge,
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Text(item.category.title, fontWeight = FontWeight.SemiBold)
+                        Text(
+                            text = "${item.questionCount} questions",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
                 }
             }
         }
