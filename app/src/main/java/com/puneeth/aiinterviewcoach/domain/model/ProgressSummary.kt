@@ -1,9 +1,12 @@
 package com.puneeth.aiinterviewcoach.domain.model
 
 data class ProgressSummary(
-    val completedInterviews: Int,
+    val totalQuestions: Int,
+    val viewedQuestions: Int,
+    val completedQuestions: Int,
     val currentStreak: Int,
-    val averageScore: Int,
-    val categoryScores: Map<InterviewCategory, Int>,
-    val weakAreas: List<String>,
+    val bookmarksCount: Int,
+    val continueQuestionId: Long?,
+    val categoryProgress: List<CategoryProgress>,
+    val difficultyProgress: List<DifficultyProgress>,
 )

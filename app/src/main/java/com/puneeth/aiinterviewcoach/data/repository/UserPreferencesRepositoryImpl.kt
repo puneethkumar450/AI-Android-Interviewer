@@ -24,4 +24,16 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override suspend fun updateDarkMode(enabled: Boolean) {
         dataSource.updateDarkMode(enabled)
     }
+
+    override suspend fun updateDynamicColor(enabled: Boolean) {
+        dataSource.updateDynamicColor(enabled)
+    }
+
+    override suspend fun updateLastOpenedQuestion(questionId: Long?) {
+        dataSource.updateLastOpenedQuestion(questionId)
+    }
+
+    override suspend fun updateDailyPractice(lastPracticeEpochDay: Long, streak: Int) {
+        dataSource.updateDailyPractice(lastPracticeEpochDay, streak)
+    }
 }

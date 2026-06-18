@@ -1,21 +1,15 @@
 package com.puneeth.aiinterviewcoach.data.remote.dto
 
-data class GeminiRequest(
-    val contents: List<GeminiContent>,
-)
+import kotlinx.serialization.Serializable
 
-data class GeminiContent(
-    val parts: List<GeminiPart>,
-)
-
-data class GeminiPart(
-    val text: String,
-)
-
-data class GeminiResponse(
-    val candidates: List<GeminiCandidate> = emptyList(),
-)
-
-data class GeminiCandidate(
-    val content: GeminiContent = GeminiContent(emptyList()),
+@Serializable
+data class QuestionAssetDto(
+    val id: Long,
+    val category: String,
+    val difficulty: String,
+    val question: String,
+    val answer: String,
+    val explanation: String,
+    val tags: List<String>,
+    val isBookmarked: Boolean = false,
 )

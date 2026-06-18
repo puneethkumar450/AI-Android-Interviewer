@@ -1,0 +1,1005 @@
+[
+  {
+    "id": 101,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "Why is state hoisting important in Compose?",
+    "answer": "State hoisting moves state ownership upward so composables stay reusable, testable, and easier to reason about.",
+    "explanation": "It separates stateful and stateless concerns and reduces hidden coupling.",
+    "tags": [
+      "compose",
+      "state-hoisting"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 102,
+    "category": "Kotlin",
+    "difficulty": "Advanced",
+    "question": "What are inline functions useful for?",
+    "answer": "Inline functions reduce overhead for higher-order functions and enable features like reified type parameters.",
+    "explanation": "They are often used in DSLs and generic helper APIs.",
+    "tags": [
+      "kotlin",
+      "inline",
+      "reified"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 103,
+    "category": "Coroutines",
+    "difficulty": "Advanced",
+    "question": "How does SupervisorJob differ from Job?",
+    "answer": "SupervisorJob isolates child failures so one failing child does not cancel its siblings.",
+    "explanation": "This is useful when concurrent tasks should fail independently.",
+    "tags": [
+      "coroutines",
+      "supervisorjob"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 104,
+    "category": "Flow",
+    "difficulty": "Advanced",
+    "question": "What is the purpose of flatMapLatest?",
+    "answer": "flatMapLatest switches to the latest upstream request and cancels the previous one.",
+    "explanation": "It is useful for search, user-driven filtering, and other rapidly changing inputs.",
+    "tags": [
+      "flow",
+      "operators"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 105,
+    "category": "Android Architecture",
+    "difficulty": "Advanced",
+    "question": "What makes a codebase multi-module ready?",
+    "answer": "Clear domain boundaries, limited outward dependencies, stable interfaces, and feature isolation make module extraction straightforward.",
+    "explanation": "Module structure should follow ownership and dependency direction, not arbitrary folders.",
+    "tags": [
+      "architecture",
+      "modules"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 106,
+    "category": "Hilt",
+    "difficulty": "Advanced",
+    "question": "How do you choose Hilt scopes correctly?",
+    "answer": "Scope dependencies to the narrowest lifecycle that matches their usage to avoid leaks and stale state.",
+    "explanation": "Examples include SingletonComponent, ActivityRetainedComponent, and ViewModelComponent.",
+    "tags": [
+      "hilt",
+      "scoping"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 107,
+    "category": "Room",
+    "difficulty": "Advanced",
+    "question": "How would you handle Room migrations safely?",
+    "answer": "Use explicit migration steps, verify schema changes in tests, and preserve data transformations carefully.",
+    "explanation": "Migrations should be treated as production data changes, not just compile-time updates.",
+    "tags": [
+      "room",
+      "migration"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 108,
+    "category": "WorkManager",
+    "difficulty": "Advanced",
+    "question": "What are unique work chains for?",
+    "answer": "Unique work chains prevent duplicate jobs and let you define replacement or append behavior.",
+    "explanation": "They are useful for periodic sync and user-triggered work deduplication.",
+    "tags": [
+      "workmanager",
+      "unique-work"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 109,
+    "category": "Android Performance",
+    "difficulty": "Expert",
+    "question": "How do you investigate a startup regression?",
+    "answer": "Measure cold and warm startup, inspect traces, identify blocking initialization, and defer non-critical work.",
+    "explanation": "Reliable performance work starts with baselines and instrumentation, not assumptions.",
+    "tags": [
+      "performance",
+      "startup"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 110,
+    "category": "Android Testing",
+    "difficulty": "Advanced",
+    "question": "How do you keep Android tests reliable in CI?",
+    "answer": "Reduce shared state, control async behavior, use test doubles carefully, and separate unit, integration, and UI concerns.",
+    "explanation": "Flaky tests usually indicate timing, dependency, or environment issues.",
+    "tags": [
+      "testing",
+      "ci",
+      "flaky-tests"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 111,
+    "category": "System Design",
+    "difficulty": "Expert",
+    "question": "What trade-offs exist in storing large offline content packs locally?",
+    "answer": "You need to balance install size, import speed, update strategy, indexing cost, and migration complexity.",
+    "explanation": "Local-first design shifts many concerns from network availability to storage lifecycle management.",
+    "tags": [
+      "system-design",
+      "storage",
+      "offline"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 112,
+    "category": "Senior Android",
+    "difficulty": "Expert",
+    "question": "How do you prioritize tech debt in a mature Android app?",
+    "answer": "Rank debt by user impact, delivery drag, incident risk, and opportunity to simplify future work.",
+    "explanation": "Senior prioritization requires clarity about trade-offs, ownership, and timing.",
+    "tags": [
+      "senior",
+      "tech-debt",
+      "prioritization"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 113,
+    "category": "Kotlin",
+    "difficulty": "Advanced",
+    "question": "What is the difference between inline, noinline, and crossinline?",
+    "answer": "inline inlines lambdas, noinline prevents inlining for specific lambdas, and crossinline prevents non-local returns.",
+    "explanation": "Commonly asked alongside higher-order functions and reified generics.",
+    "tags": [
+      "kotlin",
+      "inline",
+      "crossinline",
+      "noinline"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 114,
+    "category": "Kotlin",
+    "difficulty": "Advanced",
+    "question": "What are reified type parameters and why are they useful?",
+    "answer": "Reified type parameters preserve generic type information at runtime inside inline functions.",
+    "explanation": "They eliminate the need to pass Class<T> references.",
+    "tags": [
+      "kotlin",
+      "reified",
+      "generics"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 115,
+    "category": "Coroutines",
+    "difficulty": "Expert",
+    "question": "How does coroutine cancellation propagate through a hierarchy?",
+    "answer": "Cancellation propagates from parent to children unless a SupervisorJob is used.",
+    "explanation": "Critical for Android lifecycle management.",
+    "tags": [
+      "coroutines",
+      "cancellation"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 116,
+    "category": "Coroutines",
+    "difficulty": "Expert",
+    "question": "What is the difference between launch and async?",
+    "answer": "launch returns a Job and is used for fire-and-forget work, while async returns Deferred and produces a result.",
+    "explanation": "Classic Android interview question.",
+    "tags": [
+      "coroutines",
+      "launch",
+      "async"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 117,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is the difference between remember and rememberSaveable?",
+    "answer": "remember survives recomposition while rememberSaveable survives configuration changes by saving state.",
+    "explanation": "One of the most frequently asked Compose questions.",
+    "tags": [
+      "compose",
+      "state"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 118,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What causes unnecessary recompositions and how do you avoid them?",
+    "answer": "Unstable parameters, broad state observation, and incorrect state ownership can trigger extra recompositions.",
+    "explanation": "Performance-focused Compose interviews often include this topic.",
+    "tags": [
+      "compose",
+      "performance",
+      "recomposition"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 119,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "Explain LaunchedEffect, SideEffect, DisposableEffect, and rememberCoroutineScope.",
+    "answer": "Each side-effect API serves a different lifecycle and execution purpose within Compose.",
+    "explanation": "Frequently asked in senior Compose interviews.",
+    "tags": [
+      "compose",
+      "side-effects"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 120,
+    "category": "Android Architecture",
+    "difficulty": "Expert",
+    "question": "MVVM vs MVI: when would you choose one over the other?",
+    "answer": "MVVM provides flexibility while MVI enforces a strict unidirectional state flow.",
+    "explanation": "Common architecture discussion for senior Android roles.",
+    "tags": [
+      "architecture",
+      "mvvm",
+      "mvi"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 121,
+    "category": "Senior Android",
+    "difficulty": "Expert",
+    "question": "How would you reduce application startup time?",
+    "answer": "Measure startup metrics, defer non-critical initialization, optimize dependency graphs, and remove blocking work from the main thread.",
+    "explanation": "Common Staff and Senior Android topic.",
+    "tags": [
+      "startup",
+      "performance"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 122,
+    "category": "Senior Android",
+    "difficulty": "Expert",
+    "question": "How would you investigate a memory leak in Android?",
+    "answer": "Use LeakCanary, heap dumps, lifecycle analysis, and object reference tracing.",
+    "explanation": "Frequently asked senior-level Android question.",
+    "tags": [
+      "memory",
+      "leaks",
+      "performance"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 123,
+    "category": "Kotlin",
+    "difficulty": "Expert",
+    "question": "What is type erasure and how do reified types solve it?",
+    "answer": "Type erasure removes generic type information at runtime. Reified types preserve type information inside inline functions.",
+    "explanation": "Common senior Kotlin topic.",
+    "tags": [
+      "kotlin",
+      "generics",
+      "reified"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 124,
+    "category": "Coroutines",
+    "difficulty": "Expert",
+    "question": "What is CoroutineExceptionHandler and when should it be used?",
+    "answer": "CoroutineExceptionHandler handles uncaught coroutine exceptions at the root coroutine level.",
+    "explanation": "Exception handling is a common interview topic.",
+    "tags": [
+      "coroutines",
+      "exceptions"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 125,
+    "category": "Coroutines",
+    "difficulty": "Expert",
+    "question": "What is the difference between withContext and async?",
+    "answer": "withContext switches context and returns a result, while async creates a concurrent coroutine returning Deferred.",
+    "explanation": "Frequently asked Android interview question.",
+    "tags": [
+      "coroutines",
+      "async",
+      "withcontext"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 126,
+    "category": "Flow",
+    "difficulty": "Advanced",
+    "question": "What does collectLatest do?",
+    "answer": "collectLatest cancels the previous collector block when a new value arrives.",
+    "explanation": "Commonly used in search and UI updates.",
+    "tags": [
+      "flow",
+      "collectlatest"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 127,
+    "category": "Flow",
+    "difficulty": "Expert",
+    "question": "What are shareIn and stateIn operators?",
+    "answer": "shareIn converts a cold flow to SharedFlow while stateIn converts a cold flow to StateFlow.",
+    "explanation": "Frequently asked in modern Android interviews.",
+    "tags": [
+      "flow",
+      "sharein",
+      "statein"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 128,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What is derivedStateOf and when should it be used?",
+    "answer": "derivedStateOf optimizes recompositions by calculating derived values only when dependencies change.",
+    "explanation": "Important for Compose performance.",
+    "tags": [
+      "compose",
+      "performance"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 129,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How does Compose determine whether a composable should recompose?",
+    "answer": "Compose tracks state reads and invalidates affected composables when observed state changes.",
+    "explanation": "Core Compose interview topic.",
+    "tags": [
+      "compose",
+      "recomposition"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 130,
+    "category": "Android Architecture",
+    "difficulty": "Expert",
+    "question": "What is Unidirectional Data Flow?",
+    "answer": "Data flows in a single direction from state to UI and user actions flow back as events.",
+    "explanation": "Widely used in modern Android architecture.",
+    "tags": [
+      "architecture",
+      "udf"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 131,
+    "category": "Android Architecture",
+    "difficulty": "Expert",
+    "question": "What are the advantages of Clean Architecture?",
+    "answer": "It improves separation of concerns, testability, maintainability, and scalability.",
+    "explanation": "Common architecture question.",
+    "tags": [
+      "architecture",
+      "clean-architecture"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 132,
+    "category": "Android Performance",
+    "difficulty": "Expert",
+    "question": "What causes ANRs and how do you debug them?",
+    "answer": "ANRs occur when the main thread is blocked too long. Use traces, profiler data, and logs to investigate.",
+    "explanation": "Very frequent senior Android topic.",
+    "tags": [
+      "performance",
+      "anr"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 133,
+    "category": "System Design",
+    "difficulty": "Expert",
+    "question": "How would you design a WhatsApp-like chat application?",
+    "answer": "Consider messaging architecture, synchronization, delivery guarantees, offline storage, scalability, and encryption.",
+    "explanation": "Common mobile system design interview question.",
+    "tags": [
+      "system-design",
+      "chat"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 134,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is rememberUpdatedState and when should it be used?",
+    "answer": "rememberUpdatedState provides the latest value to long-lived side effects without restarting the effect.",
+    "explanation": "Useful when LaunchedEffect or DisposableEffect should continue running while accessing updated values.",
+    "tags": [
+      "compose",
+      "state",
+      "side-effects"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 135,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What is SnapshotFlow and when would you use it?",
+    "answer": "SnapshotFlow converts Compose state reads into a Flow stream.",
+    "explanation": "Useful when integrating Compose state with Flow operators such as debounce or distinctUntilChanged.",
+    "tags": [
+      "compose",
+      "snapshotflow",
+      "flow"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 136,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What are stable and unstable types in Compose?",
+    "answer": "Stable types allow Compose to skip recompositions safely, while unstable types may trigger unnecessary recompositions.",
+    "explanation": "Understanding stability is important for Compose performance optimization.",
+    "tags": [
+      "compose",
+      "performance",
+      "stability"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 137,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is CompositionLocal?",
+    "answer": "CompositionLocal allows data to be passed implicitly through the composable hierarchy.",
+    "explanation": "Often used for themes, configuration, and dependency access.",
+    "tags": [
+      "compose",
+      "compositionlocal"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 138,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What are the drawbacks of overusing CompositionLocal?",
+    "answer": "It can hide dependencies, reduce readability, and make testing harder.",
+    "explanation": "Senior interviews often focus on maintainability concerns.",
+    "tags": [
+      "compose",
+      "architecture"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 139,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How does LazyColumn differ from RecyclerView internally?",
+    "answer": "LazyColumn composes only visible items using Compose runtime rather than View recycling.",
+    "explanation": "Frequently asked when transitioning from View-based UI to Compose.",
+    "tags": [
+      "compose",
+      "lazycolumn"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 140,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What is SubcomposeLayout?",
+    "answer": "SubcomposeLayout allows child composables to be composed during measurement.",
+    "explanation": "Used internally by Lazy layouts and advanced custom UI components.",
+    "tags": [
+      "compose",
+      "layout"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 141,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is the purpose of key in LazyColumn?",
+    "answer": "Keys provide stable item identity so Compose can correctly track state and item changes.",
+    "explanation": "Without stable keys, state can move between items incorrectly during updates.",
+    "tags": [
+      "compose",
+      "lazycolumn",
+      "state"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 142,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What causes state loss in LazyColumn?",
+    "answer": "Missing stable keys, improper state management, and recreating state during recomposition can cause state loss.",
+    "explanation": "A common issue in dynamic lists.",
+    "tags": [
+      "compose",
+      "lazycolumn",
+      "state"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 143,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "How does rememberSaveable work internally?",
+    "answer": "rememberSaveable stores values in the SavedStateRegistry and restores them after configuration changes.",
+    "explanation": "Useful for preserving UI state across recreation.",
+    "tags": [
+      "compose",
+      "state"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 144,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What is the difference between remember and derivedStateOf?",
+    "answer": "remember stores a value while derivedStateOf calculates a value and only updates when dependencies change.",
+    "explanation": "derivedStateOf helps reduce unnecessary recompositions.",
+    "tags": [
+      "compose",
+      "performance"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 145,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "When should you use derivedStateOf?",
+    "answer": "Use derivedStateOf for expensive derived values that depend on state changes.",
+    "explanation": "It avoids unnecessary recalculations and recompositions.",
+    "tags": [
+      "compose",
+      "performance"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 146,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is a recomposition scope?",
+    "answer": "A recomposition scope defines the region of UI that can be independently recomposed.",
+    "explanation": "Compose tracks state reads within scopes.",
+    "tags": [
+      "compose",
+      "recomposition"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 147,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How can you debug recompositions in Compose?",
+    "answer": "Use Layout Inspector, Compose Tracing, recomposition counts, and compiler metrics.",
+    "explanation": "Important for performance investigations.",
+    "tags": [
+      "compose",
+      "performance",
+      "debugging"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 148,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What are compiler stability reports in Compose?",
+    "answer": "Compiler reports identify stable and unstable types affecting recomposition behavior.",
+    "explanation": "Useful for diagnosing performance issues.",
+    "tags": [
+      "compose",
+      "compiler",
+      "performance"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 149,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is the role of Modifier in Compose?",
+    "answer": "Modifier decorates or augments composables with layout, behavior, appearance, and interaction.",
+    "explanation": "Modifiers are a fundamental Compose building block.",
+    "tags": [
+      "compose",
+      "modifier"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 150,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "Why does Modifier order matter?",
+    "answer": "Modifiers are applied sequentially, so changing order changes behavior and layout results.",
+    "explanation": "Padding before clickable behaves differently from clickable before padding.",
+    "tags": [
+      "compose",
+      "modifier"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 151,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is Modifier.composed?",
+    "answer": "Modifier.composed creates stateful custom modifiers that can access Compose APIs.",
+    "explanation": "Used when custom modifiers require composition.",
+    "tags": [
+      "compose",
+      "modifier"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 152,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How does Navigation Compose handle back stack state?",
+    "answer": "Navigation Compose stores destinations in a NavBackStackEntry hierarchy and manages saved state per destination.",
+    "explanation": "Frequently asked in Compose navigation interviews.",
+    "tags": [
+      "compose",
+      "navigation"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 153,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What are common Navigation Compose pitfalls?",
+    "answer": "Duplicate destinations, improper state restoration, and passing large objects between destinations.",
+    "explanation": "Senior interviews often focus on navigation architecture.",
+    "tags": [
+      "compose",
+      "navigation"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 154,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is AnimatedVisibility?",
+    "answer": "AnimatedVisibility animates appearance and disappearance of composables.",
+    "explanation": "Part of Compose animation APIs.",
+    "tags": [
+      "compose",
+      "animation"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 155,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is animate*AsState?",
+    "answer": "animate*AsState automatically animates state value changes.",
+    "explanation": "Useful for simple property animations.",
+    "tags": [
+      "compose",
+      "animation"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 156,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What is the difference between animate*AsState and Animatable?",
+    "answer": "animate*AsState is declarative while Animatable provides imperative control over animations.",
+    "explanation": "Common animation interview topic.",
+    "tags": [
+      "compose",
+      "animation"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 157,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What is LookaheadLayout?",
+    "answer": "LookaheadLayout enables predictive measurement and placement for advanced animations.",
+    "explanation": "Useful for shared element and layout transition scenarios.",
+    "tags": [
+      "compose",
+      "layout",
+      "animation"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 158,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What are Window Size Classes?",
+    "answer": "Window Size Classes categorize device screens for adaptive layouts.",
+    "explanation": "Important for tablets and foldables.",
+    "tags": [
+      "compose",
+      "adaptive-ui"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 159,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How would you build adaptive Compose UIs for foldables?",
+    "answer": "Use Window Size Classes, folding features, and responsive layouts.",
+    "explanation": "A modern Android interview topic.",
+    "tags": [
+      "compose",
+      "foldables",
+      "adaptive-ui"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 160,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How does Compose support accessibility?",
+    "answer": "Compose provides semantics APIs for screen readers, content descriptions, and accessibility actions.",
+    "explanation": "Accessibility knowledge is increasingly evaluated in interviews.",
+    "tags": [
+      "compose",
+      "accessibility"
+    ],
+    "isBookmarked": false
+  },
+  {
+    "id": 161,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What are Baseline Profiles and how do they improve Compose performance?",
+    "answer": "Baseline Profiles precompile critical code paths to reduce startup and rendering overhead.",
+    "explanation": "A common performance optimization topic in modern Android interviews.",
+    "tags": ["compose", "performance", "baseline-profile"],
+    "isBookmarked": false
+  },
+  {
+    "id": 162,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What is Macrobenchmark and when would you use it?",
+    "answer": "Macrobenchmark measures app startup, scrolling, and rendering performance on real devices.",
+    "explanation": "Frequently discussed in senior Android performance interviews.",
+    "tags": ["compose", "performance", "benchmark"],
+    "isBookmarked": false
+  },
+  {
+    "id": 163,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "How do you write UI tests for Compose?",
+    "answer": "Use Compose Test APIs with semantic nodes and assertions.",
+    "explanation": "Compose testing differs significantly from Espresso.",
+    "tags": ["compose", "testing"],
+    "isBookmarked": false
+  },
+  {
+    "id": 164,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What are semantics in Compose testing?",
+    "answer": "Semantics expose accessibility and testing metadata for composables.",
+    "explanation": "Testing APIs rely heavily on semantics trees.",
+    "tags": ["compose", "testing", "semantics"],
+    "isBookmarked": false
+  },
+  {
+    "id": 165,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is Pager in Compose and when would you use it?",
+    "answer": "Pager displays horizontally or vertically swipeable pages.",
+    "explanation": "Common replacement for ViewPager2 in Compose.",
+    "tags": ["compose", "pager"],
+    "isBookmarked": false
+  },
+  {
+    "id": 166,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How does Paging 3 integrate with Compose?",
+    "answer": "Paging data is collected using collectAsLazyPagingItems and rendered through lazy components.",
+    "explanation": "A common interview topic for large datasets.",
+    "tags": ["compose", "paging"],
+    "isBookmarked": false
+  },
+  {
+    "id": 167,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What are common Paging 3 performance issues?",
+    "answer": "Improper key usage, large page sizes, excessive recompositions, and expensive item rendering.",
+    "explanation": "Frequently discussed in performance-focused interviews.",
+    "tags": ["compose", "paging", "performance"],
+    "isBookmarked": false
+  },
+  {
+    "id": 168,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is collectAsStateWithLifecycle?",
+    "answer": "It collects Flow values while respecting lifecycle state.",
+    "explanation": "Recommended approach for Flow collection in Compose UIs.",
+    "tags": ["compose", "flow", "lifecycle"],
+    "isBookmarked": false
+  },
+  {
+    "id": 169,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "Why should lifecycle-aware Flow collection be used in Compose?",
+    "answer": "It prevents unnecessary collection and reduces wasted work when the UI is not visible.",
+    "explanation": "A common production-level concern.",
+    "tags": ["compose", "flow", "lifecycle"],
+    "isBookmarked": false
+  },
+  {
+    "id": 170,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "How do you handle one-time events in Compose?",
+    "answer": "Use SharedFlow, Channel, or event wrappers instead of StateFlow.",
+    "explanation": "Frequently asked with MVVM and UDF discussions.",
+    "tags": ["compose", "events", "architecture"],
+    "isBookmarked": false
+  },
+  {
+    "id": 171,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "Why is StateFlow not ideal for one-time events?",
+    "answer": "StateFlow replays the latest value and can cause duplicate event handling.",
+    "explanation": "A classic Android architecture interview topic.",
+    "tags": ["compose", "stateflow", "events"],
+    "isBookmarked": false
+  },
+  {
+    "id": 172,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How do you restore scroll position in Compose?",
+    "answer": "Use rememberLazyListState and save state when appropriate.",
+    "explanation": "Important for large content screens.",
+    "tags": ["compose", "lazycolumn", "state"],
+    "isBookmarked": false
+  },
+  {
+    "id": 173,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is rememberLazyListState?",
+    "answer": "It stores and controls scroll state for lazy lists.",
+    "explanation": "Commonly used with pagination and state restoration.",
+    "tags": ["compose", "lazycolumn"],
+    "isBookmarked": false
+  },
+  {
+    "id": 174,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How would you optimize a slow LazyColumn?",
+    "answer": "Use stable keys, avoid unnecessary recompositions, reduce expensive layouts, and paginate data.",
+    "explanation": "Very common senior Android question.",
+    "tags": ["compose", "performance", "lazycolumn"],
+    "isBookmarked": false
+  },
+  {
+    "id": 175,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What tools can be used to profile Compose performance?",
+    "answer": "Layout Inspector, System Trace, Macrobenchmark, and Compose compiler reports.",
+    "explanation": "Expected knowledge for senior engineers.",
+    "tags": ["compose", "performance"],
+    "isBookmarked": false
+  },
+  {
+    "id": 176,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is AnimatedContent?",
+    "answer": "AnimatedContent animates transitions between content states.",
+    "explanation": "Useful for state-driven UI changes.",
+    "tags": ["compose", "animation"],
+    "isBookmarked": false
+  },
+  {
+    "id": 177,
+    "category": "Jetpack Compose",
+    "difficulty": "Advanced",
+    "question": "What is Crossfade in Compose?",
+    "answer": "Crossfade animates between composable content using alpha transitions.",
+    "explanation": "A simple animation API frequently used in UI state changes.",
+    "tags": ["compose", "animation"],
+    "isBookmarked": false
+  },
+  {
+    "id": 178,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "What are deep links in Navigation Compose?",
+    "answer": "Deep links allow destinations to be opened directly from external sources.",
+    "explanation": "Frequently discussed in navigation architecture interviews.",
+    "tags": ["compose", "navigation"],
+    "isBookmarked": false
+  },
+  {
+    "id": 179,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How would you secure deep links in Android?",
+    "answer": "Use verified app links, input validation, and proper authentication checks.",
+    "explanation": "A senior-level Android topic.",
+    "tags": ["compose", "navigation", "security"],
+    "isBookmarked": false
+  },
+  {
+    "id": 180,
+    "category": "Jetpack Compose",
+    "difficulty": "Expert",
+    "question": "How do you handle configuration changes in Compose?",
+    "answer": "Use ViewModels, rememberSaveable, and lifecycle-aware state management.",
+    "explanation": "A core Android concept re-evaluated for Compose.",
+    "tags": ["compose", "state"],
+    "isBookmarked": false
+  }
+]

@@ -19,11 +19,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val viewModel: RootViewModel = hiltViewModel()
-            val preferences by viewModel.preferences.collectAsStateWithLifecycle()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             AIAndroidInterviewCoachTheme(
-                darkTheme = preferences.darkMode,
+                darkTheme = uiState.preferences.darkMode,
+                dynamicColor = uiState.preferences.dynamicColor,
             ) {
-                CoachNavRoot()
+                CoachNavRoot(isReady = uiState.isReady)
             }
         }
     }
