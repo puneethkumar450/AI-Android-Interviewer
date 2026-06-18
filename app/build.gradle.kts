@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -6,6 +8,13 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+}
+
+val releaseSigningProperties = Properties().apply {
+    val propertiesFile = rootProject.file("local.properties")
+    if (propertiesFile.exists()) {
+        propertiesFile.inputStream().use { load(it) }
+    }
 }
 
 android {
@@ -26,6 +35,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -36,6 +46,26 @@ android {
             versionNameSuffix = "-debug"
         }
     }
+
+    signingConfigs {
+        create("release") {
+            val storeFileName = releaseSigningProperties.getProperty("release.storeFile")
+                ?: error("Missing release.storeFile in local.properties")
+            val storePasswordValue = releaseSigningProperties.getProperty("release.storePassword")
+                ?: error("Missing release.storePassword in local.properties")
+            val keyAliasValue = releaseSigningProperties.getProperty("release.keyAlias")
+                ?: error("Missing release.keyAlias in local.properties")
+            val keyPasswordValue = releaseSigningProperties.getProperty("release.keyPassword")
+                ?: error("Missing release.keyPassword in local.properties")
+
+            storeFile = rootProject.file(storeFileName)
+            storePassword = storePasswordValue
+            keyAlias = keyAliasValue
+            keyPassword = keyPasswordValue
+        }
+    }
+
+    buildTypes.getByName("release").signingConfig = signingConfigs.getByName("release")
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
