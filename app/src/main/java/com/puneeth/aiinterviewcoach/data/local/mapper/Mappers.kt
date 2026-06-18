@@ -3,10 +3,12 @@ package com.puneeth.aiinterviewcoach.data.local.mapper
 import com.puneeth.aiinterviewcoach.data.local.entity.InterviewSessionEntity
 import com.puneeth.aiinterviewcoach.data.local.entity.QuestionEntity
 import com.puneeth.aiinterviewcoach.data.local.model.CategorySummaryRow
+import com.puneeth.aiinterviewcoach.data.local.model.DifficultySummaryRow
 import com.puneeth.aiinterviewcoach.data.local.model.ProgressSummaryRow
 import com.puneeth.aiinterviewcoach.domain.model.CategoryProgress
 import com.puneeth.aiinterviewcoach.domain.model.CategorySummary
 import com.puneeth.aiinterviewcoach.domain.model.DifficultyProgress
+import com.puneeth.aiinterviewcoach.domain.model.HomeDifficultySummary
 import com.puneeth.aiinterviewcoach.domain.model.InterviewCategory
 import com.puneeth.aiinterviewcoach.domain.model.InterviewDifficulty
 import com.puneeth.aiinterviewcoach.domain.model.InterviewMessage
@@ -28,6 +30,11 @@ fun QuestionEntity.toDomain(): PracticeQuestion = PracticeQuestion(
 
 fun CategorySummaryRow.toDomain(): CategorySummary = CategorySummary(
     category = InterviewCategory.fromTitle(category),
+    questionCount = questionCount,
+)
+
+fun DifficultySummaryRow.toDomain(): HomeDifficultySummary = HomeDifficultySummary(
+    difficulty = InterviewDifficulty.fromTitle(dimension),
     questionCount = questionCount,
 )
 

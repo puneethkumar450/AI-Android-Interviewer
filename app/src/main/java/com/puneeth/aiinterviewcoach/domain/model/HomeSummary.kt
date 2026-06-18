@@ -5,4 +5,5 @@ data class HomeSummary(
     val bookmarksCount: Int,
     val continueQuestionId: Long?,
     val categories: List<CategorySummary>,
+    val difficultySummaries: List<HomeDifficultySummary>,
 )

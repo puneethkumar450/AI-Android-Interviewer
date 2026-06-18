@@ -5,6 +5,11 @@ data class CategorySummaryRow(
     val questionCount: Int,
 )
 
+data class DifficultySummaryRow(
+    val dimension: String,
+    val questionCount: Int,
+)
+
 data class ProgressSummaryRow(
     val dimension: String,
     val completedCount: Int,

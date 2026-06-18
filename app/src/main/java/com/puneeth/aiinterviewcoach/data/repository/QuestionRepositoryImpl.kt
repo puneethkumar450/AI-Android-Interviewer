@@ -29,12 +29,14 @@ class QuestionRepositoryImpl @Inject constructor(
         questionDao.observeTotalCount(),
         questionDao.observeBookmarksCount(),
         questionDao.observeCategorySummaries(""),
-    ) { total, bookmarks, categories ->
+        questionDao.observeDifficultySummaries(""),
+    ) { total, bookmarks, categories, difficulties ->
         HomeSummary(
             totalQuestions = total,
             bookmarksCount = bookmarks,
             continueQuestionId = null,
             categories = categories.map { it.toDomain() },
+            difficultySummaries = difficulties.map { it.toDomain() },
         )
     }
 

@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.puneeth.aiinterviewcoach.data.local.entity.QuestionEntity
 import com.puneeth.aiinterviewcoach.data.local.model.CategorySummaryRow
+import com.puneeth.aiinterviewcoach.data.local.model.DifficultySummaryRow
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -85,6 +86,23 @@ interface QuestionDao {
         """,
     )
     fun observeCategorySummaries(searchQuery: String): Flow<List<CategorySummaryRow>>
+
+    @Query(
+        """
+        SELECT difficulty AS dimension, COUNT(*) AS questionCount
+        FROM questions
+        WHERE (:searchQuery = '' OR difficulty LIKE '%' || :searchQuery || '%')
+        GROUP BY difficulty
+        ORDER BY CASE difficulty
+            WHEN 'Beginner' THEN 1
+            WHEN 'Intermediate' THEN 2
+            WHEN 'Advanced' THEN 3
+            WHEN 'Expert' THEN 4
+            ELSE 5
+        END
+        """,
+    )
+    fun observeDifficultySummaries(searchQuery: String): Flow<List<DifficultySummaryRow>>
 
     @Query("SELECT * FROM questions WHERE isBookmarked = 1 ORDER BY category ASC, question ASC")
     fun observeBookmarkedQuestions(): Flow<List<QuestionEntity>>

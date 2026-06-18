@@ -5,12 +5,15 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.navArgument
@@ -38,27 +41,42 @@ fun CoachNavRoot(
         }
         return
     }
+    val shouldShowBottomBar = topLevelDestinations.any { destination ->
+        navBackStackEntry?.destination?.hierarchy?.any { it.route == destination.route } == true
+    }
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                topLevelDestinations.forEach { destination ->
-                    val selected = navBackStackEntry?.destination?.hierarchy?.any {
-                        it.route == destination.route
-                    } == true
-                    NavigationBarItem(
-                        selected = selected,
-                        onClick = {
-                            navController.navigate(destination.route) {
-                                popUpTo(navController.graph.startDestinationId) {
-                                    saveState = true
+            if (shouldShowBottomBar) {
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    tonalElevation = 8.dp,
+                ) {
+                    topLevelDestinations.forEach { destination ->
+                        val selected = navBackStackEntry?.destination?.hierarchy?.any {
+                            it.route == destination.route
+                        } == true
+                        NavigationBarItem(
+                            selected = selected,
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
+                            ),
+                            onClick = {
+                                navController.navigate(destination.route) {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = { Icon(destination.icon, contentDescription = destination.title) },
-                        label = { Text(destination.title) },
-                    )
+                            },
+                            icon = { Icon(destination.icon, contentDescription = destination.title) },
+                            label = { Text(destination.title) },
+                        )
+                    }
                 }
             }
         },
@@ -74,6 +92,9 @@ fun CoachNavRoot(
                         navController.navigate(questionRoute(startId = questionId))
                     },
                     onOpenCategories = { navController.navigate(CoachDestination.Categories.route) },
+                    onOpenDifficulty = { difficulty ->
+                        navController.navigate(questionRoute(difficulty = difficulty.title))
+                    },
                     onOpenCategory = { category ->
                         navController.navigate(questionRoute(category = category.title))
                     },
@@ -101,6 +122,7 @@ fun CoachNavRoot(
             }
             composable(CoachDestination.Categories.route) {
                 CategoriesScreen(
+                    onNavigateBack = navController::navigateUp,
                     onOpenCategory = { category ->
                         navController.navigate(questionRoute(category = category.title))
                     },
@@ -116,7 +138,7 @@ fun CoachNavRoot(
                     navArgument("startId") { type = NavType.LongType; defaultValue = -1L },
                 ),
             ) {
-                QuestionsScreen()
+                QuestionsScreen(onNavigateBack = navController::navigateUp)
             }
         }
     }

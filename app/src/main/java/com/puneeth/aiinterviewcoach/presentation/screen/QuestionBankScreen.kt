@@ -7,6 +7,7 @@ fun QuestionBankScreen() {
     HomeScreen(
         onContinuePractice = {},
         onOpenCategories = {},
+        onOpenDifficulty = {},
         onOpenCategory = {},
     )
 }
