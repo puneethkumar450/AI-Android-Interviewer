@@ -11,6 +11,7 @@ enum class InterviewCategory(val title: String) {
     WORKMANAGER("WorkManager"),
     ANDROID_PERFORMANCE("Android Performance"),
     ANDROID_TESTING("Android Testing"),
+    CI_CD("CI/CD"),
     SYSTEM_DESIGN("System Design"),
     SENIOR_ANDROID("Senior Android");
 

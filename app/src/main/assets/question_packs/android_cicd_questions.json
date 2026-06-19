@@ -1,0 +1,502 @@
+[
+  {
+    "id": 181,
+    "category": "CI/CD",
+    "difficulty": "Beginner",
+    "question": "What should a basic GitHub Actions workflow for an Android app do on every pull request?",
+    "answer": "It should check out code, set up JDK and Gradle, restore caches, run formatting or lint checks, compile the app, and run unit tests.",
+    "explanation": "Interviewers expect a practical pipeline that protects main from broken builds, not just a YAML file that assembles an APK.",
+    "tags": ["ci-cd", "github-actions", "pull-request", "gradle"],
+    "isBookmarked": false
+  },
+  {
+    "id": 182,
+    "category": "CI/CD",
+    "difficulty": "Beginner",
+    "question": "Why should Android CI run unit tests before building release artifacts?",
+    "answer": "Unit tests give fast feedback and prevent spending time signing or packaging builds that already fail core behavior.",
+    "explanation": "Good answers show an understanding of feedback speed and pipeline cost.",
+    "tags": ["ci-cd", "unit-tests", "pipeline"],
+    "isBookmarked": false
+  },
+  {
+    "id": 183,
+    "category": "CI/CD",
+    "difficulty": "Beginner",
+    "question": "What is the role of Gradle caching in GitHub Actions for Android projects?",
+    "answer": "Gradle caching reuses dependencies, wrappers, and build outputs where safe, reducing CI time and network work.",
+    "explanation": "Candidates should know caching improves speed but must be keyed carefully to avoid stale or incorrect outputs.",
+    "tags": ["ci-cd", "github-actions", "gradle-cache"],
+    "isBookmarked": false
+  },
+  {
+    "id": 184,
+    "category": "CI/CD",
+    "difficulty": "Beginner",
+    "question": "Why should release signing credentials never be committed to the repository?",
+    "answer": "Signing credentials can publish or tamper with app releases, so they must be stored in encrypted CI secrets or a secure key manager.",
+    "explanation": "This tests security basics around Android release pipelines.",
+    "tags": ["ci-cd", "signing", "secrets", "security"],
+    "isBookmarked": false
+  },
+  {
+    "id": 185,
+    "category": "CI/CD",
+    "difficulty": "Beginner",
+    "question": "What is the difference between a debug APK and a release AAB in an Android pipeline?",
+    "answer": "A debug APK is for development and local testing, while a release AAB is optimized, signed, and intended for Play distribution.",
+    "explanation": "Interviewers look for awareness of build types, signing, optimization, and Play Store delivery format.",
+    "tags": ["ci-cd", "apk", "aab", "release"],
+    "isBookmarked": false
+  },
+  {
+    "id": 186,
+    "category": "CI/CD",
+    "difficulty": "Beginner",
+    "question": "When should a workflow use manual dispatch instead of running automatically on every push?",
+    "answer": "Use manual dispatch for expensive, risky, or release-specific jobs such as production signing, Play upload, or staged rollout changes.",
+    "explanation": "A good answer separates validation automation from controlled release automation.",
+    "tags": ["ci-cd", "github-actions", "workflow-dispatch"],
+    "isBookmarked": false
+  },
+  {
+    "id": 187,
+    "category": "CI/CD",
+    "difficulty": "Beginner",
+    "question": "What is a CI artifact in an Android build?",
+    "answer": "A CI artifact is a generated output such as an APK, AAB, test report, lint report, mapping file, or benchmark report stored by the workflow.",
+    "explanation": "Candidates should connect artifacts to debugging, QA handoff, and release traceability.",
+    "tags": ["ci-cd", "artifacts", "reports"],
+    "isBookmarked": false
+  },
+  {
+    "id": 188,
+    "category": "CI/CD",
+    "difficulty": "Beginner",
+    "question": "Why is versionCode important in automated Android releases?",
+    "answer": "Google Play requires each uploaded release to have a higher versionCode than previous uploads.",
+    "explanation": "This checks practical release knowledge that commonly breaks automated Play uploads.",
+    "tags": ["ci-cd", "versioning", "google-play"],
+    "isBookmarked": false
+  },
+  {
+    "id": 189,
+    "category": "CI/CD",
+    "difficulty": "Beginner",
+    "question": "What should happen when a GitHub Actions Android build fails on a pull request?",
+    "answer": "The PR should be blocked from merging, logs and reports should be available, and the failure should be fixed or intentionally overridden by policy.",
+    "explanation": "Interviewers expect CI to be part of engineering governance, not only background automation.",
+    "tags": ["ci-cd", "pull-request", "quality-gate"],
+    "isBookmarked": false
+  },
+  {
+    "id": 190,
+    "category": "CI/CD",
+    "difficulty": "Beginner",
+    "question": "What is the purpose of a release track in Google Play Console?",
+    "answer": "A release track controls who receives a build, such as internal testers, closed testing, open testing, or production users.",
+    "explanation": "Strong candidates understand Play tracks as release-risk controls.",
+    "tags": ["ci-cd", "google-play", "release-tracks"],
+    "isBookmarked": false
+  },
+  {
+    "id": 191,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "How would you design a GitHub Actions workflow that validates every pull request but only publishes builds from main?",
+    "answer": "Use separate workflows or conditional jobs: PR jobs run checks and tests, while main or tagged builds run signing, packaging, artifact upload, and optional Play publishing.",
+    "explanation": "Interviewers look for branch-based release control and separation between validation and deployment.",
+    "tags": ["ci-cd", "github-actions", "branching", "release"],
+    "isBookmarked": false
+  },
+  {
+    "id": 192,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "How do you safely provide a keystore to GitHub Actions for Android release signing?",
+    "answer": "Store the keystore as an encrypted secret, commonly base64 encoded, decode it during the job, pass passwords through secrets, and delete or isolate generated files after use.",
+    "explanation": "This tests secure handling of signing material in real CI environments.",
+    "tags": ["ci-cd", "signing", "github-actions", "secrets"],
+    "isBookmarked": false
+  },
+  {
+    "id": 193,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "What checks would you include before uploading an Android release to Google Play?",
+    "answer": "Run tests, lint, build release, verify versionCode, validate signing, store mapping files, check changelog metadata, and ensure the target track is correct.",
+    "explanation": "Good answers show release readiness as a gate, not just a Gradle command.",
+    "tags": ["ci-cd", "google-play", "release-checks"],
+    "isBookmarked": false
+  },
+  {
+    "id": 194,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "How would you handle different build variants such as dev, staging, and production in CI?",
+    "answer": "Model variants with product flavors and build types, run fast checks for all important variants, and restrict signing and Play upload to approved release variants.",
+    "explanation": "Interviewers expect variant-aware automation that does not accidentally ship staging configuration.",
+    "tags": ["ci-cd", "build-variants", "flavors"],
+    "isBookmarked": false
+  },
+  {
+    "id": 195,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "How can Fastlane-style automation improve Android release consistency?",
+    "answer": "It centralizes repeatable release steps such as version bumping, changelog generation, signing, screenshots, metadata upload, and Play track promotion.",
+    "explanation": "The expected answer highlights consistency, auditability, and reduced manual release mistakes.",
+    "tags": ["ci-cd", "fastlane", "release-automation"],
+    "isBookmarked": false
+  },
+  {
+    "id": 196,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "How would you prevent two release workflows from publishing conflicting Android builds at the same time?",
+    "answer": "Use GitHub Actions concurrency groups, protected environments, release locks, and versionCode validation before upload.",
+    "explanation": "This checks whether the candidate thinks about race conditions in automation.",
+    "tags": ["ci-cd", "github-actions", "concurrency", "release"],
+    "isBookmarked": false
+  },
+  {
+    "id": 197,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "Why should CI upload R8 mapping files for release builds?",
+    "answer": "Mapping files allow crash reporting tools and Play Console to deobfuscate stack traces from minified release builds.",
+    "explanation": "This is a practical production debugging requirement for minified Android apps.",
+    "tags": ["ci-cd", "r8", "mapping", "crash-analysis"],
+    "isBookmarked": false
+  },
+  {
+    "id": 198,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "How would you structure Play Console staged rollout automation?",
+    "answer": "Upload to a track with a controlled user fraction, monitor vitals and crash metrics, then promote, halt, or roll back based on defined release criteria.",
+    "explanation": "Interviewers look for rollout policy, monitoring, and decision points rather than blind promotion.",
+    "tags": ["ci-cd", "google-play", "staged-rollout"],
+    "isBookmarked": false
+  },
+  {
+    "id": 199,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "What is the difference between uploading to internal testing and production in Google Play automation?",
+    "answer": "Internal testing targets a small tester group for quick validation, while production affects real users and should require stricter gates, approvals, and rollout controls.",
+    "explanation": "This tests practical Play track risk management.",
+    "tags": ["ci-cd", "google-play", "tracks"],
+    "isBookmarked": false
+  },
+  {
+    "id": 200,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "How do GitHub Actions environments help Android release pipelines?",
+    "answer": "Environments can require approvals, scope secrets, and track deployments for sensitive stages such as production Play uploads.",
+    "explanation": "A strong answer connects environments to release governance and secret isolation.",
+    "tags": ["ci-cd", "github-actions", "environments"],
+    "isBookmarked": false
+  },
+  {
+    "id": 201,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "How would you generate release notes automatically for Android builds?",
+    "answer": "Generate notes from tags, merged PRs, conventional commits, or issue tracker metadata, then publish them as artifacts and Play listing changelogs.",
+    "explanation": "Interviewers expect release automation to support product and QA communication, not only binary upload.",
+    "tags": ["ci-cd", "release-notes", "automation"],
+    "isBookmarked": false
+  },
+  {
+    "id": 202,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "What should an Android CI pipeline do with lint results?",
+    "answer": "Fail on configured fatal issues, upload reports as artifacts, and keep warnings visible so teams can manage quality debt.",
+    "explanation": "This tests how candidates turn static analysis into a usable quality gate.",
+    "tags": ["ci-cd", "lint", "quality-gate"],
+    "isBookmarked": false
+  },
+  {
+    "id": 203,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "How would you make Android instrumented tests practical in CI?",
+    "answer": "Run a small reliable smoke suite on PRs, shard larger suites, use managed devices or device farms, and quarantine flaky tests with ownership.",
+    "explanation": "Good answers balance coverage, reliability, and CI duration.",
+    "tags": ["ci-cd", "instrumentation-tests", "device-farm"],
+    "isBookmarked": false
+  },
+  {
+    "id": 204,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "How do you decide whether a release pipeline should be triggered by tags or branches?",
+    "answer": "Use branches for continuous validation or snapshot builds, and tags for immutable release candidates with clear version identity.",
+    "explanation": "This checks release traceability and source control discipline.",
+    "tags": ["ci-cd", "git-tags", "release"],
+    "isBookmarked": false
+  },
+  {
+    "id": 205,
+    "category": "CI/CD",
+    "difficulty": "Intermediate",
+    "question": "What metadata should be retained for every Android release built by CI?",
+    "answer": "Retain commit SHA, versionName, versionCode, build variant, signing identity, artifacts, mapping files, test reports, release notes, and target Play track.",
+    "explanation": "Interviewers expect release traceability for debugging and compliance.",
+    "tags": ["ci-cd", "traceability", "release-metadata"],
+    "isBookmarked": false
+  },
+  {
+    "id": 206,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "A GitHub Actions Android workflow is slow and blocks every pull request for 45 minutes. How would you diagnose and improve it?",
+    "answer": "Measure job timings, split fast PR gates from slower nightly jobs, enable Gradle and dependency caching, parallelize independent checks, reduce variant explosion, and move device-heavy tests to targeted suites.",
+    "explanation": "Strong candidates optimize for feedback speed while preserving meaningful quality gates.",
+    "tags": ["ci-cd", "github-actions", "performance", "gradle"],
+    "isBookmarked": false
+  },
+  {
+    "id": 207,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "A release upload fails because the versionCode already exists in Google Play. How should the pipeline prevent this?",
+    "answer": "Derive versionCode deterministically or reserve it during release creation, query or validate against Play before upload, and fail early with a clear message.",
+    "explanation": "This is a common real-world release failure that tests practical automation design.",
+    "tags": ["ci-cd", "versioncode", "google-play"],
+    "isBookmarked": false
+  },
+  {
+    "id": 208,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How would you design secrets management for Android release workflows across dev, staging, and production?",
+    "answer": "Scope secrets per environment, restrict production secrets behind approvals, rotate credentials, avoid logging sensitive values, and use least-privilege service accounts.",
+    "explanation": "Interviewers look for concrete security boundaries rather than a generic statement about using secrets.",
+    "tags": ["ci-cd", "secrets", "security", "environments"],
+    "isBookmarked": false
+  },
+  {
+    "id": 209,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How would you automate promotion from internal testing to production staged rollout?",
+    "answer": "Promote only an approved artifact, verify test and vitals gates, require environment approval, set a rollout fraction, monitor metrics, and record deployment metadata.",
+    "explanation": "The key expectation is artifact immutability and controlled promotion, not rebuilding for each track.",
+    "tags": ["ci-cd", "google-play", "promotion", "staged-rollout"],
+    "isBookmarked": false
+  },
+  {
+    "id": 210,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "A staged rollout starts showing increased crashes after 10 percent release. What should the Android release process do?",
+    "answer": "Halt the rollout, analyze crash clusters and affected versions, decide on rollback or hotfix, communicate status, and keep the bad artifact from further promotion.",
+    "explanation": "Strong answers combine Play controls, observability, incident response, and release ownership.",
+    "tags": ["ci-cd", "staged-rollout", "crash-analysis", "incident"],
+    "isBookmarked": false
+  },
+  {
+    "id": 211,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How would you implement reproducible Android release builds in CI?",
+    "answer": "Pin toolchains and dependencies, use Gradle wrapper, avoid time-dependent generated outputs where possible, record build inputs, and build from immutable commits or tags.",
+    "explanation": "This tests whether candidates understand auditability and release confidence.",
+    "tags": ["ci-cd", "reproducible-builds", "gradle"],
+    "isBookmarked": false
+  },
+  {
+    "id": 212,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How would you add Baseline Profile generation to an Android CI/CD pipeline?",
+    "answer": "Generate profiles from benchmark or profile installer modules on controlled devices, package them into release builds, and monitor startup or jank metrics for regressions.",
+    "explanation": "This connects release automation with performance outcomes, a common senior Android topic.",
+    "tags": ["ci-cd", "baseline-profiles", "performance"],
+    "isBookmarked": false
+  },
+  {
+    "id": 213,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How should a pipeline handle Play App Signing versus locally managed signing keys?",
+    "answer": "With Play App Signing, CI signs uploads with the upload key while Google manages app signing; locally managed signing requires stronger protection of the actual release key.",
+    "explanation": "Interviewers expect candidates to know the operational difference and risk profile.",
+    "tags": ["ci-cd", "play-app-signing", "signing"],
+    "isBookmarked": false
+  },
+  {
+    "id": 214,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How would you make a Fastlane-style release lane safe for production?",
+    "answer": "Make it idempotent, validate inputs, use explicit tracks, require approval for production, upload the exact artifact under test, and fail loudly on partial release errors.",
+    "explanation": "Good answers focus on operational safety rather than only listing Fastlane commands.",
+    "tags": ["ci-cd", "fastlane", "production-release"],
+    "isBookmarked": false
+  },
+  {
+    "id": 215,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "A CI workflow passes but the uploaded release crashes on startup because a release-only ProGuard rule is missing. How do you prevent this?",
+    "answer": "Run release build smoke tests, test minified variants, upload mapping files, add startup checks, and avoid validating only debug builds.",
+    "explanation": "This tests awareness that debug and release builds can behave differently.",
+    "tags": ["ci-cd", "r8", "release-build", "testing"],
+    "isBookmarked": false
+  },
+  {
+    "id": 216,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How would you design rollback strategy for Android releases distributed through Google Play?",
+    "answer": "Keep previous stable artifacts and metadata, halt staged rollout when possible, ship a higher-version hotfix if needed, and use server-side kill switches for risky features.",
+    "explanation": "Android rollback is constrained by versionCode and store behavior, so candidates should not assume server-style instant rollback.",
+    "tags": ["ci-cd", "rollback", "google-play", "release"],
+    "isBookmarked": false
+  },
+  {
+    "id": 217,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How should CI handle dependency updates in a mature Android app?",
+    "answer": "Automate update PRs, run compatibility checks, group risky updates carefully, review release notes, and use staged rollout or canary builds for high-risk dependencies.",
+    "explanation": "Interviewers look for dependency governance and risk management.",
+    "tags": ["ci-cd", "dependencies", "automation"],
+    "isBookmarked": false
+  },
+  {
+    "id": 218,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How would you prevent accidental production uploads from a forked pull request?",
+    "answer": "Never expose production secrets to forked PRs, restrict deployment jobs to trusted branches or tags, require environments, and use explicit permission scopes.",
+    "explanation": "This is a security-focused CI/CD question common in senior interviews.",
+    "tags": ["ci-cd", "github-actions", "forks", "security"],
+    "isBookmarked": false
+  },
+  {
+    "id": 219,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How do you integrate Firebase App Distribution or internal QA distribution with Play Console releases?",
+    "answer": "Use CI to publish the same release candidate to QA first, collect validation signals, then promote the approved artifact to Play tracks without rebuilding.",
+    "explanation": "The expected answer emphasizes artifact promotion and avoiding drift between QA and production builds.",
+    "tags": ["ci-cd", "qa-distribution", "google-play"],
+    "isBookmarked": false
+  },
+  {
+    "id": 220,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How would you handle multi-module Android builds in GitHub Actions to avoid unnecessary work?",
+    "answer": "Use affected-module detection where reliable, cache Gradle inputs, run module-specific tests, keep global checks for shared modules, and fall back to full validation for release builds.",
+    "explanation": "Strong candidates know how to scale CI without creating blind spots.",
+    "tags": ["ci-cd", "multi-module", "github-actions", "gradle"],
+    "isBookmarked": false
+  },
+  {
+    "id": 221,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How would you automate Play Store metadata updates safely?",
+    "answer": "Keep metadata under reviewable source control, validate locale completeness, upload through a controlled lane, and separate metadata updates from binary rollout when needed.",
+    "explanation": "This tests release automation beyond the APK or AAB itself.",
+    "tags": ["ci-cd", "play-console", "metadata", "fastlane"],
+    "isBookmarked": false
+  },
+  {
+    "id": 222,
+    "category": "CI/CD",
+    "difficulty": "Advanced",
+    "question": "How would you add supply-chain safety checks to an Android CI pipeline?",
+    "answer": "Pin action versions, use least-privilege tokens, scan dependencies, verify Gradle wrapper integrity, review third-party actions, and generate provenance where required.",
+    "explanation": "Interviewers expect modern CI/CD answers to include supply-chain risk, not only build speed.",
+    "tags": ["ci-cd", "supply-chain", "security"],
+    "isBookmarked": false
+  },
+  {
+    "id": 223,
+    "category": "CI/CD",
+    "difficulty": "Expert",
+    "question": "You own Android release engineering for a super app with many teams. What CI/CD architecture would you propose?",
+    "answer": "Use layered pipelines with fast PR gates, module ownership checks, shared release workflows, protected production environments, artifact promotion, staged rollout automation, and centralized observability.",
+    "explanation": "Staff-level answers should connect team scale, ownership, reliability, and release governance.",
+    "tags": ["ci-cd", "release-engineering", "multi-team"],
+    "isBookmarked": false
+  },
+  {
+    "id": 224,
+    "category": "CI/CD",
+    "difficulty": "Expert",
+    "question": "How would you design an Android release pipeline that satisfies compliance and audit requirements?",
+    "answer": "Record approvals, artifact hashes, source commit, signing identity, test evidence, deployment track, rollout changes, and incident decisions in immutable or auditable systems.",
+    "explanation": "This tests whether candidates can design release automation for regulated or high-trust environments.",
+    "tags": ["ci-cd", "audit", "compliance", "release"],
+    "isBookmarked": false
+  },
+  {
+    "id": 225,
+    "category": "CI/CD",
+    "difficulty": "Expert",
+    "question": "A company wants fully automatic production releases after merge to main. What concerns would you raise for Android?",
+    "answer": "Discuss Play review timing, staged rollout gates, versionCode strategy, release-only failures, crash monitoring, approvals, feature flags, rollback limits, and customer support readiness.",
+    "explanation": "Expert candidates should challenge unsafe automation while offering controlled alternatives.",
+    "tags": ["ci-cd", "continuous-delivery", "google-play"],
+    "isBookmarked": false
+  },
+  {
+    "id": 226,
+    "category": "CI/CD",
+    "difficulty": "Expert",
+    "question": "How would you migrate a manual Android release process to GitHub Actions and Fastlane-style automation without disrupting releases?",
+    "answer": "Document the current process, automate read-only validation first, run shadow releases, compare artifacts, add approvals, migrate one track at a time, and keep rollback procedures ready.",
+    "explanation": "This tests migration strategy, risk reduction, and organizational rollout.",
+    "tags": ["ci-cd", "migration", "fastlane", "github-actions"],
+    "isBookmarked": false
+  },
+  {
+    "id": 227,
+    "category": "CI/CD",
+    "difficulty": "Expert",
+    "question": "How would you define release quality gates for a high-scale Android app?",
+    "answer": "Combine automated tests, lint, release smoke tests, performance budgets, crash-free thresholds, ANR/vitals monitoring, security checks, and staged rollout decision rules.",
+    "explanation": "A strong answer turns quality into measurable gates instead of relying on intuition.",
+    "tags": ["ci-cd", "quality-gates", "play-vitals"],
+    "isBookmarked": false
+  },
+  {
+    "id": 228,
+    "category": "CI/CD",
+    "difficulty": "Expert",
+    "question": "How would you handle production signing if a CI secret or upload key is suspected to be compromised?",
+    "answer": "Immediately revoke or rotate affected credentials, pause releases, audit workflow access and logs, replace secrets, validate artifacts, and follow Play key reset or upload key procedures.",
+    "explanation": "This evaluates incident response for Android signing infrastructure.",
+    "tags": ["ci-cd", "signing", "incident-response", "security"],
+    "isBookmarked": false
+  },
+  {
+    "id": 229,
+    "category": "CI/CD",
+    "difficulty": "Expert",
+    "question": "How would you design observability for Android release automation?",
+    "answer": "Track workflow duration, failure rate, flaky tests, artifact metadata, deployment events, rollout percentage, crash-free sessions, ANR rate, vitals, and promotion decisions.",
+    "explanation": "Expert answers treat CI/CD as a production system with metrics and ownership.",
+    "tags": ["ci-cd", "observability", "release-metrics"],
+    "isBookmarked": false
+  },
+  {
+    "id": 230,
+    "category": "CI/CD",
+    "difficulty": "Expert",
+    "question": "How would you balance fast Android delivery with safe staged rollouts in Google Play Console?",
+    "answer": "Automate repeatable checks and artifact promotion, keep production approval intentional, use small rollout fractions, monitor vitals, gate promotion on metrics, and rely on feature flags for risky behavior.",
+    "explanation": "This is the core senior tradeoff: automate speed while preserving control over user impact.",
+    "tags": ["ci-cd", "staged-rollout", "release-strategy"],
+    "isBookmarked": false
+  }
+]
