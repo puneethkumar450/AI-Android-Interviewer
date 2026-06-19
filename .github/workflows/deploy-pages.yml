@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - ".github/workflows/deploy-pages.yml"
+      - "android-interview-coach-privacy-policy.html"
       - "privacy-policy.html"
   workflow_dispatch:
 
@@ -28,13 +29,14 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p _site
+          cp android-interview-coach-privacy-policy.html _site/android-interview-coach-privacy-policy.html
           cp privacy-policy.html _site/privacy-policy.html
           cat > _site/index.html <<'EOF'
           <!DOCTYPE html>
           <html lang="en">
           <head>
             <meta charset="UTF-8">
-            <meta http-equiv="refresh" content="0; url=./privacy-policy.html">
+            <meta http-equiv="refresh" content="0; url=./android-interview-coach-privacy-policy.html">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Android Interview Coach</title>
           </head>
