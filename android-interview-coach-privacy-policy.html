@@ -7,47 +7,86 @@
   <style>
     :root {
       color-scheme: light;
-      --bg: #f4f7fb;
-      --surface: #ffffff;
-      --surface-alt: #eaf1ff;
+      --bg: #eef3fb;
+      --surface: rgba(255, 255, 255, 0.94);
+      --surface-strong: #ffffff;
+      --surface-alt: #deebff;
       --text: #162033;
       --muted: #5a6780;
-      --primary: #2457d6;
-      --border: #d6e0f2;
-      --shadow: 0 18px 48px rgba(22, 32, 51, 0.08);
+      --primary: #1f56d2;
+      --primary-strong: #153c9c;
+      --accent: #00a6a6;
+      --border: rgba(133, 154, 194, 0.28);
+      --shadow: 0 24px 70px rgba(20, 38, 76, 0.14);
+      --shadow-soft: 0 12px 36px rgba(20, 38, 76, 0.08);
+      --success: #127c58;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+      --topbar-height: 4px;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
       background:
-        radial-gradient(circle at top right, rgba(36, 87, 214, 0.14), transparent 24rem),
-        linear-gradient(180deg, #f7faff 0%, var(--bg) 100%);
+        radial-gradient(circle at top right, rgba(31, 86, 210, 0.18), transparent 28rem),
+        radial-gradient(circle at left 12rem, rgba(0, 166, 166, 0.12), transparent 20rem),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
       color: var(--text);
       line-height: 1.65;
     }
 
+    .progress-bar {
+      position: fixed;
+      inset: 0 0 auto;
+      height: var(--topbar-height);
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+      transform-origin: left center;
+      transform: scaleX(0);
+      z-index: 40;
+    }
+
     .shell {
-      max-width: 920px;
+      max-width: 1180px;
       margin: 0 auto;
-      padding: 32px 20px 64px;
+      padding: 28px 20px 88px;
     }
 
     .hero {
-      background: linear-gradient(135deg, #183a8f 0%, #2457d6 58%, #4a8cff 100%);
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(140deg, #12347d 0%, #1f56d2 55%, #57a0ff 100%);
       color: #fff;
-      border-radius: 24px;
-      padding: 32px 28px;
+      border-radius: 32px;
+      padding: 34px 28px 28px;
       box-shadow: var(--shadow);
     }
 
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -8% -35% auto;
+      width: 26rem;
+      height: 26rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.22), transparent 64%);
+      pointer-events: none;
+    }
+
     .eyebrow {
-      display: inline-block;
-      padding: 6px 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.14);
       font-size: 0.82rem;
@@ -55,221 +94,614 @@
       text-transform: uppercase;
     }
 
-    h1 {
-      margin: 14px 0 10px;
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      line-height: 1.05;
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: end;
+      margin-top: 18px;
     }
 
-    .hero p {
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 0.98;
+      max-width: 10ch;
+    }
+
+    .hero-copy p {
       margin: 0;
-      max-width: 54rem;
+      max-width: 56rem;
       color: rgba(255, 255, 255, 0.9);
+      font-size: 1.02rem;
     }
 
     .meta {
+      display: inline-flex;
       margin-top: 18px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(8, 18, 43, 0.18);
       font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.82);
+      color: rgba(255, 255, 255, 0.88);
     }
 
-    .content {
-      margin-top: 24px;
+    .hero-aside {
+      display: grid;
+      gap: 12px;
+    }
+
+    .hero-stat {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      padding: 16px 16px 14px;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+    }
+
+    .hero-stat span {
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 0.95rem;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      margin-top: 26px;
+      align-items: start;
+    }
+
+    .nav-panel,
+    .section,
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav-panel {
+      position: sticky;
+      top: 24px;
+      border-radius: var(--radius-lg);
+      padding: 18px;
+    }
+
+    .nav-panel h2 {
+      font-size: 1rem;
+      margin: 0 0 14px;
+    }
+
+    .nav-panel a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--muted);
+      transition: background 140ms ease, color 140ms ease, transform 140ms ease;
+    }
+
+    .nav-panel a:hover,
+    .nav-panel a:focus-visible {
+      background: var(--surface-alt);
+      color: var(--primary-strong);
+      transform: translateX(2px);
+      outline: none;
+    }
+
+    .main-column {
       display: grid;
       gap: 18px;
     }
 
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 22px 22px 20px;
-      box-shadow: var(--shadow);
-    }
-
-    h2 {
-      margin: 0 0 10px;
-      font-size: 1.2rem;
-      line-height: 1.25;
-    }
-
-    p,
-    li {
-      color: var(--muted);
-      margin: 0;
-    }
-
-    ul {
-      margin: 10px 0 0;
-      padding-left: 20px;
-    }
-
-    .summary {
+    .summary-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .summary-card {
+      border-radius: var(--radius-md);
+      padding: 18px;
+    }
+
+    .summary-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    .summary-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .section {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    details {
+      width: 100%;
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 20px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      font-weight: 600;
+      font-size: 1.04rem;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .summary-title {
+      display: flex;
+      align-items: center;
       gap: 12px;
     }
 
-    .summary .tile {
+    .summary-index {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
       background: var(--surface-alt);
-      border-radius: 16px;
-      padding: 16px;
-      border: 1px solid #d4e2ff;
+      color: var(--primary-strong);
+      font-size: 0.92rem;
+      font-weight: 700;
     }
 
-    .summary strong {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--text);
-      font-size: 0.95rem;
+    .chevron {
+      flex: 0 0 auto;
+      width: 18px;
+      height: 18px;
+      border-right: 2px solid var(--muted);
+      border-bottom: 2px solid var(--muted);
+      transform: rotate(45deg);
+      transition: transform 180ms ease;
+      margin-right: 4px;
     }
 
-    a {
-      color: var(--primary);
+    details[open] .chevron {
+      transform: rotate(-135deg);
+      margin-top: 8px;
+    }
+
+    .section-body {
+      padding: 0 22px 22px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .section-body p,
+    .section-body li {
+      margin: 0;
+    }
+
+    .section-body ul {
+      margin-top: 12px;
+      padding-left: 20px;
+    }
+
+    .section-body ul li + li,
+    .section-body p + p {
+      margin-top: 8px;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .contact-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--surface-alt);
+      color: var(--primary-strong);
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid #c7d8ff;
+    }
+
+    .copy-button,
+    .back-to-top {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .copy-button {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      box-shadow: var(--shadow-soft);
+      transition: background 140ms ease, transform 140ms ease;
+    }
+
+    .copy-button:hover,
+    .copy-button:focus-visible,
+    .back-to-top:hover,
+    .back-to-top:focus-visible {
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .copy-button:hover,
+    .copy-button:focus-visible {
+      background: var(--primary-strong);
+    }
+
+    .copy-status {
+      min-height: 1.1rem;
+      margin-top: 10px;
+      color: var(--success);
+      font-size: 0.94rem;
     }
 
     footer {
-      margin-top: 20px;
+      margin-top: 26px;
       text-align: center;
       color: var(--muted);
       font-size: 0.92rem;
     }
+
+    .back-to-top {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: inline-grid;
+      place-items: center;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 160ms ease, transform 160ms ease;
+      z-index: 30;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        padding: 18px 14px 88px;
+      }
+
+      .hero {
+        border-radius: 24px;
+        padding: 24px 18px 20px;
+      }
+
+      summary,
+      .section-body,
+      .nav-panel,
+      .summary-card {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="progress-bar" id="reading-progress" aria-hidden="true"></div>
+
   <main class="shell">
     <section class="hero">
       <span class="eyebrow">Privacy Policy</span>
-      <h1>Android Interview Coach</h1>
-      <p>
-        This policy explains what information the app uses, how it is handled,
-        and what controls users have when practicing interview questions,
-        tracking progress, and using AI-assisted features.
-      </p>
-      <div class="meta">Effective date: June 19, 2026</div>
-    </section>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1>Android Interview Coach</h1>
+          <p>
+            This policy explains what information the app uses, how it is handled,
+            and what controls users have when practicing interview questions,
+            tracking progress, and using AI-assisted features.
+          </p>
+          <div class="meta">Effective date: June 19, 2026</div>
+        </div>
 
-    <section class="content">
-      <article class="card">
-        <h2>At a glance</h2>
-        <div class="summary">
-          <div class="tile">
-            <strong>Core app data</strong>
-            <p>Progress, bookmarks, settings, and local question packs are stored on the device.</p>
+        <div class="hero-aside">
+          <div class="hero-stat">
+            <strong>Offline-first by default</strong>
+            <span>Progress, bookmarks, settings, and packs stay local unless you explicitly use online features.</span>
           </div>
-          <div class="tile">
-            <strong>Personal data sales</strong>
-            <p>We do not sell personal data.</p>
-          </div>
-          <div class="tile">
-            <strong>Network usage</strong>
-            <p>Online access is used only when a feature explicitly relies on remote AI or related services.</p>
+          <div class="hero-stat">
+            <strong>Designed for clarity</strong>
+            <span>Use quick navigation, summary highlights, and expandable sections to skim or read in depth.</span>
           </div>
         </div>
-      </article>
+      </div>
+    </section>
 
-      <article class="card">
-        <h2>Information we collect</h2>
-        <p>
-          Android Interview Coach is designed to work primarily with local app data.
-          Depending on the features you use, the app may store:
-        </p>
-        <ul>
-          <li>Bookmarked questions and progress history</li>
-          <li>App preferences such as theme and dynamic color settings</li>
-          <li>Imported or bundled question packs</li>
-          <li>Interview responses or prompts when you choose AI-assisted features</li>
-        </ul>
-      </article>
+    <section class="content-grid">
+      <aside class="nav-panel" aria-label="Quick navigation">
+        <h2>Quick Jump</h2>
+        <a href="#summary">Summary highlights</a>
+        <a href="#information">Information we collect</a>
+        <a href="#usage">How information is used</a>
+        <a href="#local-storage">Local storage and device data</a>
+        <a href="#ai-services">AI and remote services</a>
+        <a href="#sharing">Sharing and disclosure</a>
+        <a href="#security">Security</a>
+        <a href="#choices">Your choices</a>
+        <a href="#children">Children's privacy</a>
+        <a href="#changes">Changes to this policy</a>
+        <a href="#contact">Contact</a>
+      </aside>
 
-      <article class="card">
-        <h2>How information is used</h2>
-        <p>Your data is used to provide the app experience, including:</p>
-        <ul>
-          <li>Restoring practice progress and bookmarked questions</li>
-          <li>Personalizing app behavior and display settings</li>
-          <li>Running mock interview and AI-assisted learning flows you explicitly start</li>
-          <li>Improving release stability, debugging, and operational support when diagnostic tooling is enabled</li>
-        </ul>
-      </article>
+      <section class="main-column">
+        <div class="summary-grid" id="summary">
+          <article class="summary-card">
+            <strong>Core app data</strong>
+            <p>Progress, bookmarks, settings, and local question packs are stored on the device.</p>
+          </article>
+          <article class="summary-card">
+            <strong>Personal data sales</strong>
+            <p>We do not sell personal data.</p>
+          </article>
+          <article class="summary-card">
+            <strong>Network usage</strong>
+            <p>Online access is used only when a feature explicitly relies on remote AI or related services.</p>
+          </article>
+        </div>
 
-      <article class="card">
-        <h2>Local storage and device data</h2>
-        <p>
-          The app stores most of its working data locally on your device. That includes
-          progress, bookmarks, question packs, and settings required for offline-first use.
-          You can clear the app data through the device settings or use the in-app reset
-          options where available.
-        </p>
-      </article>
+        <article class="section" id="information">
+          <details open>
+            <summary>
+              <span class="summary-title"><span class="summary-index">01</span>Information we collect</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="section-body">
+              <p>
+                Android Interview Coach is designed to work primarily with local app data.
+                Depending on the features you use, the app may store:
+              </p>
+              <ul>
+                <li>Bookmarked questions and progress history</li>
+                <li>App preferences such as theme and dynamic color settings</li>
+                <li>Imported or bundled question packs</li>
+                <li>Interview responses or prompts when you choose AI-assisted features</li>
+              </ul>
+            </div>
+          </details>
+        </article>
 
-      <article class="card">
-        <h2>AI and remote services</h2>
-        <p>
-          Some experiences may use remote AI services, such as mock interview analysis or
-          answer feedback. When those features are used, the content you provide may be sent
-          to the configured service provider to generate a response. Only use these features
-          for content you are comfortable sharing for that purpose.
-        </p>
-      </article>
+        <article class="section" id="usage">
+          <details>
+            <summary>
+              <span class="summary-title"><span class="summary-index">02</span>How information is used</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="section-body">
+              <p>Your data is used to provide the app experience, including:</p>
+              <ul>
+                <li>Restoring practice progress and bookmarked questions</li>
+                <li>Personalizing app behavior and display settings</li>
+                <li>Running mock interview and AI-assisted learning flows you explicitly start</li>
+                <li>Improving release stability, debugging, and operational support when diagnostic tooling is enabled</li>
+              </ul>
+            </div>
+          </details>
+        </article>
 
-      <article class="card">
-        <h2>Sharing and disclosure</h2>
-        <p>
-          We do not sell your personal information. Data may be shared only when required to
-          operate an online feature you requested, comply with legal obligations, protect the
-          service, or investigate abuse or security incidents.
-        </p>
-      </article>
+        <article class="section" id="local-storage">
+          <details>
+            <summary>
+              <span class="summary-title"><span class="summary-index">03</span>Local storage and device data</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="section-body">
+              <p>
+                The app stores most of its working data locally on your device. That includes
+                progress, bookmarks, question packs, and settings required for offline-first use.
+                You can clear the app data through the device settings or use the in-app reset
+                options where available.
+              </p>
+            </div>
+          </details>
+        </article>
 
-      <article class="card">
-        <h2>Security</h2>
-        <p>
-          Reasonable technical and organizational measures are used to protect app data.
-          No storage or transmission system can be guaranteed to be completely secure, so users
-          should avoid submitting highly sensitive personal information through optional AI flows.
-        </p>
-      </article>
+        <article class="section" id="ai-services">
+          <details>
+            <summary>
+              <span class="summary-title"><span class="summary-index">04</span>AI and remote services</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="section-body">
+              <p>
+                Some experiences may use remote AI services, such as mock interview analysis or
+                answer feedback. When those features are used, the content you provide may be sent
+                to the configured service provider to generate a response. Only use these features
+                for content you are comfortable sharing for that purpose.
+              </p>
+            </div>
+          </details>
+        </article>
 
-      <article class="card">
-        <h2>Your choices</h2>
-        <ul>
-          <li>Use the app offline for local practice where supported</li>
-          <li>Reset progress and remove local data from the app</li>
-          <li>Avoid AI-assisted features if you do not want interview content sent to remote services</li>
-          <li>Uninstall the app to remove locally stored app data subject to Android system behavior</li>
-        </ul>
-      </article>
+        <article class="section" id="sharing">
+          <details>
+            <summary>
+              <span class="summary-title"><span class="summary-index">05</span>Sharing and disclosure</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="section-body">
+              <p>
+                We do not sell your personal information. Data may be shared only when required to
+                operate an online feature you requested, comply with legal obligations, protect the
+                service, or investigate abuse or security incidents.
+              </p>
+            </div>
+          </details>
+        </article>
 
-      <article class="card">
-        <h2>Children's privacy</h2>
-        <p>
-          Android Interview Coach is intended for interview preparation and professional learning.
-          It is not directed to children under 13, and we do not knowingly collect personal data
-          from children through the app.
-        </p>
-      </article>
+        <article class="section" id="security">
+          <details>
+            <summary>
+              <span class="summary-title"><span class="summary-index">06</span>Security</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="section-body">
+              <p>
+                Reasonable technical and organizational measures are used to protect app data.
+                No storage or transmission system can be guaranteed to be completely secure, so users
+                should avoid submitting highly sensitive personal information through optional AI flows.
+              </p>
+            </div>
+          </details>
+        </article>
 
-      <article class="card">
-        <h2>Changes to this policy</h2>
-        <p>
-          This privacy policy may be updated from time to time. When updates are made, the
-          effective date on this page will be revised to reflect the current version.
-        </p>
-      </article>
+        <article class="section" id="choices">
+          <details>
+            <summary>
+              <span class="summary-title"><span class="summary-index">07</span>Your choices</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="section-body">
+              <ul>
+                <li>Use the app offline for local practice where supported</li>
+                <li>Reset progress and remove local data from the app</li>
+                <li>Avoid AI-assisted features if you do not want interview content sent to remote services</li>
+                <li>Uninstall the app to remove locally stored app data subject to Android system behavior</li>
+              </ul>
+            </div>
+          </details>
+        </article>
 
-      <article class="card">
-        <h2>Contact</h2>
-        <p>
-          For privacy-related questions about Android Interview Coach, contact the developer,
-          Puneeth. Add your preferred support email or website here before publishing.
-        </p>
-      </article>
+        <article class="section" id="children">
+          <details>
+            <summary>
+              <span class="summary-title"><span class="summary-index">08</span>Children's privacy</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="section-body">
+              <p>
+                Android Interview Coach is intended for interview preparation and professional learning.
+                It is not directed to children under 13, and we do not knowingly collect personal data
+                from children through the app.
+              </p>
+            </div>
+          </details>
+        </article>
+
+        <article class="section" id="changes">
+          <details>
+            <summary>
+              <span class="summary-title"><span class="summary-index">09</span>Changes to this policy</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="section-body">
+              <p>
+                This privacy policy may be updated from time to time. When updates are made, the
+                effective date on this page will be revised to reflect the current version.
+              </p>
+            </div>
+          </details>
+        </article>
+
+        <article class="section" id="contact">
+          <details open>
+            <summary>
+              <span class="summary-title"><span class="summary-index">10</span>Contact</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="section-body">
+              <p>
+                For privacy-related questions about Android Interview Coach, contact the developer,
+                Puneeth. Add your preferred support email or website here before publishing.
+              </p>
+
+              <div class="contact-actions">
+                <a class="contact-chip" href="mailto:kpuneethkumar450@proton.me">kpuneethkumar450@proton.me</a>
+                <button class="copy-button" id="copy-email" type="button" data-email="kpuneethkumar450@proton.me">
+                  Copy email
+                </button>
+              </div>
+              <div class="copy-status" id="copy-status" aria-live="polite"></div>
+            </div>
+          </details>
+        </article>
+      </section>
     </section>
 
     <footer>
       Android Interview Coach Privacy Policy
     </footer>
   </main>
+
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">↑</button>
+
+  <script>
+    (function () {
+      const progressBar = document.getElementById("reading-progress");
+      const backToTop = document.getElementById("back-to-top");
+      const copyButton = document.getElementById("copy-email");
+      const copyStatus = document.getElementById("copy-status");
+
+      function updateReadingProgress() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
+        progressBar.style.transform = "scaleX(" + progress + ")";
+        backToTop.classList.toggle("visible", scrollTop > 480);
+      }
+
+      async function copyEmail() {
+        const email = copyButton.getAttribute("data-email");
+        try {
+          await navigator.clipboard.writeText(email);
+          copyStatus.textContent = "Copied " + email;
+        } catch (error) {
+          copyStatus.textContent = "Copy failed. Email: " + email;
+        }
+      }
+
+      backToTop.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      copyButton.addEventListener("click", copyEmail);
+      window.addEventListener("scroll", updateReadingProgress, { passive: true });
+      updateReadingProgress();
+    })();
+  </script>
 </body>
 </html>
