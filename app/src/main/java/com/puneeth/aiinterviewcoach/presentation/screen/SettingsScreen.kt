@@ -1,7 +1,9 @@
 package com.puneeth.aiinterviewcoach.presentation.screen
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -15,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -82,6 +85,11 @@ fun SettingsScreen(
                     text = "Android Interview Coach stores your progress, bookmarks, preferences, and question packs locally on your device. The app does not sell personal data. Network access is used only for app features that explicitly require online AI or interview services.",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+                OutlinedButton(
+                    onClick = { openUrl(context, context.getString(com.puneeth.aiinterviewcoach.R.string.privacy_policy_url)) },
+                ) {
+                    Text("Open Privacy Policy")
+                }
             }
         }
         item {
@@ -169,4 +177,12 @@ private fun appVersionLabel(context: Context): String {
         context.packageManager.getPackageInfo(context.packageName, 0)
     }
     return "${packageInfo.versionName} (${PackageInfoCompat.getLongVersionCode(packageInfo)})"
+}
+
+private fun openUrl(context: Context, url: String) {
+    context.startActivity(
+        Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        },
+    )
 }
