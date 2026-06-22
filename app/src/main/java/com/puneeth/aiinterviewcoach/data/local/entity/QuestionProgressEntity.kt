@@ -11,4 +11,5 @@ data class QuestionProgressEntity(
     val firstViewedAt: Long,
     val lastViewedAt: Long,
     val lastCompletedAt: Long?,
+    val confidenceRating: String? = null,
 )

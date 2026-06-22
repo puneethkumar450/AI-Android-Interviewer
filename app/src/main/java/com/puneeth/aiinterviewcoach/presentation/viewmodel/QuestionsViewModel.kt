@@ -3,9 +3,11 @@ package com.puneeth.aiinterviewcoach.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.puneeth.aiinterviewcoach.domain.model.ConfidenceRating
 import com.puneeth.aiinterviewcoach.domain.model.InterviewCategory
 import com.puneeth.aiinterviewcoach.domain.model.InterviewDifficulty
 import com.puneeth.aiinterviewcoach.domain.model.PracticeQuestion
+import com.puneeth.aiinterviewcoach.domain.repository.ProgressRepository
 import com.puneeth.aiinterviewcoach.domain.repository.QuestionRepository
 import com.puneeth.aiinterviewcoach.domain.repository.UserPreferences
 import com.puneeth.aiinterviewcoach.domain.repository.UserPreferencesRepository
@@ -17,6 +19,10 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 data class QuestionsUiState(
@@ -26,6 +32,7 @@ data class QuestionsUiState(
     val question: PracticeQuestion? = null,
     val showAnswer: Boolean = false,
     val preferences: UserPreferences = UserPreferences(),
+    val confidenceRating: ConfidenceRating? = null,
 ) {
     val hasPrevious: Boolean
         get() = currentIndex > 0
@@ -38,6 +45,7 @@ class QuestionsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val observeQuestionSession: ObserveQuestionSessionUseCase,
     private val questionRepository: QuestionRepository,
+    private val progressRepository: ProgressRepository,
     private val trackQuestionViewed: TrackQuestionViewedUseCase,
     private val trackQuestionCompleted: TrackQuestionCompletedUseCase,
     preferencesRepository: UserPreferencesRepository,
@@ -58,6 +66,18 @@ class QuestionsViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(preferences = preferences)
             }
         }
+        viewModelScope.launch {
+            _uiState
+                .map { it.question?.id }
+                .distinctUntilChanged()
+                .flatMapLatest { id ->
+                    if (id != null) progressRepository.observeConfidenceRating(id)
+                    else flowOf(null)
+                }
+                .collect { rating ->
+                    _uiState.value = _uiState.value.copy(confidenceRating = rating)
+                }
+        }
     }
 
     fun revealAnswer() {
@@ -77,6 +97,13 @@ class QuestionsViewModel @Inject constructor(
     fun previousQuestion() {
         val prevId = _uiState.value.questionIds.getOrNull(_uiState.value.currentIndex - 1) ?: return
         loadSession(prevId)
+    }
+
+    fun saveConfidenceRating(rating: ConfidenceRating) {
+        val questionId = _uiState.value.question?.id ?: return
+        viewModelScope.launch {
+            progressRepository.saveConfidenceRating(questionId, rating)
+        }
     }
 
     fun toggleBookmark() {

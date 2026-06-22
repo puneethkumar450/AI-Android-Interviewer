@@ -5,6 +5,7 @@ import com.puneeth.aiinterviewcoach.data.local.dao.QuestionProgressDao
 import com.puneeth.aiinterviewcoach.data.local.entity.QuestionProgressEntity
 import com.puneeth.aiinterviewcoach.data.local.mapper.toCategoryProgress
 import com.puneeth.aiinterviewcoach.data.local.mapper.toDifficultyProgress
+import com.puneeth.aiinterviewcoach.domain.model.ConfidenceRating
 import com.puneeth.aiinterviewcoach.domain.model.ProgressSummary
 import com.puneeth.aiinterviewcoach.domain.model.RecentActivity
 import com.puneeth.aiinterviewcoach.domain.repository.ProgressRepository
@@ -65,6 +66,14 @@ class ProgressRepositoryImpl @Inject constructor(
 
     override fun observeUnviewedCount(): Flow<Int> {
         return progressDao.observeUnviewedCount()
+    }
+
+    override fun observeConfidenceRating(questionId: Long): Flow<ConfidenceRating?> {
+        return progressDao.observeConfidenceRating(questionId).map { ConfidenceRating.fromString(it) }
+    }
+
+    override suspend fun saveConfidenceRating(questionId: Long, rating: ConfidenceRating) {
+        progressDao.updateConfidenceRating(questionId, rating.name)
     }
 
     override suspend fun markQuestionViewed(questionId: Long) {

@@ -11,7 +11,7 @@ import com.puneeth.aiinterviewcoach.data.local.entity.QuestionProgressEntity
 
 @Database(
     entities = [QuestionEntity::class, InterviewSessionEntity::class, QuestionProgressEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {

@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.puneeth.aiinterviewcoach.domain.model.ConfidenceRating
 import com.puneeth.aiinterviewcoach.domain.model.InterviewCategory
 import com.puneeth.aiinterviewcoach.domain.model.InterviewDifficulty
 import com.puneeth.aiinterviewcoach.domain.model.PracticeQuestion
@@ -71,6 +72,7 @@ fun QuestionsScreen(
         onNavigateBack = onNavigateBack,
         onPrevious = viewModel::previousQuestion,
         onRevealAnswer = viewModel::revealAnswer,
+        onRateConfidence = viewModel::saveConfidenceRating,
         onToggleBookmark = viewModel::toggleBookmark,
         onNext = viewModel::nextQuestion,
     )
@@ -82,6 +84,7 @@ private fun QuestionsScreenContent(
     onNavigateBack: () -> Unit,
     onPrevious: () -> Unit,
     onRevealAnswer: () -> Unit,
+    onRateConfidence: (ConfidenceRating) -> Unit,
     onToggleBookmark: () -> Unit,
     onNext: () -> Unit,
 ) {
@@ -111,8 +114,11 @@ private fun QuestionsScreenContent(
                 hasPrevious = uiState.hasPrevious,
                 hasNext = uiState.hasNext,
                 isBookmarked = question?.isBookmarked == true,
+                showAnswer = uiState.showAnswer,
+                confidenceRating = uiState.confidenceRating,
                 onPrevious = onPrevious,
                 onRevealAnswer = onRevealAnswer,
+                onRateConfidence = onRateConfidence,
                 onToggleBookmark = onToggleBookmark,
                 onNext = onNext,
             )
@@ -341,8 +347,11 @@ private fun QuestionActionBar(
     hasPrevious: Boolean,
     hasNext: Boolean,
     isBookmarked: Boolean,
+    showAnswer: Boolean,
+    confidenceRating: ConfidenceRating?,
     onPrevious: () -> Unit,
     onRevealAnswer: () -> Unit,
+    onRateConfidence: (ConfidenceRating) -> Unit,
     onToggleBookmark: () -> Unit,
     onNext: () -> Unit,
 ) {
@@ -371,10 +380,17 @@ private fun QuestionActionBar(
                 }
                 FilledTonalButton(
                     onClick = onRevealAnswer,
+                    enabled = !showAnswer,
                     modifier = Modifier.weight(1f),
                 ) {
                     Text("Reveal Answer")
                 }
+            }
+            if (showAnswer) {
+                ConfidenceRatingRow(
+                    selected = confidenceRating,
+                    onRate = onRateConfidence,
+                )
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -392,6 +408,43 @@ private fun QuestionActionBar(
                     modifier = Modifier.weight(1f),
                 ) {
                     Text("Next")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ConfidenceRatingRow(
+    selected: ConfidenceRating?,
+    onRate: (ConfidenceRating) -> Unit,
+) {
+    val ratings = listOf(
+        ConfidenceRating.EASY to MaterialTheme.colorScheme.tertiary,
+        ConfidenceRating.OKAY to MaterialTheme.colorScheme.primary,
+        ConfidenceRating.HARD to MaterialTheme.colorScheme.error,
+    )
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            text = "How did you find it?",
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            ratings.forEach { (rating, color) ->
+                val isSelected = selected == rating
+                Button(
+                    onClick = { onRate(rating) },
+                    modifier = Modifier.weight(1f),
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                        containerColor = if (isSelected) color else color.copy(alpha = 0.12f),
+                        contentColor = if (isSelected) androidx.compose.ui.graphics.Color.White else color,
+                    ),
+                ) {
+                    Text(rating.label, style = MaterialTheme.typography.labelMedium)
                 }
             }
         }
@@ -668,6 +721,7 @@ private fun QuestionsScreenPreview() {
             onNavigateBack = {},
             onPrevious = {},
             onRevealAnswer = {},
+            onRateConfidence = {},
             onToggleBookmark = {},
             onNext = {}
         )

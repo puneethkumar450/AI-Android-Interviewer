@@ -69,6 +69,12 @@ interface QuestionProgressDao {
     )
     fun observeUnviewedCount(): Flow<Int>
 
+    @Query("UPDATE question_progress SET confidenceRating = :rating WHERE questionId = :questionId")
+    suspend fun updateConfidenceRating(questionId: Long, rating: String?)
+
+    @Query("SELECT confidenceRating FROM question_progress WHERE questionId = :questionId")
+    fun observeConfidenceRating(questionId: Long): Flow<String?>
+
     @Query("DELETE FROM question_progress")
     suspend fun clearAll()
 }
