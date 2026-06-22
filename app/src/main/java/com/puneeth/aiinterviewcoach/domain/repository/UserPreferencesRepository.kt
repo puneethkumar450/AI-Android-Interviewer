@@ -17,6 +17,7 @@ data class UserPreferences(
     val lastOpenedQuestionId: Long? = null,
     val dailyStreak: Int = 0,
     val lastPracticeEpochDay: Long = 0L,
+    val dailyGoal: Int = 5,
 )
 
 interface UserPreferencesRepository {
@@ -32,4 +33,5 @@ interface UserPreferencesRepository {
     suspend fun updateSpeechPreferOffline(enabled: Boolean)
     suspend fun updateLastOpenedQuestion(questionId: Long?)
     suspend fun updateDailyPractice(lastPracticeEpochDay: Long, streak: Int)
+    suspend fun updateDailyGoal(goal: Int)
 }

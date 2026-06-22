@@ -30,6 +30,7 @@ interface QuestionRepository {
         hardOnly: Boolean = false,
     ): List<Long>
 
+    fun observeSuggestedQuestions(limit: Int = 3): Flow<List<PracticeQuestion>>
     suspend fun toggleBookmark(questionId: Long)
     suspend fun importQuestionPacksIfNeeded()
     suspend fun exportBookmarks(destinationDir: File): File

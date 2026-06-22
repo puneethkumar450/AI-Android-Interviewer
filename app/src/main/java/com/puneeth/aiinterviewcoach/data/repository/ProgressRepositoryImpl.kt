@@ -12,6 +12,7 @@ import com.puneeth.aiinterviewcoach.domain.model.ProgressSummary
 import com.puneeth.aiinterviewcoach.domain.model.RecentActivity
 import com.puneeth.aiinterviewcoach.domain.repository.ProgressRepository
 import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
@@ -72,6 +73,14 @@ class ProgressRepositoryImpl @Inject constructor(
 
     override fun observeHardRatedCount(): Flow<Int> {
         return progressDao.observeHardRatedCount()
+    }
+
+    override fun observeViewedTodayCount(): Flow<Int> {
+        val startOfToday = LocalDate.now()
+            .atStartOfDay(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
+        return progressDao.observeViewedTodayCount(startOfToday)
     }
 
     override fun observeCategoryConfidence(): Flow<List<CategoryConfidenceSummary>> {

@@ -12,6 +12,7 @@ interface ProgressRepository {
     fun observeRecentActivity(): Flow<RecentActivity?>
     fun observeUnviewedCount(): Flow<Int>
     fun observeHardRatedCount(): Flow<Int>
+    fun observeViewedTodayCount(): Flow<Int>
     fun observeCategoryConfidence(): Flow<List<CategoryConfidenceSummary>>
     fun observeConfidenceRating(questionId: Long): Flow<ConfidenceRating?>
     suspend fun saveConfidenceRating(questionId: Long, rating: ConfidenceRating)

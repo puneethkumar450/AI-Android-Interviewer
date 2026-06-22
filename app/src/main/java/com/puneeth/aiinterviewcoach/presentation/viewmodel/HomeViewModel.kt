@@ -8,16 +8,20 @@ import com.puneeth.aiinterviewcoach.domain.model.HomeDifficultySummary
 import com.puneeth.aiinterviewcoach.domain.model.HomeSummary
 import com.puneeth.aiinterviewcoach.domain.model.InterviewCategory
 import com.puneeth.aiinterviewcoach.domain.model.InterviewDifficulty
+import com.puneeth.aiinterviewcoach.domain.model.PracticeQuestion
 import com.puneeth.aiinterviewcoach.domain.model.RecentActivity
 import com.puneeth.aiinterviewcoach.domain.repository.ProgressRepository
 import com.puneeth.aiinterviewcoach.domain.repository.QuestionRepository
+import com.puneeth.aiinterviewcoach.domain.repository.UserPreferencesRepository
 import com.puneeth.aiinterviewcoach.domain.usecase.ObserveHomeSummaryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 data class HomeUiState(
     val summary: HomeSummary = HomeSummary(
@@ -34,6 +38,9 @@ data class HomeUiState(
     val recentActivity: RecentActivity? = null,
     val unviewedCount: Int = 0,
     val hardRatedCount: Int = 0,
+    val viewedTodayCount: Int = 0,
+    val dailyGoal: Int = 5,
+    val suggestedQuestions: List<PracticeQuestion> = emptyList(),
 )
 
 @HiltViewModel
@@ -41,6 +48,7 @@ class HomeViewModel @Inject constructor(
     observeHomeSummary: ObserveHomeSummaryUseCase,
     private val progressRepository: ProgressRepository,
     private val questionRepository: QuestionRepository,
+    private val preferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
 
     val uiState: StateFlow<HomeUiState> = combine(
@@ -54,8 +62,13 @@ class HomeViewModel @Inject constructor(
         combine(
             progressRepository.observeUnviewedCount(),
             progressRepository.observeHardRatedCount(),
-        ) { unviewed, hard -> unviewed to hard },
-    ) { (summary, progress, recentActivity), (unviewedCount, hardRatedCount) ->
+            progressRepository.observeViewedTodayCount(),
+        ) { unviewed, hard, today -> Triple(unviewed, hard, today) },
+        combine(
+            questionRepository.observeSuggestedQuestions(3),
+            preferencesRepository.observePreferences().map { it.dailyGoal },
+        ) { suggestions, goal -> suggestions to goal },
+    ) { (summary, progress, recentActivity), (unviewedCount, hardRatedCount, viewedTodayCount), (suggestions, dailyGoal) ->
         HomeUiState(
             summary = summary,
             streak = progress.currentStreak,
@@ -67,10 +80,20 @@ class HomeViewModel @Inject constructor(
             recentActivity = recentActivity,
             unviewedCount = unviewedCount,
             hardRatedCount = hardRatedCount,
+            viewedTodayCount = viewedTodayCount,
+            dailyGoal = dailyGoal,
+            suggestedQuestions = suggestions,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeUiState())
 
     suspend fun getRandomQuestionId(): Long? {
         return questionRepository.getQuestionIds().randomOrNull()
+    }
+
+    fun adjustDailyGoal(delta: Int) {
+        viewModelScope.launch {
+            val current = uiState.value.dailyGoal
+            preferencesRepository.updateDailyGoal((current + delta).coerceIn(1, 50))
+        }
     }
 }

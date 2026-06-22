@@ -82,6 +82,10 @@ class QuestionRepositoryImpl @Inject constructor(
         )
     }
 
+    override fun observeSuggestedQuestions(limit: Int): Flow<List<PracticeQuestion>> {
+        return questionDao.observeSuggestedQuestions(limit).map { list -> list.map { it.toDomain() } }
+    }
+
     override suspend fun toggleBookmark(questionId: Long) {
         questionDao.toggleBookmark(questionId)
     }

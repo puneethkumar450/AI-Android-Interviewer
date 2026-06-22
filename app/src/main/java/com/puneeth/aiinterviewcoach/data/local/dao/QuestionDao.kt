@@ -111,4 +111,15 @@ interface QuestionDao {
 
     @Query("SELECT * FROM questions WHERE isBookmarked = 1 ORDER BY category ASC, question ASC")
     fun observeBookmarkedQuestions(): Flow<List<QuestionEntity>>
+
+    @Query(
+        """
+        SELECT q.* FROM questions q
+        LEFT JOIN question_progress p ON q.id = p.questionId
+        WHERE p.questionId IS NULL OR p.viewedCount = 0
+        ORDER BY RANDOM()
+        LIMIT :limit
+        """,
+    )
+    fun observeSuggestedQuestions(limit: Int): Flow<List<QuestionEntity>>
 }

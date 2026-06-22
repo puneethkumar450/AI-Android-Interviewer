@@ -10,5 +10,6 @@ fun QuestionBankScreen() {
         onOpenBookmarks = {},
         onOpenHardQuestions = {},
         onOpenAllQuestions = {},
+        onOpenQuestion = {},
     )
 }

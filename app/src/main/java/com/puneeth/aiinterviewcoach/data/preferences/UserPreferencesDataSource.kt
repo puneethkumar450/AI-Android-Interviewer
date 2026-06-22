@@ -36,6 +36,7 @@ class UserPreferencesDataSource @Inject constructor(
             lastOpenedQuestionId = prefs[Keys.LAST_OPENED_QUESTION_ID],
             dailyStreak = prefs[Keys.DAILY_STREAK] ?: 0,
             lastPracticeEpochDay = prefs[Keys.LAST_PRACTICE_EPOCH_DAY] ?: 0L,
+            dailyGoal = prefs[Keys.DAILY_GOAL] ?: 5,
         )
     }
 
@@ -71,6 +72,10 @@ class UserPreferencesDataSource @Inject constructor(
         }
     }
 
+    suspend fun updateDailyGoal(goal: Int) {
+        dataStore.edit { it[Keys.DAILY_GOAL] = goal.coerceIn(1, 50) }
+    }
+
     suspend fun updateDailyPractice(lastPracticeEpochDay: Long, streak: Int) {
         dataStore.edit {
             it[Keys.LAST_PRACTICE_EPOCH_DAY] = lastPracticeEpochDay
@@ -91,5 +96,6 @@ class UserPreferencesDataSource @Inject constructor(
         val LAST_OPENED_QUESTION_ID = longPreferencesKey("last_opened_question_id")
         val LAST_PRACTICE_EPOCH_DAY = longPreferencesKey("last_practice_epoch_day")
         val DAILY_STREAK = intPreferencesKey("daily_streak")
+        val DAILY_GOAL = intPreferencesKey("daily_goal")
     }
 }

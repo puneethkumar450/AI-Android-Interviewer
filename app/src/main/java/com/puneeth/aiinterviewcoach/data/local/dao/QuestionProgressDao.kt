@@ -93,6 +93,9 @@ interface QuestionProgressDao {
     @Query("SELECT confidenceRating FROM question_progress WHERE questionId = :questionId")
     fun observeConfidenceRating(questionId: Long): Flow<String?>
 
+    @Query("SELECT COUNT(*) FROM question_progress WHERE lastViewedAt >= :startOfTodayMs")
+    fun observeViewedTodayCount(startOfTodayMs: Long): Flow<Int>
+
     @Query("DELETE FROM question_progress")
     suspend fun clearAll()
 }

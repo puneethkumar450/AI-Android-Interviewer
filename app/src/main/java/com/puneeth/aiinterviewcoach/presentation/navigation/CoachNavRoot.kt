@@ -104,6 +104,9 @@ fun CoachNavRoot(
                     onOpenAllQuestions = {
                         navController.navigate(questionRoute())
                     },
+                    onOpenQuestion = { questionId ->
+                        navController.navigate(questionRoute(startId = questionId))
+                    },
                 )
             }
             composable(CoachDestination.Search.route) {

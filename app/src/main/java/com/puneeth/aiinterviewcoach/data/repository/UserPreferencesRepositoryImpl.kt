@@ -42,4 +42,8 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     override suspend fun updateDailyPractice(lastPracticeEpochDay: Long, streak: Int) {
         dataSource.updateDailyPractice(lastPracticeEpochDay, streak)
     }
+
+    override suspend fun updateDailyGoal(goal: Int) {
+        dataSource.updateDailyGoal(goal)
+    }
 }
