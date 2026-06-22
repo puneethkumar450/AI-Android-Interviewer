@@ -4,8 +4,8 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "Why is state hoisting important in Compose?",
-    "answer": "State hoisting means lifting the state up to a parent composable so child composables become stateless and reusable. Instead of a TextField holding its own text state internally, the parent holds it and passes it down as a parameter. This way the same TextField composable can be used in different places\u2014one place might store text in a ViewModel, another in a parent state. When state changes in the parent, only the affected composables recompose, not the whole tree.",
-    "explanation": "If you keep state inside a composable, it becomes tied to that specific composable and hard to test in isolation. Also, you can't reuse it easily in different contexts. Hoisting forces you to think about unidirectional data flow\u2014data flows down as parameters, events flow up as callbacks.",
+    "answer": "State hoisting means lifting the state up to a parent composable so child composables become stateless and reusable. Instead of a TextField holding its own text state internally, the parent holds it and passes it down as a parameter. This way the same TextField composable can be used in different places—one place might store text in a ViewModel, another in a parent state. When state changes in the parent, only the affected composables recompose, not the whole tree.",
+    "explanation": "If you keep state inside a composable, it becomes tied to that specific composable and hard to test in isolation. Also, you can't reuse it easily in different contexts. Hoisting forces you to think about unidirectional data flow—data flows down as parameters, events flow up as callbacks.",
     "tags": [
       "compose",
       "state-hoisting"
@@ -17,8 +17,8 @@
     "category": "Kotlin",
     "difficulty": "Advanced",
     "question": "What are inline functions useful for?",
-    "answer": "Inline functions get copied directly into the call site at compile time instead of creating a function call. This is useful for higher-order functions because the lambda you pass also gets inlined, so no Function object is created. Reified type parameters are only available in inline functions\u2014they let you access the actual generic type at runtime. For example, if you want to parse JSON into a specific type, you can use inline fun <reified T> fromJson(json: String): T and check what T actually is.",
-    "explanation": "The main tradeoff is code size\u2014if the function is large or called many times, inlining creates more bytecode. So you only use it for small utility functions. But for things like DSLs or generic helpers where you'd normally lose type information, it's really powerful.",
+    "answer": "Inline functions get copied directly into the call site at compile time instead of creating a function call. This is useful for higher-order functions because the lambda you pass also gets inlined, so no Function object is created. Reified type parameters are only available in inline functions—they let you access the actual generic type at runtime. For example, if you want to parse JSON into a specific type, you can use inline fun <reified T> fromJson(json: String): T and check what T actually is.",
+    "explanation": "The main tradeoff is code size—if the function is large or called many times, inlining creates more bytecode. So you only use it for small utility functions. But for things like DSLs or generic helpers where you'd normally lose type information, it's really powerful.",
     "tags": [
       "kotlin",
       "inline",
@@ -31,7 +31,7 @@
     "category": "Coroutines",
     "difficulty": "Advanced",
     "question": "How does SupervisorJob differ from Job?",
-    "answer": "With a regular Job, if any child coroutine fails, it cancels all siblings and the parent also fails. With SupervisorJob, a child's failure doesn't affect siblings\u2014each one can fail independently. You'd use SupervisorJob when you have multiple separate tasks that shouldn't depend on each other. For example, if you're fetching user data and post data in parallel and the posts API fails, you still want the user data to be available.",
+    "answer": "With a regular Job, if any child coroutine fails, it cancels all siblings and the parent also fails. With SupervisorJob, a child's failure doesn't affect siblings—each one can fail independently. You'd use SupervisorJob when you have multiple separate tasks that shouldn't depend on each other. For example, if you're fetching user data and post data in parallel and the posts API fails, you still want the user data to be available.",
     "explanation": "In viewModelScope, if one thing goes wrong, you don't want the entire scope to fail and lose other data you already fetched. SupervisorJob lets you handle failures individually. It's also useful with supervisorScope {} which gives you that isolation while still cleaning up children when the scope exits.",
     "tags": [
       "coroutines",
@@ -44,7 +44,7 @@
     "category": "Flow",
     "difficulty": "Advanced",
     "question": "What is the purpose of flatMapLatest?",
-    "answer": "flatMapLatest cancels the previous Flow when a new value comes in and switches to the new Flow. It's useful for search\u2014when the user types each letter, you cancel the previous search and start the new one. So if the user types 'a', then immediately 'ab', then 'abc', you only end up making the request for 'abc' instead of all three. It prevents wasted network calls and keeps the results fresh.",
+    "answer": "flatMapLatest cancels the previous Flow when a new value comes in and switches to the new Flow. It's useful for search—when the user types each letter, you cancel the previous search and start the new one. So if the user types 'a', then immediately 'ab', then 'abc', you only end up making the request for 'abc' instead of all three. It prevents wasted network calls and keeps the results fresh.",
     "explanation": "If you used flatMapMerge instead, all three searches would run and results might come back out of order. If you used flatMapConcat, you'd wait for the 'a' results before searching for 'ab', which is slow. flatMapLatest is specifically designed for rapid user input where you only care about the latest intent.",
     "tags": [
       "flow",
@@ -57,7 +57,7 @@
     "category": "Android Architecture",
     "difficulty": "Advanced",
     "question": "What makes a codebase multi-module ready?",
-    "answer": "A multi-module codebase needs clear feature boundaries, unidirectional dependencies, and each module having a single responsibility. Like, :feature:auth shouldn't depend on :feature:home\u2014both should depend on :core. Each module should hide its implementation and expose a stable API. This way features can be developed independently, tested separately, and you can even deliver them dynamically or toggle them on/off.",
+    "answer": "A multi-module codebase needs clear feature boundaries, unidirectional dependencies, and each module having a single responsibility. Like, :feature:auth shouldn't depend on :feature:home—both should depend on :core. Each module should hide its implementation and expose a stable API. This way features can be developed independently, tested separately, and you can even deliver them dynamically or toggle them on/off.",
     "explanation": "If modules have circular dependencies or leak their internal structure, it's hard to extract them later. You also want to avoid having one mega-module that does everything. The goal is that you could theoretically develop and test the auth feature completely separate from the home feature.",
     "tags": [
       "architecture",
@@ -70,7 +70,7 @@
     "category": "Hilt",
     "difficulty": "Advanced",
     "question": "How do you choose Hilt scopes correctly?",
-    "answer": "Scope dependencies to match their lifetime. A Database or HttpClient should be Singleton because they live for the whole app. A Repository might be ActivityRetained if you want it to survive configuration changes but be created fresh for each activity. ViewModels use ViewModelComponent. The wrong scope either causes memory leaks\u2014holding references too long\u2014or stale state because you're recreating things too often.",
+    "answer": "Scope dependencies to match their lifetime. A Database or HttpClient should be Singleton because they live for the whole app. A Repository might be ActivityRetained if you want it to survive configuration changes but be created fresh for each activity. ViewModels use ViewModelComponent. The wrong scope either causes memory leaks—holding references too long—or stale state because you're recreating things too often.",
     "explanation": "For example, if you make a ViewModel a Singleton, it survives even after the screen is closed, which is wrong. If you make a Repository ActivityScoped when it should be Singleton, you're creating multiple instances unnecessarily. You have to think about 'this object needs to live as long as X and no longer.'",
     "tags": [
       "hilt",
@@ -83,7 +83,7 @@
     "category": "Room",
     "difficulty": "Advanced",
     "question": "How would you handle Room migrations safely?",
-    "answer": "Write explicit Migration objects for each schema change. Test them by creating the old schema, running the migration, and checking the result. Use temporary tables for complex data transformations\u2014copy data, modify the schema, repopulate. Never assume a migration is backward compatible. On production apps, the risk is highest for users upgrading from very old versions, so test those paths.",
+    "answer": "Write explicit Migration objects for each schema change. Test them by creating the old schema, running the migration, and checking the result. Use temporary tables for complex data transformations—copy data, modify the schema, repopulate. Never assume a migration is backward compatible. On production apps, the risk is highest for users upgrading from very old versions, so test those paths.",
     "explanation": "If you don't test migrations, users upgrading from an old version will get crashes and data loss. Treat migrations like production code, not like a compile-time concern. Document why each schema changed so future developers don't make conflicting changes.",
     "tags": [
       "room",
@@ -109,8 +109,8 @@
     "category": "Android Performance",
     "difficulty": "Expert",
     "question": "How do you investigate a startup regression?",
-    "answer": "Measure cold and warm startup, inspect traces, identify blocking initialization, and defer non-critical work. A complete answer should identify the performance bottleneck, how to measure it, and what change would reduce work on the critical path. Mention tools such as Android Studio Profiler, Perfetto, baseline profiles, StrictMode, or frame timing when relevant. For this question, specifically address How do you investigate a startup regression with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "Finding startup regressions requires methodical profiling. Use Android Studio Profiler, trace the critical path, and identify where time was lost. Compare against a baseline. The tradeoff is that premature optimization wastes time\u2014measure first, optimize bottlenecks.",
+    "answer": "A startup regression is something I would explain by naming the user-visible symptom, the metric I would measure, the likely bottleneck, and the change that reduces work on the critical path.",
+    "explanation": "Finding startup regressions requires methodical profiling. Use Android Studio Profiler, trace the critical path, and identify where time was lost. Compare against a baseline. The tradeoff is that premature optimization wastes time—measure first, optimize bottlenecks.",
     "tags": [
       "performance",
       "startup"
@@ -122,7 +122,7 @@
     "category": "Android Testing",
     "difficulty": "Advanced",
     "question": "How do you keep Android tests reliable in CI?",
-    "answer": "Reduce shared state, control async behavior, use test doubles carefully, and separate unit, integration, and UI concerns. Explain what behavior is being tested, which test type fits best, and how dependencies are controlled with fakes, mocks, test dispatchers, or in-memory databases. Also mention what would make the test deterministic and useful in CI. For this question, specifically address How do you keep Android tests reliable in CI with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "I keep Android tests reliable in CI by pushing as much logic as possible into fast deterministic unit tests, isolating async work with test dispatchers, using fakes instead of live services, and making sure every slower UI or integration test is worth its cost. If a test is timing-sensitive, shares state, or depends on external systems, I assume it will become flaky unless I control those variables explicitly.",
     "explanation": "CI tests are flaky if they depend on timing, device state, or luck. Use Espresso for UI tests with proper waits. Mock network and database. Run tests on CI multiple times to catch flakiness. Deterministic tests are reproducible and reliable.",
     "tags": [
       "testing",
@@ -136,7 +136,7 @@
     "category": "System Design",
     "difficulty": "Expert",
     "question": "What trade-offs exist in storing large offline content packs locally?",
-    "answer": "You need to balance install size, import speed, update strategy, indexing cost, and migration complexity. Begin by clarifying requirements and constraints, then define data ownership, API contracts, local persistence, background work, error handling, security, and observability. Explain trade-offs such as consistency versus availability, simplicity versus flexibility, and offline behavior versus server freshness. For this question, specifically address What trade-offs exist in storing large offline content packs locally with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "The main trade-offs are storage size, indexing cost, startup time, sync complexity, update strategy, and how much of the content has to remain usable offline. I would decide early whether packs are immutable, partially updatable, or streamed in segments, because that choice affects downloads, integrity checks, migrations, and how aggressively the app can cache content on limited devices.",
     "explanation": "Large offline content packs require storage space and synchronization logic. Benefits: offline UX, bandwidth control. Costs: complexity, disk usage. Consider storing in database vs files, compression, versioning, and update strategy. The design depends on content type and usage patterns.",
     "tags": [
       "system-design",
@@ -150,7 +150,7 @@
     "category": "Senior Android",
     "difficulty": "Expert",
     "question": "How do you prioritize tech debt in a mature Android app?",
-    "answer": "Rank debt by user impact, delivery drag, incident risk, and opportunity to simplify future work. Frame the answer around trade-offs, team maintainability, delivery risk, and long-term ownership. A senior answer should compare options, explain failure modes, and show how you would guide implementation, testing, rollout, and review. For this question, specifically address How do you prioritize tech debt in a mature Android app with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "I prioritize tech debt by looking at user impact, delivery drag, incident risk, and how often the pain repeats across the team. If a debt item is blocking multiple features, causing production issues, or making testing and releases slower every sprint, it moves up quickly; if it is only theoretically ugly, I usually keep it behind real product work until the leverage is clearer.",
     "explanation": "Tech debt prioritization is business decision, not just technical. Measure impact: developer velocity, bug rates, incident frequency. Communicate to stakeholders. Fix high-impact debt in sprints. Some debt is acceptable if the cost of paying it exceeds the benefit.",
     "tags": [
       "senior",
@@ -164,7 +164,7 @@
     "category": "Kotlin",
     "difficulty": "Advanced",
     "question": "What is the difference between inline, noinline, and crossinline?",
-    "answer": "inline inlines lambdas, noinline prevents inlining for specific lambdas, and crossinline prevents non-local returns. In an interview, explain the idea in plain Kotlin terms first, then mention how it affects Android code readability, safety, and maintainability. Include a small mental example, such as how the feature changes object creation, null handling, collection usage, or function calls. For this question, specifically address the difference between inline, noinline, and crossinline with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "Inline, noinline, and crossinline is a Kotlin feature I would explain by focusing on what it does at compile time or runtime, where it improves readability or safety, and what mistake developers usually make when they use it without understanding the behavior.",
     "explanation": "inline copies code to call site. noinline prevents inlining specific lambdas. crossinline requires lambdas to not use return (only return from the outer function). Use inline for small utilities with lambdas. Use noinline for lambdas passed to other functions. Use crossinline for complex control flow.",
     "tags": [
       "kotlin",
@@ -179,8 +179,8 @@
     "category": "Kotlin",
     "difficulty": "Advanced",
     "question": "What are reified type parameters and why are they useful?",
-    "answer": "Reified type parameters preserve generic type information at runtime inside inline functions. In an interview, explain the idea in plain Kotlin terms first, then mention how it affects Android code readability, safety, and maintainability. Include a small mental example, such as how the feature changes object creation, null handling, collection usage, or function calls. For this question, specifically address reified type parameters and why are they useful with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "Reified types let you access the actual generic type at runtime\u2014normally erased. Only works with inline functions. Useful for JSON parsing: inline fun <reified T> fromJson(json: String): T lets you check what T is. Without reified, you'd need to pass Class<T> explicitly.",
+    "answer": "Reified type parameters let me keep generic type information inside an inline function, which normally gets erased on the JVM. That is useful when I need `is T`, `as T`, or type-based factory logic without passing `Class<T>` manually every time.",
+    "explanation": "Reified types let you access the actual generic type at runtime—normally erased. Only works with inline functions. Useful for JSON parsing: inline fun <reified T> fromJson(json: String): T lets you check what T is. Without reified, you'd need to pass Class<T> explicitly.",
     "tags": [
       "kotlin",
       "reified",
@@ -193,7 +193,7 @@
     "category": "Coroutines",
     "difficulty": "Expert",
     "question": "How does coroutine cancellation propagate through a hierarchy?",
-    "answer": "Cancellation propagates from parent to children unless a SupervisorJob is used. A complete answer should cover what work runs asynchronously, which CoroutineScope owns that work, which dispatcher is appropriate, and how cancellation or errors are handled. On Android, always relate it to viewModelScope, lifecycleScope, structured concurrency, and avoiding leaked background work. For this question, specifically address How does coroutine cancellation propagate through a hierarchy with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "Coroutine cancellation normally propagates from parent to child, so when the parent scope is cancelled all of its children are cancelled too. Failure also propagates upward unless you isolate it with supervision, which is why scope ownership and error boundaries matter so much in Android.",
     "explanation": "Cancellation propagates parent-to-child. If a parent scope cancels, all children are cancelled. Exceptions propagate child-to-parent. If a child throws, the parent fails. Structured concurrency ensures proper cleanup. Understanding this prevents orphaned coroutines and memory leaks.",
     "tags": [
       "coroutines",
@@ -206,8 +206,8 @@
     "category": "Coroutines",
     "difficulty": "Expert",
     "question": "What is the difference between launch and async?",
-    "answer": "launch returns a Job and is used for fire-and-forget work, while async returns Deferred and produces a result. A complete answer should cover what work runs asynchronously, which CoroutineScope owns that work, which dispatcher is appropriate, and how cancellation or errors are handled. On Android, always relate it to viewModelScope, lifecycleScope, structured concurrency, and avoiding leaked background work. For this question, specifically address the difference between launch and async with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "launch is fire-and-forget\u2014returns immediately. async returns Deferred<T> to await results. Use launch for background work you don't wait for. Use async for parallel operations with results. Both are important\u2014choose based on whether you need a return value.",
+    "answer": "`launch` starts a coroutine for work where I care about completion but not a return value, so it gives me a `Job`. `async` starts a coroutine that produces a result and gives me a `Deferred`, which I later `await`. I choose `async` only when I genuinely need concurrent result-producing work.",
+    "explanation": "launch is fire-and-forget—returns immediately. async returns Deferred<T> to await results. Use launch for background work you don't wait for. Use async for parallel operations with results. Both are important—choose based on whether you need a return value.",
     "tags": [
       "coroutines",
       "launch",
@@ -220,8 +220,8 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is the difference between remember and rememberSaveable?",
-    "answer": "remember survives recomposition while rememberSaveable survives configuration changes by saving state. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address the difference between remember and rememberSaveable with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "remember survives recomposition. rememberSaveable survives process death too. Use remember for temporary UI state. Use rememberSaveable for state you want across app restarts. rememberSaveable is more expensive\u2014only use when needed.",
+    "answer": "`remember` keeps a value across recompositions, but not across configuration changes or process recreation. `rememberSaveable` also persists supported state through saved instance state, so I use it for lightweight UI state like text input, selected tab, or scroll-related values that should survive rotation.",
+    "explanation": "remember survives recomposition. rememberSaveable survives process death too. Use remember for temporary UI state. Use rememberSaveable for state you want across app restarts. rememberSaveable is more expensive—only use when needed.",
     "tags": [
       "compose",
       "state"
@@ -233,7 +233,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What causes unnecessary recompositions and how do you avoid them?",
-    "answer": "Unstable parameters, broad state observation, and incorrect state ownership can trigger extra recompositions. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address What causes unnecessary recompositions and how do you avoid them with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "Unnecessary recompositions usually happen when I pass unstable objects, read state too broadly, or recreate values on every render. I avoid them by hoisting state properly, keeping parameters stable, using `remember` where it actually helps, and making sure each composable only reads the state it really needs.",
     "explanation": "Unnecessary recompositions happen when a composable reads state that changed elsewhere. Use remember and derive state from parameters. Avoid reading mutable state outside remember. Use derivedStateOf for expensive computations. Profile with Compose DevTools to find recompositions.",
     "tags": [
       "compose",
@@ -247,8 +247,8 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "Explain LaunchedEffect, SideEffect, DisposableEffect, and rememberCoroutineScope.",
-    "answer": "Each side-effect API serves a different lifecycle and execution purpose within Compose. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address Explain LaunchedEffect, SideEffect, DisposableEffect, and rememberCoroutineScope. with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "LaunchedEffect runs code when effect enters composition. SideEffect runs after composition completes. DisposableEffect runs and provides cleanup. rememberCoroutineScope provides a scope to launch coroutines from callbacks. Each has specific use cases\u2014understanding when to use each prevents bugs.",
+    "answer": "`LaunchedEffect` is for running suspend work tied to composition, `SideEffect` is for pushing composed state out to non-Compose code after a successful recomposition, `DisposableEffect` is for setup and cleanup around a lifecycle-bound side effect, and `rememberCoroutineScope` gives me a scope for launching work from callbacks. I choose between them based on who owns the work and when it should start or stop.",
+    "explanation": "LaunchedEffect runs code when effect enters composition. SideEffect runs after composition completes. DisposableEffect runs and provides cleanup. rememberCoroutineScope provides a scope to launch coroutines from callbacks. Each has specific use cases—understanding when to use each prevents bugs.",
     "tags": [
       "compose",
       "side-effects"
@@ -260,8 +260,8 @@
     "category": "Android Architecture",
     "difficulty": "Expert",
     "question": "MVVM vs MVI: when would you choose one over the other?",
-    "answer": "MVVM provides flexibility while MVI enforces a strict unidirectional state flow. Start with the responsibility of each layer, then describe how data moves from data sources through repositories and use cases into ViewModels and UI state. Also mention testability, separation of concerns, and how the design behaves when requirements grow. For this question, specifically address MVVM vs MVI: when would you choose one over the other with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "MVVM is simpler, UI-focused. MVI is more structured, unidirectional. Choose MVVM for smaller apps or teams new to architecture. Choose MVI for complex apps where predictability matters. Both work\u2014MVI prevents more bugs but costs more boilerplate.",
+    "answer": "MVI models the screen as unidirectional state updates: the UI sends intents, logic processes them, and the screen renders a new immutable state. I like it for complex screens because every state transition is explicit, but I would also mention that it can become verbose if the screen is simple and the team does not benefit from that level of structure.",
+    "explanation": "MVVM is simpler, UI-focused. MVI is more structured, unidirectional. Choose MVVM for smaller apps or teams new to architecture. Choose MVI for complex apps where predictability matters. Both work—MVI prevents more bugs but costs more boilerplate.",
     "tags": [
       "architecture",
       "mvvm",
@@ -274,7 +274,7 @@
     "category": "Senior Android",
     "difficulty": "Expert",
     "question": "How would you reduce application startup time?",
-    "answer": "Measure startup metrics, defer non-critical initialization, optimize dependency graphs, and remove blocking work from the main thread. Frame the answer around trade-offs, team maintainability, delivery risk, and long-term ownership. A senior answer should compare options, explain failure modes, and show how you would guide implementation, testing, rollout, and review. For this question, specifically address How would you reduce application startup time with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "I would start by measuring startup with real traces so I know whether the cost is in app initialization, dependency graph creation, disk I/O, first composition, or something else on the main thread. Then I would remove or defer non-critical work, flatten expensive startup paths, and re-measure after each change so we keep only improvements that affect the user-visible launch time.",
     "explanation": "Startup time matters for UX. Profiles show where time is spent. Defer non-critical initialization to background. Use Baseline Profiles for AOT compilation. Lazy-load heavy libraries. Startup is often a business metric that affects store reviews.",
     "tags": [
       "startup",
@@ -287,7 +287,7 @@
     "category": "Senior Android",
     "difficulty": "Expert",
     "question": "How would you investigate a memory leak in Android?",
-    "answer": "Use LeakCanary, heap dumps, lifecycle analysis, and object reference tracing. Frame the answer around trade-offs, team maintainability, delivery risk, and long-term ownership. A senior answer should compare options, explain failure modes, and show how you would guide implementation, testing, rollout, and review. For this question, specifically address How would you investigate a memory leak in Android with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "I would start with a tool like LeakCanary to identify the leaking reference chain, then confirm whether the root cause is lifecycle misuse, a long-lived singleton, a callback that was never cleared, or something retained by a framework object. After fixing the specific leak, I would also look for the architectural reason it was easy to create, because memory leaks usually come from unclear ownership or objects living longer than intended.",
     "explanation": "Memory leaks happen when long-lived objects hold references to short-lived ones. Use Android Studio Profiler heap dump. Look for unexpected object counts. Common causes: listeners not unregistered, static references, async callbacks. Fix by clearing references in lifecycle methods.",
     "tags": [
       "memory",
@@ -301,8 +301,8 @@
     "category": "Kotlin",
     "difficulty": "Expert",
     "question": "What is type erasure and how do reified types solve it?",
-    "answer": "Type erasure removes generic type information at runtime. Reified types preserve type information inside inline functions. In an interview, explain the idea in plain Kotlin terms first, then mention how it affects Android code readability, safety, and maintainability. Include a small mental example, such as how the feature changes object creation, null handling, collection usage, or function calls. For this question, specifically address type erasure and how do reified types solve it with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "Type erasure removes generic information at runtime\u2014the compiler enforces types but they're gone at runtime. reified types (with inline) preserve type information. Useful for type-safe APIs without passing Class<T>. A powerful Kotlin feature.",
+    "answer": "Type erasure means generic type information is removed at runtime on the JVM, so something like `List<String>` and `List<Int>` both look like `List`. Reified type parameters help inside inline functions because the compiler substitutes the actual type at the call site, which lets me do runtime checks or lookups based on that type.",
+    "explanation": "Type erasure removes generic information at runtime—the compiler enforces types but they're gone at runtime. reified types (with inline) preserve type information. Useful for type-safe APIs without passing Class<T>. A powerful Kotlin feature.",
     "tags": [
       "kotlin",
       "generics",
@@ -315,7 +315,7 @@
     "category": "Coroutines",
     "difficulty": "Expert",
     "question": "What is CoroutineExceptionHandler and when should it be used?",
-    "answer": "CoroutineExceptionHandler handles uncaught coroutine exceptions at the root coroutine level. A complete answer should cover what work runs asynchronously, which CoroutineScope owns that work, which dispatcher is appropriate, and how cancellation or errors are handled. On Android, always relate it to viewModelScope, lifecycleScope, structured concurrency, and avoiding leaked background work. For this question, specifically address CoroutineExceptionHandler and when should it be used with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "`CoroutineExceptionHandler` handles uncaught exceptions on root coroutines. I treat it as a last-resort reporting hook, not as my normal business error strategy, because exceptions inside structured coroutine code are usually better handled closer to where the failure actually matters.",
     "explanation": "CoroutineExceptionHandler catches uncaught exceptions. Without it, exceptions crash. Use it for logging and fallbacks. Install in a scope: CoroutineScope(dispatcher + handler). Important for production apps to handle errors gracefully.",
     "tags": [
       "coroutines",
@@ -328,7 +328,7 @@
     "category": "Coroutines",
     "difficulty": "Expert",
     "question": "What is the difference between withContext and async?",
-    "answer": "withContext switches context and returns a result, while async creates a concurrent coroutine returning Deferred. A complete answer should cover what work runs asynchronously, which CoroutineScope owns that work, which dispatcher is appropriate, and how cancellation or errors are handled. On Android, always relate it to viewModelScope, lifecycleScope, structured concurrency, and avoiding leaked background work. For this question, specifically address the difference between withContext and async with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "`withContext` switches context and waits for the result before continuing, so it is still sequential. `async` starts concurrent work and lets me await it later. If I just need to move one block to `Dispatchers.IO`, I use `withContext`; if I need parallel work, I use `async` carefully.",
     "explanation": "withContext switches dispatchers and returns a result. async starts a separate coroutine. Use withContext to change threads temporarily. Use async for parallel work. withContext is simpler for sequential switching.",
     "tags": [
       "coroutines",
@@ -342,8 +342,8 @@
     "category": "Flow",
     "difficulty": "Advanced",
     "question": "What does collectLatest do?",
-    "answer": "collectLatest cancels the previous collector block when a new value arrives. Explain whether the stream is cold or hot, who emits values, who collects them, and what should happen on configuration changes. For Android UI, describe how the Flow becomes observable state, how errors/loading are represented, and how collection is tied to lifecycle. For this question, specifically address What does collectLatest do with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "collectLatest collects the latest Flow value, cancelling previous collectors if a new value arrives. Useful for search\u2014cancel previous search when user types. Different from collect (waits for each value) or conflate (skips intermediate values).",
+    "answer": "`collectLatest` cancels the previous collector block when a new value arrives. I use it when only the latest value matters, like search queries or rapidly changing UI input, because older work becomes stale.",
+    "explanation": "collectLatest collects the latest Flow value, cancelling previous collectors if a new value arrives. Useful for search—cancel previous search when user types. Different from collect (waits for each value) or conflate (skips intermediate values).",
     "tags": [
       "flow",
       "collectlatest"
@@ -355,7 +355,7 @@
     "category": "Flow",
     "difficulty": "Expert",
     "question": "What are shareIn and stateIn operators?",
-    "answer": "shareIn converts a cold flow to SharedFlow while stateIn converts a cold flow to StateFlow. Explain whether the stream is cold or hot, who emits values, who collects them, and what should happen on configuration changes. For Android UI, describe how the Flow becomes observable state, how errors/loading are represented, and how collection is tied to lifecycle. For this question, specifically address shareIn and stateIn operators with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "`shareIn` turns a cold flow into a shared hot flow, while `stateIn` turns it into a `StateFlow` with a current value. I use `stateIn` when the UI needs stable observable state, and `shareIn` when I want shared upstream work without forcing everything into a state model.",
     "explanation": "shareIn converts a Flow to SharedFlow with caching. stateIn converts a Flow to StateFlow with a current value. Use shareIn to share one producer across multiple collectors. Use stateIn for observable state. Both prevent duplicate collection of the upstream Flow.",
     "tags": [
       "flow",
@@ -369,7 +369,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What is derivedStateOf and when should it be used?",
-    "answer": "derivedStateOf optimizes recompositions by calculating derived values only when dependencies change. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address derivedStateOf and when should it be used with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "`derivedStateOf` creates computed state that only updates when its dependencies change. I use it when a derived value is expensive enough or noisy enough that recalculating it on every recomposition would be wasteful.",
     "explanation": "derivedStateOf recomputes state based on dependencies only when dependencies change. Avoids unnecessary recompositions. Use for expensive computations or complex state logic. Without it, every read of the derived value triggers recomposition.",
     "tags": [
       "compose",
@@ -382,7 +382,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "How does Compose determine whether a composable should recompose?",
-    "answer": "Compose tracks state reads and invalidates affected composables when observed state changes. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How does Compose determine whether a composable should recompose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "Compose recomposes when a composable reads state and that observed state changes. Whether the recomposition is skipped or propagated further depends on stability, parameter changes, and what part of the tree actually read the value.",
     "explanation": "Compose uses snapshot-based tracking to know what State each composable reads. If a State changes, affected composables recompose. Unread State changes don't trigger recomposition. This fine-grained tracking makes Compose efficient.",
     "tags": [
       "compose",
@@ -395,8 +395,8 @@
     "category": "Android Architecture",
     "difficulty": "Expert",
     "question": "What is Unidirectional Data Flow?",
-    "answer": "Data flows in a single direction from state to UI and user actions flow back as events. Start with the responsibility of each layer, then describe how data moves from data sources through repositories and use cases into ViewModels and UI state. Also mention testability, separation of concerns, and how the design behaves when requirements grow. For this question, specifically address Unidirectional Data Flow with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "UDF means data flows down (from ViewModel to UI), events flow up (from UI to ViewModel). One direction\u2014predictable, testable, easy to reason about. The opposite of bidirectional binding (confusing, hard to debug).",
+    "answer": "Unidirectional Data Flow means state moves one way to the UI, and user actions travel back as events that trigger state updates. I like it because it makes ownership clearer, reduces hidden mutation, and makes screens easier to debug when state changes unexpectedly.",
+    "explanation": "UDF means data flows down (from ViewModel to UI), events flow up (from UI to ViewModel). One direction—predictable, testable, easy to reason about. The opposite of bidirectional binding (confusing, hard to debug).",
     "tags": [
       "architecture",
       "udf"
@@ -408,8 +408,8 @@
     "category": "Android Architecture",
     "difficulty": "Expert",
     "question": "What are the advantages of Clean Architecture?",
-    "answer": "It improves separation of concerns, testability, maintainability, and scalability. Start with the responsibility of each layer, then describe how data moves from data sources through repositories and use cases into ViewModels and UI state. Also mention testability, separation of concerns, and how the design behaves when requirements grow. For this question, specifically address the advantages of Clean Architecture with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "Clean Architecture decouples business logic from frameworks. Testable without Android or network. Flexible\u2014swap implementations easily. Maintainable\u2014changes are localized. The tradeoff: boilerplate and indirection.",
+    "answer": "Clean Architecture keeps business rules independent from frameworks and data-source details by pushing dependencies inward. In Android that usually means the UI depends on ViewModels, ViewModels depend on use cases or repositories, and the domain layer does not depend on Retrofit, Room, or Android classes directly.",
+    "explanation": "Clean Architecture decouples business logic from frameworks. Testable without Android or network. Flexible—swap implementations easily. Maintainable—changes are localized. The tradeoff: boilerplate and indirection.",
     "tags": [
       "architecture",
       "clean-architecture"
@@ -421,7 +421,7 @@
     "category": "Android Performance",
     "difficulty": "Expert",
     "question": "What causes ANRs and how do you debug them?",
-    "answer": "ANRs occur when the main thread is blocked too long. Use traces, profiler data, and logs to investigate. A complete answer should identify the performance bottleneck, how to measure it, and what change would reduce work on the critical path. Mention tools such as Android Studio Profiler, Perfetto, baseline profiles, StrictMode, or frame timing when relevant. For this question, specifically address What causes ANRs and how do you debug them with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "ANRs happen when the main thread is blocked long enough that the system decides the app is not responding. I debug them by reading ANR traces, identifying the blocking call or lock, confirming it with Perfetto or profiler data, and then removing the root cause instead of just moving symptoms around.",
     "explanation": "ANRs happen when the main thread is blocked for 5+ seconds. Profiler shows what's blocking. Common causes: heavy computation, disk I/O, network on main thread. Move work to background with coroutines or threads. Structured profiling reveals the culprit.",
     "tags": [
       "performance",
@@ -434,7 +434,7 @@
     "category": "System Design",
     "difficulty": "Expert",
     "question": "How would you design a WhatsApp-like chat application?",
-    "answer": "Consider messaging architecture, synchronization, delivery guarantees, offline storage, scalability, and encryption. Begin by clarifying requirements and constraints, then define data ownership, API contracts, local persistence, background work, error handling, security, and observability. Explain trade-offs such as consistency versus availability, simplicity versus flexibility, and offline behavior versus server freshness. For this question, specifically address a WhatsApp-like chat application with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For a WhatsApp-like chat app, I would start with message delivery guarantees, offline behavior, synchronization, ordering, and encryption. On Android I would keep a local database as the source of truth for the UI, sync with the server in the background, model pending and failed states explicitly, and make sure retries, reconnection, and pagination work without freezing the conversation screen.",
     "explanation": "A chat app requires real-time messaging, user presence, typing indicators, and offline support. Architecture: message queue, sync strategy, presence tracking, efficient database queries. Design for reliability, scalability, and offline-first UX. This is a system design problem.",
     "tags": [
       "system-design",
@@ -447,7 +447,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is rememberUpdatedState and when should it be used?",
-    "answer": "rememberUpdatedState provides the latest value to long-lived side effects without restarting the effect. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address rememberUpdatedState and when should it be used with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "`rememberUpdatedState` lets a long-lived effect see the latest value without restarting the effect itself. It is useful when I want the current lambda or current parameter inside `LaunchedEffect` or `DisposableEffect` without treating every value change as a reason to restart the whole effect.",
     "explanation": "rememberUpdatedState captures the latest value without recomposition dependencies. Useful when you need current value in a callback without resetting it. Example: LaunchedEffect({ }) only takes () as dependency, but you might need a current state value.",
     "tags": [
       "compose",
@@ -461,8 +461,8 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What is SnapshotFlow and when would you use it?",
-    "answer": "SnapshotFlow converts Compose state reads into a Flow stream. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address SnapshotFlow and when would you use it with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "snapshotFlow converts Snapshot state (remember state) to Flow. Useful for reacting to remember state changes from outside Compose. Niche\u2014most of the time, use StateFlow in ViewModels instead.",
+    "answer": "`snapshotFlow` converts reads of Compose state into a Flow stream. I use it when I need to bridge Compose state into coroutine operators, for example to debounce scroll position or observe text changes outside the immediate UI rendering path.",
+    "explanation": "snapshotFlow converts Snapshot state (remember state) to Flow. Useful for reacting to remember state changes from outside Compose. Niche—most of the time, use StateFlow in ViewModels instead.",
     "tags": [
       "compose",
       "snapshotflow",
@@ -475,7 +475,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What are stable and unstable types in Compose?",
-    "answer": "Stable types allow Compose to skip recompositions safely, while unstable types may trigger unnecessary recompositions. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address stable and unstable types in Compose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Stable and unstable types, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Stable types prevent unnecessary recompositions. Primitives, Strings, immutable data classes are stable. Unstable types (mutable lists, mutable maps) cause recompositions. Mark types as stable with @Stable annotation if the compiler is wrong.",
     "tags": [
       "compose",
@@ -489,7 +489,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is CompositionLocal?",
-    "answer": "CompositionLocal allows data to be passed implicitly through the composable hierarchy. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address CompositionLocal with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "`CompositionLocal` is a way to provide data implicitly down the composable tree without threading it through every parameter. I use it for cross-cutting UI context like theme values or ambient dependencies, but I avoid overusing it for feature-specific state because it hides where data comes from.",
     "explanation": "CompositionLocal provides implicit dependencies. CompositionLocalProvider(LocalColor provides Color.Blue) { ... }. Children access via LocalColor.current without passing as parameter. Useful for theming. Downside: implicit dependencies are hard to debug.",
     "tags": [
       "compose",
@@ -502,7 +502,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What are the drawbacks of overusing CompositionLocal?",
-    "answer": "It can hide dependencies, reduce readability, and make testing harder. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address the drawbacks of overusing CompositionLocal with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "`CompositionLocal` is a way to provide data implicitly down the composable tree without threading it through every parameter. I use it for cross-cutting UI context like theme values or ambient dependencies, but I avoid overusing it for feature-specific state because it hides where data comes from.",
     "explanation": "Overusing CompositionLocal hides dependencies, making code hard to understand. Too many implicit parameters confuse readers. Use for truly ambient values (theme, colors). Avoid for business logic. Keep the dependency tree visible.",
     "tags": [
       "compose",
@@ -515,7 +515,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "How does LazyColumn differ from RecyclerView internally?",
-    "answer": "LazyColumn composes only visible items using Compose runtime rather than View recycling. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How does LazyColumn differ from RecyclerView internally with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "`LazyColumn` and `RecyclerView` both avoid rendering the whole list at once, but they do it with different models. `RecyclerView` reuses imperative view holders, while `LazyColumn` works through composition, slot reuse, and state-driven rendering. The trade-offs show up in how state, measurement, and performance tuning are handled.",
     "explanation": "LazyColumn composes only visible items. RecyclerView recycles Views. Compose creates composables on demand, reuses them as you scroll. Both are efficient for large lists. LazyColumn integrates better with Compose state.",
     "tags": [
       "compose",
@@ -528,7 +528,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What is SubcomposeLayout?",
-    "answer": "SubcomposeLayout allows child composables to be composed during measurement. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address SubcomposeLayout with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For SubcomposeLayout, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "SubcomposeLayout lets you measure children before placing them. Example: creating a responsive layout that adjusts based on content size. Powerful but complex. Most layouts don't need it.",
     "tags": [
       "compose",
@@ -541,7 +541,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is the purpose of key in LazyColumn?",
-    "answer": "Keys provide stable item identity so Compose can correctly track state and item changes. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address the purpose of key in LazyColumn with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For The purpose of key in LazyColumn, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "key() tells Compose which item in a list is which. Without keys, reordering causes state loss. Use a stable ID: key(item.id) { ... }. Keys prevent bugs with stateful list items.",
     "tags": [
       "compose",
@@ -555,7 +555,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What causes state loss in LazyColumn?",
-    "answer": "Missing stable keys, improper state management, and recreating state during recomposition can cause state loss. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address What causes state loss in LazyColumn with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For State loss in LazyColumn, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "State loss happens when LazyColumn items change order or position. Use key() with stable IDs to preserve state. Without keys, scrolling can lose state in list items. This is a common bug with LazyColumn.",
     "tags": [
       "compose",
@@ -569,7 +569,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "How does rememberSaveable work internally?",
-    "answer": "rememberSaveable stores values in the SavedStateRegistry and restores them after configuration changes. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How does rememberSaveable work internally with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For RememberSaveable work internally, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "rememberSaveable uses SavedStateHandle internally. State is serialized to Bundle, saved, and restored on process death. Saves via Parcelable/Serializable. Has size limits (1MB). Not for large objects.",
     "tags": [
       "compose",
@@ -582,7 +582,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What is the difference between remember and derivedStateOf?",
-    "answer": "remember stores a value while derivedStateOf calculates a value and only updates when dependencies change. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address the difference between remember and derivedStateOf with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "`derivedStateOf` creates computed state that only updates when its dependencies change. I use it when a derived value is expensive enough or noisy enough that recalculating it on every recomposition would be wasteful.",
     "explanation": "remember creates state that survives recompositions. derivedStateOf creates state that recomputes from other state. Use remember for base state. Use derivedStateOf for derived/computed values.",
     "tags": [
       "compose",
@@ -595,7 +595,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "When should you use derivedStateOf?",
-    "answer": "Use derivedStateOf for expensive derived values that depend on state changes. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address When should you use derivedStateOf with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "`derivedStateOf` creates computed state that only updates when its dependencies change. I use it when a derived value is expensive enough or noisy enough that recalculating it on every recomposition would be wasteful.",
     "explanation": "Use derivedStateOf when you have expensive computations or complex logic that should only recompute when dependencies change. Without it, every recomposition recomputes. Avoids unnecessary recompositions and improves performance.",
     "tags": [
       "compose",
@@ -608,8 +608,8 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is a recomposition scope?",
-    "answer": "A recomposition scope defines the region of UI that can be independently recomposed. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address a recomposition scope with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "A recomposition scope is a composable and the functions it calls. When State changes, Compose reruns this scope. Scopes are fine-grained\u2014only affected composables recompose. Efficient compared to View invalidation.",
+    "answer": "For A recomposition scope, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
+    "explanation": "A recomposition scope is a composable and the functions it calls. When State changes, Compose reruns this scope. Scopes are fine-grained—only affected composables recompose. Efficient compared to View invalidation.",
     "tags": [
       "compose",
       "recomposition"
@@ -621,7 +621,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "How can you debug recompositions in Compose?",
-    "answer": "Use Layout Inspector, Compose Tracing, recomposition counts, and compiler metrics. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How can you debug recompositions in Compose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Debug recompositions, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Compose DevTools show recomposition counts and reasons. Android Studio Compose compiler plugin reports stability issues. Use these tools to understand what's recomposing and why. Data-driven optimization beats guessing.",
     "tags": [
       "compose",
@@ -635,7 +635,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What are compiler stability reports in Compose?",
-    "answer": "Compiler reports identify stable and unstable types affecting recomposition behavior. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address compiler stability reports in Compose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Compiler stability reports, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Compiler stability reports show which types Compose can't prove stable. Unstable types cause extra recompositions. Use @Stable to mark types stable. Fix stability issues to reduce recompositions.",
     "tags": [
       "compose",
@@ -649,7 +649,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is the role of Modifier in Compose?",
-    "answer": "Modifier decorates or augments composables with layout, behavior, appearance, and interaction. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address the role of Modifier in Compose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For The role of Modifier, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Modifier applies visual effects and behavior: size, padding, background, click listeners, etc. Chain modifiers: Modifier.size(100.dp).background(Color.Red).clickable { ... }. Order matters.",
     "tags": [
       "compose",
@@ -662,7 +662,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "Why does Modifier order matter?",
-    "answer": "Modifiers are applied sequentially, so changing order changes behavior and layout results. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address Why does Modifier order matter with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Why does Modifier order matter, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Modifier order affects layout and rendering. Padding then background is different from background then padding. Later modifiers wrap earlier ones. Get the order right to avoid layout bugs.",
     "tags": [
       "compose",
@@ -675,7 +675,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is Modifier.composed?",
-    "answer": "Modifier.composed creates stateful custom modifiers that can access Compose APIs. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address Modifier.composed with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Modifier.composed, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Modifier.composed creates a custom modifier with recomposable logic. Useful for conditional modifiers or stateful effects. More complex than simple modifiers but powerful.",
     "tags": [
       "compose",
@@ -688,7 +688,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "How does Navigation Compose handle back stack state?",
-    "answer": "Navigation Compose stores destinations in a NavBackStackEntry hierarchy and manages saved state per destination. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How does Navigation Compose handle back stack state with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Navigation Compose handle back stack state, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Navigation Compose manages the back stack automatically. Back button pops the current screen. SavedStateHandle restores state on process death. Deep links work with the back stack. Navigation handles complexity well.",
     "tags": [
       "compose",
@@ -701,7 +701,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What are common Navigation Compose pitfalls?",
-    "answer": "Duplicate destinations, improper state restoration, and passing large objects between destinations. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address common Navigation Compose pitfalls with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Common Navigation Compose pitfalls, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Common pitfalls: losing state on navigation, incorrect back behavior, deep link failures. Handle arguments properly. Test navigation and state restoration. Use type-safe navigation (SafeArgs equivalent in Compose).",
     "tags": [
       "compose",
@@ -714,7 +714,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is AnimatedVisibility?",
-    "answer": "AnimatedVisibility animates appearance and disappearance of composables. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address AnimatedVisibility with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For AnimatedVisibility, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "AnimatedVisibility animates appearance/disappearance of a composable. enter/exit are animation specs. Smooth transitions without manual state management. Essential for fluid UX.",
     "tags": [
       "compose",
@@ -727,7 +727,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is animate*AsState?",
-    "answer": "animate*AsState automatically animates state value changes. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address animate*AsState with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Animate*AsState, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "animate*AsState animates a value change smoothly. val animatedSize by animateDpAsState(targetSize). Changes trigger animation. Used everywhere for smooth transitions.",
     "tags": [
       "compose",
@@ -740,7 +740,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What is the difference between animate*AsState and Animatable?",
-    "answer": "animate*AsState is declarative while Animatable provides imperative control over animations. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address the difference between animate*AsState and Animatable with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Animate*AsState and Animatable, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "animate*AsState is high-level, simple for one-off animations. Animatable is low-level, powerful for complex animations with snapshots, precise control. Use animate*AsState by default. Use Animatable for complex cases.",
     "tags": [
       "compose",
@@ -753,8 +753,8 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What is LookaheadLayout?",
-    "answer": "LookaheadLayout enables predictive measurement and placement for advanced animations. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address LookaheadLayout with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "LookaheadLayout enables lookahead composition\u2014measure future layouts before actual composition. Enables complex animations based on layout changes. Advanced, rarely needed.",
+    "answer": "For LookaheadLayout, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
+    "explanation": "LookaheadLayout enables lookahead composition—measure future layouts before actual composition. Enables complex animations based on layout changes. Advanced, rarely needed.",
     "tags": [
       "compose",
       "layout",
@@ -767,7 +767,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What are Window Size Classes?",
-    "answer": "Window Size Classes categorize device screens for adaptive layouts. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address Window Size Classes with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Window Size Classes, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Window Size Classes categorize screen sizes: Compact, Medium, Expanded. Use to adapt layouts for different devices. Material 3 standard for responsive design.",
     "tags": [
       "compose",
@@ -780,7 +780,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "How would you build adaptive Compose UIs for foldables?",
-    "answer": "Use Window Size Classes, folding features, and responsive layouts. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How would you build adaptive Compose UIs for foldables with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For How would you build adaptive Compose UIs for foldables, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Foldable devices have unusual screen configurations. Use Window Size Classes to adapt. Test on foldable devices or emulator. Responsive design is essential.",
     "tags": [
       "compose",
@@ -794,7 +794,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "How does Compose support accessibility?",
-    "answer": "Compose provides semantics APIs for screen readers, content descriptions, and accessibility actions. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How does Compose support accessibility with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Compose support accessibility, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Compose supports accessibility: semantics (describe UI to accessibility services), content descriptions, selection handling. Test with TalkBack. Accessibility is required, not optional.",
     "tags": [
       "compose",
@@ -807,7 +807,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What are Baseline Profiles and how do they improve Compose performance?",
-    "answer": "Baseline Profiles precompile critical code paths to reduce startup and rendering overhead. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address Baseline Profiles and how do they improve Compose performance with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Baseline Profiles and how do they improve Compose performance, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Baseline Profiles pre-compile commonly-used code paths. APK includes profile file. ART compiler uses it for ahead-of-time compilation. Measurably faster startup and smoother UX. Newer feature.",
     "tags": [
       "compose",
@@ -821,7 +821,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What is Macrobenchmark and when would you use it?",
-    "answer": "Macrobenchmark measures app startup, scrolling, and rendering performance on real devices. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address Macrobenchmark and when would you use it with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Macrobenchmark, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Macrobenchmark measures real app performance: startup, scrolling, navigation. Runs on device, removes noise. Better than Microbenchmark for real-world metrics. Use for performance regression testing.",
     "tags": [
       "compose",
@@ -835,7 +835,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "How do you write UI tests for Compose?",
-    "answer": "Use Compose Test APIs with semantic nodes and assertions. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How do you write UI tests for Compose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "I write Compose UI tests with the Compose testing APIs, query nodes through semantics, perform user actions, and assert what is actually visible or accessible. I keep those tests stable by using meaningful semantics or tags, controlling async behavior, and avoiding assertions that depend on implementation details.",
     "explanation": "Use Compose UI testing APIs: onNodeWithText(), performClick(). Assertions: assertIsDisplayed(). Mock ViewModels for testing. UI tests should be fast and reliable.",
     "tags": [
       "compose",
@@ -848,7 +848,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What are semantics in Compose testing?",
-    "answer": "Semantics expose accessibility and testing metadata for composables. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address semantics in Compose testing with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Semantics in Compose testing, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Semantics describe UI to testing and accessibility. setters merge semantics from parent and children. Use mergeDescendants to simplify semantics. Important for testing and accessibility.",
     "tags": [
       "compose",
@@ -862,7 +862,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is Pager in Compose and when would you use it?",
-    "answer": "Pager displays horizontally or vertically swipeable pages. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address Pager in Compose and when would you use it with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Pager in Compose, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Pager shows horizontal/vertical sliding pages. Similar to ViewPager2 but in Compose. Handles state, animations, indicators. Use for tabbed content or image galleries.",
     "tags": [
       "compose",
@@ -875,8 +875,8 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "How does Paging 3 integrate with Compose?",
-    "answer": "Paging data is collected using collectAsLazyPagingItems and rendered through lazy components. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How does Paging 3 integrate with Compose with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "Paging 3 loads data in chunks. PagingDataAdapter shows data. LazyColumn accepts PagingItems for Compose. Integration is seamless\u2014Paging handles pagination, Compose displays items.",
+    "answer": "For Paging 3 integrate with Compose, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
+    "explanation": "Paging 3 loads data in chunks. PagingDataAdapter shows data. LazyColumn accepts PagingItems for Compose. Integration is seamless—Paging handles pagination, Compose displays items.",
     "tags": [
       "compose",
       "paging"
@@ -888,8 +888,8 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What are common Paging 3 performance issues?",
-    "answer": "Improper key usage, large page sizes, excessive recompositions, and expensive item rendering. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address common Paging 3 performance issues with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "Pagination issues: loading states, error handling, offset calculation. Use Paging 3 to handle correctly. Monitor network calls\u2014don't load unnecessarily. Cache aggressively.",
+    "answer": "For Common Paging 3 performance issues, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
+    "explanation": "Pagination issues: loading states, error handling, offset calculation. Use Paging 3 to handle correctly. Monitor network calls—don't load unnecessarily. Cache aggressively.",
     "tags": [
       "compose",
       "paging",
@@ -902,7 +902,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is collectAsStateWithLifecycle?",
-    "answer": "It collects Flow values while respecting lifecycle state. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address collectAsStateWithLifecycle with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For CollectAsStateWithLifecycle, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "collectAsStateWithLifecycle observes a Flow and collects only when lifecycle is active (Started state). Prevents crashes from updating destroyed UI. Better than collect() which collects always.",
     "tags": [
       "compose",
@@ -916,7 +916,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "Why should lifecycle-aware Flow collection be used in Compose?",
-    "answer": "It prevents unnecessary collection and reduces wasted work when the UI is not visible. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address Why should lifecycle-aware Flow collection be used in Compose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Lifecycle-aware Flow collection be used, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Lifecycle-aware collection prevents bugs where code updates destroyed UI. Important for preventing crashes and memory leaks. Use lifecycle-aware APIs in Compose.",
     "tags": [
       "compose",
@@ -930,7 +930,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "How do you handle one-time events in Compose?",
-    "answer": "Use SharedFlow, Channel, or event wrappers instead of StateFlow. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How do you handle one-time events in Compose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Handle one-time events, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "One-time events (navigation, snackbar) shouldn't be StateFlow (new subscribers get old events). Use Channel or SharedFlow with replay=0. Or emit events separately from state.",
     "tags": [
       "compose",
@@ -944,8 +944,8 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "Why is StateFlow not ideal for one-time events?",
-    "answer": "StateFlow replays the latest value and can cause duplicate event handling. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address Why is StateFlow not ideal for one-time events with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "StateFlow has replay=1\u2014new subscribers get the last value. For navigation events, this causes unexpected navigation. Use SharedFlow for events, StateFlow for state.",
+    "answer": "For StateFlow not ideal for one-time events, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
+    "explanation": "StateFlow has replay=1—new subscribers get the last value. For navigation events, this causes unexpected navigation. Use SharedFlow for events, StateFlow for state.",
     "tags": [
       "compose",
       "stateflow",
@@ -958,7 +958,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "How do you restore scroll position in Compose?",
-    "answer": "Use rememberLazyListState and save state when appropriate. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How do you restore scroll position in Compose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Restore scroll position, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "rememberLazyListState preserves scroll position. Save it: val state = rememberLazyListState(). It survives recomposition. For process death, use SavedStateHandle.",
     "tags": [
       "compose",
@@ -972,7 +972,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is rememberLazyListState?",
-    "answer": "It stores and controls scroll state for lazy lists. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address rememberLazyListState with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For RememberLazyListState, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "rememberLazyListState returns LazyListState with scroll position and first visible item. Listen: LaunchedEffect(state) { state.scroll { ... } }. Useful for scroll-based behaviors.",
     "tags": [
       "compose",
@@ -985,7 +985,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "How would you optimize a slow LazyColumn?",
-    "answer": "Use stable keys, avoid unnecessary recompositions, reduce expensive layouts, and paginate data. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How would you optimize a slow LazyColumn with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For How would you optimize a slow LazyColumn, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Slow LazyColumn usually has expensive item composables. Profile with DevTools. Memoize expensive composables. Use keys to preserve state. Move heavy work off main thread.",
     "tags": [
       "compose",
@@ -999,7 +999,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What tools can be used to profile Compose performance?",
-    "answer": "Layout Inspector, System Trace, Macro benchmark, and Compose compiler reports. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address What tools can be used to profile Compose performance with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Profile Compose performance, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Android Studio Profiler shows composition frequency. DevTools show recomposition counts. Macrobenchmark measures real performance. Use all three for complete picture.",
     "tags": [
       "compose",
@@ -1012,7 +1012,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is AnimatedContent?",
-    "answer": "AnimatedContent animates transitions between content states. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address AnimatedContent with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For AnimatedContent, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "AnimatedContent animates transitions between different content. Morphing animations between states. More complex than AnimatedVisibility. Use for state-based UI changes.",
     "tags": [
       "compose",
@@ -1025,7 +1025,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Advanced",
     "question": "What is Crossfade in Compose?",
-    "answer": "Crossfade animates between composable content using alpha transitions. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address Crossfade in Compose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Crossfade, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Crossfade animates between two composables with fade transition. Simpler than AnimatedContent. Use for fading between screens.",
     "tags": [
       "compose",
@@ -1038,7 +1038,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "What are deep links in Navigation Compose?",
-    "answer": "Deep links allow destinations to be opened directly from external sources. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address deep links in Navigation Compose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Deep links in Navigation Compose, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Deep links are URLs that open specific screens. Registered in manifest. Navigation Compose handles deep links. Must extract arguments from Intent and pass to composables.",
     "tags": [
       "compose",
@@ -1051,8 +1051,8 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "How would you secure deep links in Android?",
-    "answer": "Use verified app links, input validation, and proper authentication checks. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How would you secure deep links in Android with definition, use case, common mistake, and Android-specific implication.",
-    "explanation": "Validate deep link origins. Only accept from trusted sources. Sanitize arguments. Don't trust data in deep links\u2014verify with server. Security is critical.",
+    "answer": "For How would you secure deep links in Android, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
+    "explanation": "Validate deep link origins. Only accept from trusted sources. Sanitize arguments. Don't trust data in deep links—verify with server. Security is critical.",
     "tags": [
       "compose",
       "navigation",
@@ -1065,7 +1065,7 @@
     "category": "Jetpack Compose",
     "difficulty": "Expert",
     "question": "How do you handle configuration changes in Compose?",
-    "answer": "Use ViewModels, rememberSaveable, and lifecycle-aware state management. Explain how the Compose concept affects state, recomposition, layout, or side effects. A strong answer should mention where state is owned, how changes trigger UI updates, and how to keep composables predictable and testable. For this question, specifically address How do you handle configuration changes in Compose with definition, use case, common mistake, and Android-specific implication.",
+    "answer": "For Handle configuration changes, I would explain what state is involved, when recomposition or side effects happen, and why that API is the right tool instead of a simpler or more explicit alternative.",
     "explanation": "Compose handles configuration changes automatically. State in ViewModel survives. State in remember might not (use rememberSaveable). SavedStateHandle handles process death. No special handling needed usually.",
     "tags": [
       "compose",
