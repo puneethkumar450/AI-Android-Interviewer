@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -67,6 +68,46 @@ fun SettingsScreen(
                         onCheckedChange = viewModel::updateDynamicColor,
                     )
                 }
+            }
+        }
+        item {
+            InfoCard(title = "Speech") {
+                SpeechSlider(
+                    title = "Speech rate",
+                    subtitle = "Control how fast questions and answers are spoken",
+                    value = uiState.preferences.speechRate,
+                    valueText = "${"%.1f".format(uiState.preferences.speechRate)}x",
+                    range = 0.5f..2.0f,
+                    steps = 14,
+                    onValueChange = viewModel::updateSpeechRate,
+                )
+                SpeechSlider(
+                    title = "Pitch",
+                    subtitle = "Adjust how high or low the voice sounds",
+                    value = uiState.preferences.speechPitch,
+                    valueText = "${"%.1f".format(uiState.preferences.speechPitch)}x",
+                    range = 0.5f..1.5f,
+                    steps = 9,
+                    onValueChange = viewModel::updateSpeechPitch,
+                )
+                SettingRow(
+                    title = "Auto-read",
+                    subtitle = "Read each question aloud automatically",
+                    checked = uiState.preferences.speechAutoRead,
+                    onCheckedChange = viewModel::updateSpeechAutoRead,
+                )
+                SettingRow(
+                    title = "Highlight while reading",
+                    subtitle = "Highlight words as the speech engine reads them",
+                    checked = uiState.preferences.speechHighlight,
+                    onCheckedChange = viewModel::updateSpeechHighlight,
+                )
+                SettingRow(
+                    title = "Prefer offline voices",
+                    subtitle = "Use installed offline voices when available",
+                    checked = uiState.preferences.speechPreferOffline,
+                    onCheckedChange = viewModel::updateSpeechPreferOffline,
+                )
             }
         }
         item {
@@ -163,6 +204,47 @@ private fun SettingRow(
             )
         }
         Switch(checked = checked, onCheckedChange = onCheckedChange)
+    }
+}
+
+@Composable
+private fun SpeechSlider(
+    title: String,
+    subtitle: String,
+    value: Float,
+    valueText: String,
+    range: ClosedFloatingPointRange<Float>,
+    steps: Int,
+    onValueChange: (Float) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                Text(title, fontWeight = FontWeight.SemiBold)
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Text(
+                text = valueText,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Slider(
+            value = value,
+            onValueChange = onValueChange,
+            valueRange = range,
+            steps = steps,
+        )
     }
 }
 
