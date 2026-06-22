@@ -71,12 +71,14 @@ class QuestionRepositoryImpl @Inject constructor(
         difficulty: InterviewDifficulty?,
         searchQuery: String,
         bookmarksOnly: Boolean,
+        hardOnly: Boolean,
     ): List<Long> {
         return questionDao.getQuestionIds(
             searchQuery = searchQuery,
             category = category?.title,
             difficulty = difficulty?.title,
             bookmarksOnly = bookmarksOnly,
+            hardOnly = hardOnly,
         )
     }
 

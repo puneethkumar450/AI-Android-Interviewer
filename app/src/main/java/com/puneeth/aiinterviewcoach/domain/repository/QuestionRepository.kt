@@ -27,6 +27,7 @@ interface QuestionRepository {
         difficulty: InterviewDifficulty? = null,
         searchQuery: String = "",
         bookmarksOnly: Boolean = false,
+        hardOnly: Boolean = false,
     ): List<Long>
 
     suspend fun toggleBookmark(questionId: Long)

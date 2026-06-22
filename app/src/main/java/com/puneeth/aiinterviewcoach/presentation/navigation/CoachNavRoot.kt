@@ -105,6 +105,9 @@ fun CoachNavRoot(
                     onOpenBookmarks = {
                         navController.navigate(questionRoute(bookmarksOnly = true))
                     },
+                    onOpenHardQuestions = {
+                        navController.navigate(questionRoute(hardOnly = true))
+                    },
                     onOpenAllQuestions = {
                         navController.navigate(questionRoute())
                     },
@@ -145,6 +148,7 @@ fun CoachNavRoot(
                     navArgument("difficulty") { type = NavType.StringType; nullable = true; defaultValue = null },
                     navArgument("search") { type = NavType.StringType; nullable = true; defaultValue = null },
                     navArgument("bookmarksOnly") { type = NavType.BoolType; defaultValue = false },
+                    navArgument("hardOnly") { type = NavType.BoolType; defaultValue = false },
                     navArgument("startId") { type = NavType.LongType; defaultValue = -1L },
                 ),
             ) {
@@ -159,11 +163,12 @@ fun questionRoute(
     difficulty: String? = null,
     search: String? = null,
     bookmarksOnly: Boolean = false,
+    hardOnly: Boolean = false,
     startId: Long? = null,
 ): String {
     val categoryValue = category.orEmpty()
     val difficultyValue = difficulty.orEmpty()
     val searchValue = search.orEmpty()
     val startIdValue = startId ?: -1L
-    return "questions?category=$categoryValue&difficulty=$difficultyValue&search=$searchValue&bookmarksOnly=$bookmarksOnly&startId=$startIdValue"
+    return "questions?category=$categoryValue&difficulty=$difficultyValue&search=$searchValue&bookmarksOnly=$bookmarksOnly&hardOnly=$hardOnly&startId=$startIdValue"
 }

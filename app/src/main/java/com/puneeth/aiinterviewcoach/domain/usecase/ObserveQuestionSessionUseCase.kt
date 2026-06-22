@@ -17,12 +17,14 @@ class ObserveQuestionSessionUseCase @Inject constructor(
         difficulty: InterviewDifficulty?,
         searchQuery: String,
         bookmarksOnly: Boolean,
+        hardOnly: Boolean = false,
     ): Flow<QuestionSession> = flow {
         val ids = repository.getQuestionIds(
             category = category,
             difficulty = difficulty,
             searchQuery = searchQuery,
             bookmarksOnly = bookmarksOnly,
+            hardOnly = hardOnly,
         )
         val currentIndex = when {
             ids.isEmpty() -> -1

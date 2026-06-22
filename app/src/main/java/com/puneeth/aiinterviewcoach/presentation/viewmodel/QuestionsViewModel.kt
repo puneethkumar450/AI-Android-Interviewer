@@ -54,6 +54,7 @@ class QuestionsViewModel @Inject constructor(
     private val difficulty = savedStateHandle.get<String?>("difficulty")?.takeIf { it.isNotBlank() }?.let(InterviewDifficulty::fromTitle)
     private val search = savedStateHandle.get<String?>("search").orEmpty()
     private val bookmarksOnly = savedStateHandle.get<Boolean>("bookmarksOnly") ?: false
+    private val hardOnly = savedStateHandle.get<Boolean>("hardOnly") ?: false
     private val initialStartId = savedStateHandle.get<Long>("startId")?.takeIf { it > 0L }
 
     private val _uiState = MutableStateFlow(QuestionsUiState())
@@ -122,10 +123,15 @@ class QuestionsViewModel @Inject constructor(
                 difficulty = difficulty,
                 searchQuery = search,
                 bookmarksOnly = bookmarksOnly,
+                hardOnly = hardOnly,
             ).collect { session ->
                 session.question?.let { trackQuestionViewed(it.id) }
                 _uiState.value = QuestionsUiState(
-                    title = category?.title ?: if (bookmarksOnly) "Bookmarks" else "Practice",
+                    title = category?.title ?: when {
+                        hardOnly -> "Hard questions"
+                        bookmarksOnly -> "Bookmarks"
+                        else -> "Practice"
+                    },
                     questionIds = session.questionIds,
                     currentIndex = session.currentIndex,
                     question = session.question,

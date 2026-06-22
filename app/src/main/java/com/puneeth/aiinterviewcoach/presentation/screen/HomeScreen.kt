@@ -53,6 +53,7 @@ fun HomeScreen(
     onOpenCategory: (InterviewCategory) -> Unit,
     onRandomQuestion: (Long) -> Unit,
     onOpenBookmarks: () -> Unit,
+    onOpenHardQuestions: () -> Unit,
     onOpenAllQuestions: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -99,7 +100,9 @@ fun HomeScreen(
             QuickFiltersRow(
                 bookmarksCount = summary.bookmarksCount,
                 unviewedCount = uiState.unviewedCount,
+                hardRatedCount = uiState.hardRatedCount,
                 onOpenBookmarks = onOpenBookmarks,
+                onOpenHardQuestions = onOpenHardQuestions,
                 onOpenAllQuestions = onOpenAllQuestions,
                 onOpenCategories = onOpenCategories,
             )
@@ -343,7 +346,9 @@ private fun WeakAreaRow(
 private fun QuickFiltersRow(
     bookmarksCount: Int,
     unviewedCount: Int,
+    hardRatedCount: Int,
     onOpenBookmarks: () -> Unit,
+    onOpenHardQuestions: () -> Unit,
     onOpenAllQuestions: () -> Unit,
     onOpenCategories: () -> Unit,
 ) {
@@ -366,11 +371,14 @@ private fun QuickFiltersRow(
                 count = unviewedCount,
                 onClick = onOpenAllQuestions,
             )
-            QuickChip(
-                label = "All",
-                count = null,
-                onClick = onOpenAllQuestions,
-            )
+            if (hardRatedCount > 0) {
+                QuickChip(
+                    label = "Hard",
+                    count = hardRatedCount,
+                    onClick = onOpenHardQuestions,
+                    accentColor = MaterialTheme.colorScheme.error,
+                )
+            }
         }
     }
 }
@@ -380,6 +388,7 @@ private fun QuickChip(
     label: String,
     count: Int?,
     onClick: () -> Unit,
+    accentColor: Color? = null,
 ) {
     FilterChip(
         selected = false,
@@ -388,15 +397,19 @@ private fun QuickChip(
             Text(
                 text = if (count != null) "$label ($count)" else label,
                 style = MaterialTheme.typography.labelMedium,
+                color = accentColor ?: Color.Unspecified,
             )
         },
         colors = FilterChipDefaults.filterChipColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            containerColor = if (accentColor != null)
+                accentColor.copy(alpha = 0.10f)
+            else
+                MaterialTheme.colorScheme.surfaceContainerHigh,
         ),
         border = FilterChipDefaults.filterChipBorder(
             enabled = true,
             selected = false,
-            borderColor = MaterialTheme.colorScheme.outlineVariant,
+            borderColor = accentColor?.copy(alpha = 0.4f) ?: MaterialTheme.colorScheme.outlineVariant,
         ),
     )
 }

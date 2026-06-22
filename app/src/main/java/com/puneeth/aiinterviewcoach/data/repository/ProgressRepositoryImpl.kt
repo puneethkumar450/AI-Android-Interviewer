@@ -68,6 +68,10 @@ class ProgressRepositoryImpl @Inject constructor(
         return progressDao.observeUnviewedCount()
     }
 
+    override fun observeHardRatedCount(): Flow<Int> {
+        return progressDao.observeHardRatedCount()
+    }
+
     override fun observeConfidenceRating(questionId: Long): Flow<ConfidenceRating?> {
         return progressDao.observeConfidenceRating(questionId).map { ConfidenceRating.fromString(it) }
     }

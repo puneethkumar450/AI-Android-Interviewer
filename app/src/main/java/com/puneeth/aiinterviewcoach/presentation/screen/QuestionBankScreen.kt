@@ -11,6 +11,7 @@ fun QuestionBankScreen() {
         onOpenCategory = {},
         onRandomQuestion = {},
         onOpenBookmarks = {},
+        onOpenHardQuestions = {},
         onOpenAllQuestions = {},
     )
 }

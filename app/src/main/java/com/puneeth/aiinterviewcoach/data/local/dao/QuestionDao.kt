@@ -42,15 +42,16 @@ interface QuestionDao {
     @Query(
         """
         SELECT id FROM questions
-        WHERE (:searchQuery = '' 
-            OR question LIKE '%' || :searchQuery || '%' 
-            OR answer LIKE '%' || :searchQuery || '%' 
+        WHERE (:searchQuery = ''
+            OR question LIKE '%' || :searchQuery || '%'
+            OR answer LIKE '%' || :searchQuery || '%'
             OR explanation LIKE '%' || :searchQuery || '%'
             OR category LIKE '%' || :searchQuery || '%'
             OR tags LIKE '%' || :searchQuery || '%')
         AND (:category IS NULL OR category = :category)
         AND (:difficulty IS NULL OR difficulty = :difficulty)
         AND (:bookmarksOnly = 0 OR isBookmarked = 1)
+        AND (:hardOnly = 0 OR id IN (SELECT questionId FROM question_progress WHERE confidenceRating = 'HARD'))
         ORDER BY category ASC, question ASC
         """,
     )
@@ -59,6 +60,7 @@ interface QuestionDao {
         category: String?,
         difficulty: String?,
         bookmarksOnly: Boolean,
+        hardOnly: Boolean = false,
     ): List<Long>
 
     @Query("UPDATE questions SET isBookmarked = NOT isBookmarked WHERE id = :questionId")

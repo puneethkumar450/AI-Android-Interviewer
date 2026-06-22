@@ -69,6 +69,9 @@ interface QuestionProgressDao {
     )
     fun observeUnviewedCount(): Flow<Int>
 
+    @Query("SELECT COUNT(*) FROM question_progress WHERE confidenceRating = 'HARD'")
+    fun observeHardRatedCount(): Flow<Int>
+
     @Query("UPDATE question_progress SET confidenceRating = :rating WHERE questionId = :questionId")
     suspend fun updateConfidenceRating(questionId: Long, rating: String?)
 

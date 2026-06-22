@@ -33,6 +33,7 @@ data class HomeUiState(
     val weakCategories: List<CategoryProgress> = emptyList(),
     val recentActivity: RecentActivity? = null,
     val unviewedCount: Int = 0,
+    val hardRatedCount: Int = 0,
 )
 
 @HiltViewModel
@@ -43,11 +44,18 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val uiState: StateFlow<HomeUiState> = combine(
-        observeHomeSummary(),
-        progressRepository.observeProgressSummary(),
-        progressRepository.observeRecentActivity(),
-        progressRepository.observeUnviewedCount(),
-    ) { summary, progress, recentActivity, unviewedCount ->
+        combine(
+            observeHomeSummary(),
+            progressRepository.observeProgressSummary(),
+            progressRepository.observeRecentActivity(),
+        ) { summary, progress, recentActivity ->
+            Triple(summary, progress, recentActivity)
+        },
+        combine(
+            progressRepository.observeUnviewedCount(),
+            progressRepository.observeHardRatedCount(),
+        ) { unviewed, hard -> unviewed to hard },
+    ) { (summary, progress, recentActivity), (unviewedCount, hardRatedCount) ->
         HomeUiState(
             summary = summary,
             streak = progress.currentStreak,
@@ -58,6 +66,7 @@ class HomeViewModel @Inject constructor(
                 .take(3),
             recentActivity = recentActivity,
             unviewedCount = unviewedCount,
+            hardRatedCount = hardRatedCount,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeUiState())
 

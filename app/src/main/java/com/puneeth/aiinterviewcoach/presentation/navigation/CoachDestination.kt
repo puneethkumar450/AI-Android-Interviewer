@@ -51,7 +51,7 @@ sealed class CoachDestination(
     )
 
     data object Questions : CoachDestination(
-        route = "questions?category={category}&difficulty={difficulty}&search={search}&bookmarksOnly={bookmarksOnly}&startId={startId}",
+        route = "questions?category={category}&difficulty={difficulty}&search={search}&bookmarksOnly={bookmarksOnly}&hardOnly={hardOnly}&startId={startId}",
         title = "Questions",
         icon = Icons.Outlined.MenuBook,
     )
