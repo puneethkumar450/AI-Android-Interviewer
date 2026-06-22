@@ -6,9 +6,6 @@ import androidx.compose.runtime.Composable
 fun QuestionBankScreen() {
     HomeScreen(
         onContinuePractice = {},
-        onOpenCategories = {},
-        onOpenDifficulty = {},
-        onOpenCategory = {},
         onRandomQuestion = {},
         onOpenBookmarks = {},
         onOpenHardQuestions = {},

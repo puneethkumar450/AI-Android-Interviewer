@@ -92,13 +92,6 @@ fun CoachNavRoot(
                     onContinuePractice = { questionId ->
                         navController.navigate(questionRoute(startId = questionId))
                     },
-                    onOpenCategories = { navController.navigate(CoachDestination.Categories.route) },
-                    onOpenDifficulty = { difficulty ->
-                        navController.navigate(questionRoute(difficulty = difficulty.title))
-                    },
-                    onOpenCategory = { category ->
-                        navController.navigate(questionRoute(category = category.title))
-                    },
                     onRandomQuestion = { questionId ->
                         navController.navigate(questionRoute(startId = questionId))
                     },
@@ -117,6 +110,12 @@ fun CoachNavRoot(
                 SearchScreen(
                     onOpenQuestion = { questionId, category ->
                         navController.navigate(questionRoute(startId = questionId, category = category.title))
+                    },
+                    onOpenCategory = { category ->
+                        navController.navigate(questionRoute(category = category.title))
+                    },
+                    onOpenDifficulty = { difficulty ->
+                        navController.navigate(questionRoute(difficulty = difficulty.title))
                     },
                 )
             }

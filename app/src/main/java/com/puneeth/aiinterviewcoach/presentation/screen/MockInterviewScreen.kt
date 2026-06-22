@@ -4,5 +4,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun MockInterviewScreen() {
-    SearchScreen(onOpenQuestion = { _, _ -> })
+    SearchScreen(onOpenQuestion = { _, _ -> }, onOpenCategory = {}, onOpenDifficulty = {})
 }
