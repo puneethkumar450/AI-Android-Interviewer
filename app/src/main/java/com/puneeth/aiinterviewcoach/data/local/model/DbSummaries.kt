@@ -20,3 +20,10 @@ data class LastViewedRow(
     val category: String,
     val lastViewedAt: Long,
 )
+
+data class CategoryConfidenceRow(
+    val category: String,
+    val easyCount: Int,
+    val okayCount: Int,
+    val hardCount: Int,
+)

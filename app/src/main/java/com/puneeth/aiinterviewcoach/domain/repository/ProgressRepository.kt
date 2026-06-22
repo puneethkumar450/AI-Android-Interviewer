@@ -1,5 +1,6 @@
 package com.puneeth.aiinterviewcoach.domain.repository
 
+import com.puneeth.aiinterviewcoach.domain.model.CategoryConfidenceSummary
 import com.puneeth.aiinterviewcoach.domain.model.ConfidenceRating
 import com.puneeth.aiinterviewcoach.domain.model.ProgressSummary
 import com.puneeth.aiinterviewcoach.domain.model.RecentActivity
@@ -11,6 +12,7 @@ interface ProgressRepository {
     fun observeRecentActivity(): Flow<RecentActivity?>
     fun observeUnviewedCount(): Flow<Int>
     fun observeHardRatedCount(): Flow<Int>
+    fun observeCategoryConfidence(): Flow<List<CategoryConfidenceSummary>>
     fun observeConfidenceRating(questionId: Long): Flow<ConfidenceRating?>
     suspend fun saveConfidenceRating(questionId: Long, rating: ConfidenceRating)
     suspend fun markQuestionViewed(questionId: Long)

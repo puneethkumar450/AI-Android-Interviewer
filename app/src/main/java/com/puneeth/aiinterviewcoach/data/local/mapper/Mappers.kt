@@ -2,9 +2,11 @@ package com.puneeth.aiinterviewcoach.data.local.mapper
 
 import com.puneeth.aiinterviewcoach.data.local.entity.InterviewSessionEntity
 import com.puneeth.aiinterviewcoach.data.local.entity.QuestionEntity
+import com.puneeth.aiinterviewcoach.data.local.model.CategoryConfidenceRow
 import com.puneeth.aiinterviewcoach.data.local.model.CategorySummaryRow
 import com.puneeth.aiinterviewcoach.data.local.model.DifficultySummaryRow
 import com.puneeth.aiinterviewcoach.data.local.model.ProgressSummaryRow
+import com.puneeth.aiinterviewcoach.domain.model.CategoryConfidenceSummary
 import com.puneeth.aiinterviewcoach.domain.model.CategoryProgress
 import com.puneeth.aiinterviewcoach.domain.model.CategorySummary
 import com.puneeth.aiinterviewcoach.domain.model.DifficultyProgress
@@ -42,6 +44,13 @@ fun ProgressSummaryRow.toCategoryProgress(): CategoryProgress = CategoryProgress
     category = InterviewCategory.fromTitle(dimension),
     completedCount = completedCount,
     totalCount = totalCount,
+)
+
+fun CategoryConfidenceRow.toDomain(): CategoryConfidenceSummary = CategoryConfidenceSummary(
+    category = InterviewCategory.fromTitle(category),
+    easyCount = easyCount,
+    okayCount = okayCount,
+    hardCount = hardCount,
 )
 
 fun ProgressSummaryRow.toDifficultyProgress(): DifficultyProgress = DifficultyProgress(

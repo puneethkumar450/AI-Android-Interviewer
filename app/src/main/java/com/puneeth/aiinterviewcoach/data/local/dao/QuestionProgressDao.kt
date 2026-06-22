@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.puneeth.aiinterviewcoach.data.local.entity.QuestionProgressEntity
+import com.puneeth.aiinterviewcoach.data.local.model.CategoryConfidenceRow
 import com.puneeth.aiinterviewcoach.data.local.model.LastViewedRow
 import com.puneeth.aiinterviewcoach.data.local.model.ProgressSummaryRow
 import kotlinx.coroutines.flow.Flow
@@ -71,6 +72,20 @@ interface QuestionProgressDao {
 
     @Query("SELECT COUNT(*) FROM question_progress WHERE confidenceRating = 'HARD'")
     fun observeHardRatedCount(): Flow<Int>
+
+    @Query(
+        """
+        SELECT q.category AS category,
+               SUM(CASE WHEN p.confidenceRating = 'EASY' THEN 1 ELSE 0 END) AS easyCount,
+               SUM(CASE WHEN p.confidenceRating = 'OKAY' THEN 1 ELSE 0 END) AS okayCount,
+               SUM(CASE WHEN p.confidenceRating = 'HARD' THEN 1 ELSE 0 END) AS hardCount
+        FROM questions q
+        LEFT JOIN question_progress p ON q.id = p.questionId
+        GROUP BY q.category
+        ORDER BY q.category ASC
+        """,
+    )
+    fun observeCategoryConfidence(): Flow<List<CategoryConfidenceRow>>
 
     @Query("UPDATE question_progress SET confidenceRating = :rating WHERE questionId = :questionId")
     suspend fun updateConfidenceRating(questionId: Long, rating: String?)

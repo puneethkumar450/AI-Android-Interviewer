@@ -2,13 +2,14 @@ package com.puneeth.aiinterviewcoach.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.puneeth.aiinterviewcoach.domain.model.CategoryConfidenceSummary
 import com.puneeth.aiinterviewcoach.domain.model.ProgressSummary
 import com.puneeth.aiinterviewcoach.domain.repository.ProgressRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 data class ProgressUiState(
@@ -22,13 +23,17 @@ data class ProgressUiState(
         categoryProgress = emptyList(),
         difficultyProgress = emptyList(),
     ),
+    val categoryConfidence: List<CategoryConfidenceSummary> = emptyList(),
 )
 
 @HiltViewModel
 class ProgressViewModel @Inject constructor(
     progressRepository: ProgressRepository,
 ) : ViewModel() {
-    val uiState: StateFlow<ProgressUiState> = progressRepository.observeProgressSummary()
-        .map { ProgressUiState(summary = it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ProgressUiState())
+    val uiState: StateFlow<ProgressUiState> = combine(
+        progressRepository.observeProgressSummary(),
+        progressRepository.observeCategoryConfidence(),
+    ) { summary, confidence ->
+        ProgressUiState(summary = summary, categoryConfidence = confidence)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ProgressUiState())
 }

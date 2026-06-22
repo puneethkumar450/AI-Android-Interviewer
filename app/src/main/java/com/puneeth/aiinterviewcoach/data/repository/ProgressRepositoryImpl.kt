@@ -5,6 +5,8 @@ import com.puneeth.aiinterviewcoach.data.local.dao.QuestionProgressDao
 import com.puneeth.aiinterviewcoach.data.local.entity.QuestionProgressEntity
 import com.puneeth.aiinterviewcoach.data.local.mapper.toCategoryProgress
 import com.puneeth.aiinterviewcoach.data.local.mapper.toDifficultyProgress
+import com.puneeth.aiinterviewcoach.data.local.mapper.toDomain
+import com.puneeth.aiinterviewcoach.domain.model.CategoryConfidenceSummary
 import com.puneeth.aiinterviewcoach.domain.model.ConfidenceRating
 import com.puneeth.aiinterviewcoach.domain.model.ProgressSummary
 import com.puneeth.aiinterviewcoach.domain.model.RecentActivity
@@ -70,6 +72,10 @@ class ProgressRepositoryImpl @Inject constructor(
 
     override fun observeHardRatedCount(): Flow<Int> {
         return progressDao.observeHardRatedCount()
+    }
+
+    override fun observeCategoryConfidence(): Flow<List<CategoryConfidenceSummary>> {
+        return progressDao.observeCategoryConfidence().map { rows -> rows.map { it.toDomain() } }
     }
 
     override fun observeConfidenceRating(questionId: Long): Flow<ConfidenceRating?> {
