@@ -7,22 +7,30 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,9 +39,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.puneeth.aiinterviewcoach.domain.model.CategoryProgress
 import com.puneeth.aiinterviewcoach.domain.model.InterviewCategory
 import com.puneeth.aiinterviewcoach.domain.model.InterviewDifficulty
 import com.puneeth.aiinterviewcoach.presentation.viewmodel.HomeViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -41,10 +51,14 @@ fun HomeScreen(
     onOpenCategories: () -> Unit,
     onOpenDifficulty: (InterviewDifficulty) -> Unit,
     onOpenCategory: (InterviewCategory) -> Unit,
+    onRandomQuestion: (Long) -> Unit,
+    onOpenBookmarks: () -> Unit,
+    onOpenAllQuestions: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val summary = uiState.summary
+    val scope = rememberCoroutineScope()
 
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 150.dp),
@@ -55,14 +69,42 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        // Today card
         item(span = { GridItemSpan(maxLineSpan) }) {
-            HeroCard(
+            TodayCard(
                 totalQuestions = summary.totalQuestions,
-                bookmarks = summary.bookmarksCount,
+                completedQuestions = uiState.completedQuestions,
+                streak = uiState.streak,
+                recentActivityLabel = uiState.recentActivity?.let {
+                    "Last practiced: ${it.categoryTitle}, ${formatRelativeTime(it.lastViewedAt)}"
+                },
                 onContinuePractice = { onContinuePractice(summary.continueQuestionId) },
+                onRandomQuestion = {
+                    scope.launch {
+                        viewModel.getRandomQuestionId()?.let { onRandomQuestion(it) }
+                    }
+                },
+            )
+        }
+
+        // Weak areas
+        if (uiState.weakCategories.isNotEmpty()) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                WeakAreasCard(categories = uiState.weakCategories)
+            }
+        }
+
+        // Quick filters
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            QuickFiltersRow(
+                bookmarksCount = summary.bookmarksCount,
+                unviewedCount = uiState.unviewedCount,
+                onOpenBookmarks = onOpenBookmarks,
+                onOpenAllQuestions = onOpenAllQuestions,
                 onOpenCategories = onOpenCategories,
             )
         }
+
         item(span = { GridItemSpan(maxLineSpan) }) {
             SectionHeader(
                 title = "Difficulty levels",
@@ -109,12 +151,17 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HeroCard(
+private fun TodayCard(
     totalQuestions: Int,
-    bookmarks: Int,
+    completedQuestions: Int,
+    streak: Int,
+    recentActivityLabel: String?,
     onContinuePractice: () -> Unit,
-    onOpenCategories: () -> Unit,
+    onRandomQuestion: () -> Unit,
 ) {
+    val completionFraction = if (totalQuestions > 0) completedQuestions.toFloat() / totalQuestions else 0f
+    val completionPercent = (completionFraction * 100).toInt()
+
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         shape = MaterialTheme.shapes.extraLarge,
@@ -123,58 +170,235 @@ private fun HeroCard(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.extraLarge)
-                    .background(
-                        brush = androidx.compose.ui.graphics.Brush.linearGradient(
-                            colors = listOf(
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.20f),
-                                MaterialTheme.colorScheme.tertiary.copy(alpha = 0.12f),
-                            ),
-                        ),
-                    )
-                    .padding(16.dp),
+            // Header row: title + streak badge
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text(
                         text = "Android Interview Prep",
-                        style = MaterialTheme.typography.headlineSmall,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                    )
-                    Text(
-                        text = "Offline practice with modern progress tracking and smarter revision flows.",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Text(
                         text = "$totalQuestions questions available",
                         color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.SemiBold,
                     )
                 }
+                if (streak > 0) {
+                    StreakBadge(streak = streak)
+                }
             }
-            Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-                shape = MaterialTheme.shapes.extraLarge,
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
+
+            // Completion progress
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    Text("Bookmarks: $bookmarks", fontWeight = FontWeight.SemiBold)
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Button(onClick = onContinuePractice, modifier = Modifier.weight(1f)) {
-                            Text("Continue")
-                        }
-                        OutlinedButton(onClick = onOpenCategories, modifier = Modifier.weight(1f)) {
-                            Text("Categories")
-                        }
-                    }
+                    Text(
+                        text = "Overall progress",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Text(
+                        text = "$completionPercent%",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+                LinearProgressIndicator(
+                    progress = { completionFraction },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(6.dp)
+                        .clip(MaterialTheme.shapes.small),
+                    color = MaterialTheme.colorScheme.primary,
+                    trackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                )
+                Text(
+                    text = "$completedQuestions of $totalQuestions completed",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            // Recent activity label
+            if (recentActivityLabel != null) {
+                Text(
+                    text = recentActivityLabel,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            // Action buttons
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Button(onClick = onContinuePractice, modifier = Modifier.weight(1f)) {
+                    Text("Continue")
+                }
+                OutlinedButton(onClick = onRandomQuestion, modifier = Modifier.weight(1f)) {
+                    Text("Random")
                 }
             }
         }
     }
+}
+
+@Composable
+private fun StreakBadge(streak: Int) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+        ),
+        shape = MaterialTheme.shapes.large,
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(text = "🔥", style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = "$streak day${if (streak != 1) "s" else ""}",
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+        }
+    }
+}
+
+@Composable
+private fun WeakAreasCard(categories: List<CategoryProgress>) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        shape = MaterialTheme.shapes.extraLarge,
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = "Weak areas",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+            Text(
+                text = "Topics needing the most attention",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            categories.forEachIndexed { index, progress ->
+                WeakAreaRow(
+                    categoryTitle = progress.category.title,
+                    completionPercent = progress.completionPercent,
+                    accent = weakAreaAccent(index),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun WeakAreaRow(
+    categoryTitle: String,
+    completionPercent: Int,
+    accent: Color,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = categoryTitle,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+            )
+            Text(
+                text = "$completionPercent%",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        LinearProgressIndicator(
+            progress = { completionPercent / 100f },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(4.dp)
+                .clip(MaterialTheme.shapes.small),
+            color = accent,
+            trackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+        )
+    }
+}
+
+@Composable
+private fun QuickFiltersRow(
+    bookmarksCount: Int,
+    unviewedCount: Int,
+    onOpenBookmarks: () -> Unit,
+    onOpenAllQuestions: () -> Unit,
+    onOpenCategories: () -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text(
+            text = "Quick access",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            QuickChip(
+                label = "Bookmarked",
+                count = bookmarksCount,
+                onClick = onOpenBookmarks,
+            )
+            QuickChip(
+                label = "Unread",
+                count = unviewedCount,
+                onClick = onOpenAllQuestions,
+            )
+            QuickChip(
+                label = "All",
+                count = null,
+                onClick = onOpenAllQuestions,
+            )
+        }
+    }
+}
+
+@Composable
+private fun QuickChip(
+    label: String,
+    count: Int?,
+    onClick: () -> Unit,
+) {
+    FilterChip(
+        selected = false,
+        onClick = onClick,
+        label = {
+            Text(
+                text = if (count != null) "$label ($count)" else label,
+                style = MaterialTheme.typography.labelMedium,
+            )
+        },
+        colors = FilterChipDefaults.filterChipColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        ),
+        border = FilterChipDefaults.filterChipBorder(
+            enabled = true,
+            selected = false,
+            borderColor = MaterialTheme.colorScheme.outlineVariant,
+        ),
+    )
 }
 
 @Composable
@@ -267,24 +491,25 @@ private fun CategoryCard(
     }
 }
 
-private data class DifficultyPalette(
-    val accent: Color,
-)
+private fun formatRelativeTime(timestampMs: Long): String {
+    val diffMs = System.currentTimeMillis() - timestampMs
+    val minutes = diffMs / 60_000
+    return when {
+        minutes < 1 -> "just now"
+        minutes < 60 -> "$minutes min ago"
+        minutes < 24 * 60 -> "${minutes / 60} hr ago"
+        else -> "${minutes / (24 * 60)} days ago"
+    }
+}
+
+private data class DifficultyPalette(val accent: Color)
 
 private fun difficultyPalette(difficulty: InterviewDifficulty): DifficultyPalette {
     return when (difficulty) {
-        InterviewDifficulty.BEGINNER -> DifficultyPalette(
-            accent = Color(0xFF2DD4BF),
-        )
-        InterviewDifficulty.INTERMEDIATE -> DifficultyPalette(
-            accent = Color(0xFFF59E0B),
-        )
-        InterviewDifficulty.ADVANCED -> DifficultyPalette(
-            accent = Color(0xFFF97316),
-        )
-        InterviewDifficulty.EXPERT -> DifficultyPalette(
-            accent = Color(0xFF8B5CF6),
-        )
+        InterviewDifficulty.BEGINNER -> DifficultyPalette(accent = Color(0xFF2DD4BF))
+        InterviewDifficulty.INTERMEDIATE -> DifficultyPalette(accent = Color(0xFFF59E0B))
+        InterviewDifficulty.ADVANCED -> DifficultyPalette(accent = Color(0xFFF97316))
+        InterviewDifficulty.EXPERT -> DifficultyPalette(accent = Color(0xFF8B5CF6))
     }
 }
 
@@ -296,6 +521,15 @@ private fun categoryAccent(index: Int): Color {
         Color(0xFFFBBF24),
         Color(0xFFA78BFA),
         Color(0xFF22D3EE),
+    )
+    return palette[index % palette.size]
+}
+
+private fun weakAreaAccent(index: Int): Color {
+    val palette = listOf(
+        Color(0xFFEF4444),
+        Color(0xFFF97316),
+        Color(0xFFF59E0B),
     )
     return palette[index % palette.size]
 }

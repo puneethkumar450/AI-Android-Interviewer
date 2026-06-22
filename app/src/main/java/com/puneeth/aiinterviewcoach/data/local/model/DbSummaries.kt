@@ -15,3 +15,8 @@ data class ProgressSummaryRow(
     val completedCount: Int,
     val totalCount: Int,
 )
+
+data class LastViewedRow(
+    val category: String,
+    val lastViewedAt: Long,
+)

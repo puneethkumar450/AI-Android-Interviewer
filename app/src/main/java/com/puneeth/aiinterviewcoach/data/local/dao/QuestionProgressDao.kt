@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.puneeth.aiinterviewcoach.data.local.entity.QuestionProgressEntity
+import com.puneeth.aiinterviewcoach.data.local.model.LastViewedRow
 import com.puneeth.aiinterviewcoach.data.local.model.ProgressSummaryRow
 import kotlinx.coroutines.flow.Flow
 
@@ -47,6 +48,26 @@ interface QuestionProgressDao {
         """,
     )
     fun observeDifficultyProgress(): Flow<List<ProgressSummaryRow>>
+
+    @Query(
+        """
+        SELECT q.category AS category, p.lastViewedAt AS lastViewedAt
+        FROM question_progress p
+        JOIN questions q ON q.id = p.questionId
+        ORDER BY p.lastViewedAt DESC
+        LIMIT 1
+        """,
+    )
+    fun observeLastViewed(): Flow<LastViewedRow?>
+
+    @Query(
+        """
+        SELECT COUNT(*) FROM questions q
+        LEFT JOIN question_progress p ON q.id = p.questionId
+        WHERE p.questionId IS NULL OR p.viewedCount = 0
+        """,
+    )
+    fun observeUnviewedCount(): Flow<Int>
 
     @Query("DELETE FROM question_progress")
     suspend fun clearAll()

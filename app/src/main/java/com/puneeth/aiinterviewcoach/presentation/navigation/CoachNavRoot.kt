@@ -99,6 +99,15 @@ fun CoachNavRoot(
                     onOpenCategory = { category ->
                         navController.navigate(questionRoute(category = category.title))
                     },
+                    onRandomQuestion = { questionId ->
+                        navController.navigate(questionRoute(startId = questionId))
+                    },
+                    onOpenBookmarks = {
+                        navController.navigate(questionRoute(bookmarksOnly = true))
+                    },
+                    onOpenAllQuestions = {
+                        navController.navigate(questionRoute())
+                    },
                 )
             }
             composable(CoachDestination.Search.route) {

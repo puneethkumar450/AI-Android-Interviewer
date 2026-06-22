@@ -6,6 +6,7 @@ import com.puneeth.aiinterviewcoach.data.local.entity.QuestionProgressEntity
 import com.puneeth.aiinterviewcoach.data.local.mapper.toCategoryProgress
 import com.puneeth.aiinterviewcoach.data.local.mapper.toDifficultyProgress
 import com.puneeth.aiinterviewcoach.domain.model.ProgressSummary
+import com.puneeth.aiinterviewcoach.domain.model.RecentActivity
 import com.puneeth.aiinterviewcoach.domain.repository.ProgressRepository
 import java.time.LocalDate
 import javax.inject.Inject
@@ -54,6 +55,16 @@ class ProgressRepositoryImpl @Inject constructor(
 
     override fun observeLastOpenedQuestionId(): Flow<Long?> {
         return preferencesRepository.observePreferences().map { it.lastOpenedQuestionId }
+    }
+
+    override fun observeRecentActivity(): Flow<RecentActivity?> {
+        return progressDao.observeLastViewed().map { row ->
+            row?.let { RecentActivity(categoryTitle = it.category, lastViewedAt = it.lastViewedAt) }
+        }
+    }
+
+    override fun observeUnviewedCount(): Flow<Int> {
+        return progressDao.observeUnviewedCount()
     }
 
     override suspend fun markQuestionViewed(questionId: Long) {

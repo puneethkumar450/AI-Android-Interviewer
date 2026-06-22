@@ -9,5 +9,8 @@ fun QuestionBankScreen() {
         onOpenCategories = {},
         onOpenDifficulty = {},
         onOpenCategory = {},
+        onRandomQuestion = {},
+        onOpenBookmarks = {},
+        onOpenAllQuestions = {},
     )
 }
