@@ -29,6 +29,12 @@ class UserPreferencesRepositoryImpl @Inject constructor(
         dataSource.updateDynamicColor(enabled)
     }
 
+    override suspend fun updateSpeechRate(rate: Float) = dataSource.updateSpeechRate(rate)
+    override suspend fun updateSpeechPitch(pitch: Float) = dataSource.updateSpeechPitch(pitch)
+    override suspend fun updateSpeechAutoRead(enabled: Boolean) = dataSource.updateSpeechAutoRead(enabled)
+    override suspend fun updateSpeechHighlight(enabled: Boolean) = dataSource.updateSpeechHighlight(enabled)
+    override suspend fun updateSpeechPreferOffline(enabled: Boolean) = dataSource.updateSpeechPreferOffline(enabled)
+
     override suspend fun updateLastOpenedQuestion(questionId: Long?) {
         dataSource.updateLastOpenedQuestion(questionId)
     }

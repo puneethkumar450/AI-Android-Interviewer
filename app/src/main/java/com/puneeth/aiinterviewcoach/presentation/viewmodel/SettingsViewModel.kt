@@ -47,6 +47,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun updateSpeechRate(rate: Float) = viewModelScope.launch { preferencesRepository.updateSpeechRate(rate) }
+    fun updateSpeechPitch(pitch: Float) = viewModelScope.launch { preferencesRepository.updateSpeechPitch(pitch) }
+    fun updateSpeechAutoRead(enabled: Boolean) = viewModelScope.launch { preferencesRepository.updateSpeechAutoRead(enabled) }
+    fun updateSpeechHighlight(enabled: Boolean) = viewModelScope.launch { preferencesRepository.updateSpeechHighlight(enabled) }
+    fun updateSpeechPreferOffline(enabled: Boolean) = viewModelScope.launch { preferencesRepository.updateSpeechPreferOffline(enabled) }
+
     fun resetProgress() {
         viewModelScope.launch {
             resetProgress.invoke()

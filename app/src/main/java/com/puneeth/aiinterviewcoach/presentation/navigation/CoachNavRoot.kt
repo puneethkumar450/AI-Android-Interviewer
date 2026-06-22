@@ -84,7 +84,8 @@ fun CoachNavRoot(
         NavHost(
             navController = navController,
             startDestination = CoachDestination.Home.route,
-            modifier = Modifier.padding(padding),
+            modifier = Modifier.padding(top = 21.dp, bottom = padding.calculateBottomPadding(),
+                start = 4.dp, end = 4.dp),
         ) {
             composable(CoachDestination.Home.route) {
                 HomeScreen(

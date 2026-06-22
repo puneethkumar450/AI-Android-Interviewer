@@ -70,6 +70,9 @@ interface QuestionDao {
     @Query("SELECT COUNT(*) FROM questions")
     suspend fun count(): Int
 
+    @Query("SELECT id FROM questions WHERE isBookmarked = 1")
+    suspend fun getBookmarkedQuestionIds(): List<Long>
+
     @Query("SELECT COUNT(*) FROM questions WHERE isBookmarked = 1")
     fun observeBookmarksCount(): Flow<Int>
 

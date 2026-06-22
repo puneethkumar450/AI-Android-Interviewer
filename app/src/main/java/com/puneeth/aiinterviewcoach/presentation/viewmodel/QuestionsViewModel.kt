@@ -7,6 +7,8 @@ import com.puneeth.aiinterviewcoach.domain.model.InterviewCategory
 import com.puneeth.aiinterviewcoach.domain.model.InterviewDifficulty
 import com.puneeth.aiinterviewcoach.domain.model.PracticeQuestion
 import com.puneeth.aiinterviewcoach.domain.repository.QuestionRepository
+import com.puneeth.aiinterviewcoach.domain.repository.UserPreferences
+import com.puneeth.aiinterviewcoach.domain.repository.UserPreferencesRepository
 import com.puneeth.aiinterviewcoach.domain.usecase.ObserveQuestionSessionUseCase
 import com.puneeth.aiinterviewcoach.domain.usecase.TrackQuestionCompletedUseCase
 import com.puneeth.aiinterviewcoach.domain.usecase.TrackQuestionViewedUseCase
@@ -23,6 +25,7 @@ data class QuestionsUiState(
     val currentIndex: Int = -1,
     val question: PracticeQuestion? = null,
     val showAnswer: Boolean = false,
+    val preferences: UserPreferences = UserPreferences(),
 ) {
     val hasPrevious: Boolean
         get() = currentIndex > 0
@@ -37,6 +40,7 @@ class QuestionsViewModel @Inject constructor(
     private val questionRepository: QuestionRepository,
     private val trackQuestionViewed: TrackQuestionViewedUseCase,
     private val trackQuestionCompleted: TrackQuestionCompletedUseCase,
+    preferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
     private val category = savedStateHandle.get<String?>("category")?.takeIf { it.isNotBlank() }?.let(InterviewCategory::fromTitle)
     private val difficulty = savedStateHandle.get<String?>("difficulty")?.takeIf { it.isNotBlank() }?.let(InterviewDifficulty::fromTitle)
@@ -49,6 +53,11 @@ class QuestionsViewModel @Inject constructor(
 
     init {
         loadSession(initialStartId)
+        viewModelScope.launch {
+            preferencesRepository.observePreferences().collect { preferences ->
+                _uiState.value = _uiState.value.copy(preferences = preferences)
+            }
+        }
     }
 
     fun revealAnswer() {
@@ -94,6 +103,7 @@ class QuestionsViewModel @Inject constructor(
                     currentIndex = session.currentIndex,
                     question = session.question,
                     showAnswer = false,
+                    preferences = _uiState.value.preferences,
                 )
             }
         }

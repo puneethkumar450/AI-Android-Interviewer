@@ -85,8 +85,12 @@ class QuestionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun importQuestionPacksIfNeeded() {
-        if (questionDao.count() == 0) {
-            val questions = assetDataSource.loadQuestionPacks().map { it.toEntity() }
+        val assetQuestions = assetDataSource.loadQuestionPacks()
+        if (questionDao.count() < assetQuestions.size) {
+            val bookmarkedQuestionIds = questionDao.getBookmarkedQuestionIds().toSet()
+            val questions = assetQuestions.map { question ->
+                question.toEntity(isBookmarked = question.id in bookmarkedQuestionIds || question.isBookmarked)
+            }
             questionDao.insertAll(questions)
         }
     }
@@ -116,7 +120,9 @@ class QuestionRepositoryImpl @Inject constructor(
     }
 }
 
-private fun QuestionAssetDto.toEntity() = com.puneeth.aiinterviewcoach.data.local.entity.QuestionEntity(
+private fun QuestionAssetDto.toEntity(
+    isBookmarked: Boolean = this.isBookmarked,
+) = com.puneeth.aiinterviewcoach.data.local.entity.QuestionEntity(
     id = id,
     category = category,
     difficulty = difficulty,

@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -27,6 +28,11 @@ class UserPreferencesDataSource @Inject constructor(
             ),
             darkMode = prefs[Keys.DARK_MODE] ?: true,
             dynamicColor = prefs[Keys.DYNAMIC_COLOR] ?: true,
+            speechRate = prefs[Keys.SPEECH_RATE] ?: 1f,
+            speechPitch = prefs[Keys.SPEECH_PITCH] ?: 1f,
+            speechAutoRead = prefs[Keys.SPEECH_AUTO_READ] ?: false,
+            speechHighlight = prefs[Keys.SPEECH_HIGHLIGHT] ?: true,
+            speechPreferOffline = prefs[Keys.SPEECH_PREFER_OFFLINE] ?: true,
             lastOpenedQuestionId = prefs[Keys.LAST_OPENED_QUESTION_ID],
             dailyStreak = prefs[Keys.DAILY_STREAK] ?: 0,
             lastPracticeEpochDay = prefs[Keys.LAST_PRACTICE_EPOCH_DAY] ?: 0L,
@@ -48,6 +54,12 @@ class UserPreferencesDataSource @Inject constructor(
     suspend fun updateDynamicColor(enabled: Boolean) {
         dataStore.edit { it[Keys.DYNAMIC_COLOR] = enabled }
     }
+
+    suspend fun updateSpeechRate(rate: Float) { dataStore.edit { it[Keys.SPEECH_RATE] = rate } }
+    suspend fun updateSpeechPitch(pitch: Float) { dataStore.edit { it[Keys.SPEECH_PITCH] = pitch } }
+    suspend fun updateSpeechAutoRead(enabled: Boolean) { dataStore.edit { it[Keys.SPEECH_AUTO_READ] = enabled } }
+    suspend fun updateSpeechHighlight(enabled: Boolean) { dataStore.edit { it[Keys.SPEECH_HIGHLIGHT] = enabled } }
+    suspend fun updateSpeechPreferOffline(enabled: Boolean) { dataStore.edit { it[Keys.SPEECH_PREFER_OFFLINE] = enabled } }
 
     suspend fun updateLastOpenedQuestion(questionId: Long?) {
         dataStore.edit {
@@ -71,6 +83,11 @@ class UserPreferencesDataSource @Inject constructor(
         val PREFERRED_DIFFICULTY = stringPreferencesKey("preferred_difficulty")
         val DARK_MODE = booleanPreferencesKey("dark_mode")
         val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
+        val SPEECH_RATE = floatPreferencesKey("speech_rate")
+        val SPEECH_PITCH = floatPreferencesKey("speech_pitch")
+        val SPEECH_AUTO_READ = booleanPreferencesKey("speech_auto_read")
+        val SPEECH_HIGHLIGHT = booleanPreferencesKey("speech_highlight")
+        val SPEECH_PREFER_OFFLINE = booleanPreferencesKey("speech_prefer_offline")
         val LAST_OPENED_QUESTION_ID = longPreferencesKey("last_opened_question_id")
         val LAST_PRACTICE_EPOCH_DAY = longPreferencesKey("last_practice_epoch_day")
         val DAILY_STREAK = intPreferencesKey("daily_streak")
