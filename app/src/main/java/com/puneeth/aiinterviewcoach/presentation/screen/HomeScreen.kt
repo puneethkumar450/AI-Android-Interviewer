@@ -7,24 +7,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -154,9 +149,6 @@ private fun TodayCard(
     onContinuePractice: () -> Unit,
     onRandomQuestion: () -> Unit,
 ) {
-    val completionFraction = if (totalQuestions > 0) completedQuestions.toFloat() / totalQuestions else 0f
-    val completionPercent = (completionFraction * 100).toInt()
-
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         shape = MaterialTheme.shapes.extraLarge,
@@ -165,7 +157,6 @@ private fun TodayCard(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            // Header row: title + streak badge
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -178,10 +169,9 @@ private fun TodayCard(
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
-                        text = "$totalQuestions questions available",
-                        color = MaterialTheme.colorScheme.primary,
+                        text = "$totalQuestions questions · $completedQuestions completed",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.SemiBold,
                     )
                 }
                 if (streak > 0) {
@@ -189,41 +179,6 @@ private fun TodayCard(
                 }
             }
 
-            // Completion progress
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(
-                        text = "Overall progress",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Text(
-                        text = "$completionPercent%",
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
-                LinearProgressIndicator(
-                    progress = { completionFraction },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(6.dp)
-                        .clip(MaterialTheme.shapes.small),
-                    color = MaterialTheme.colorScheme.primary,
-                    trackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                )
-                Text(
-                    text = "$completedQuestions of $totalQuestions completed",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-
-            // Recent activity label
             if (recentActivityLabel != null) {
                 Text(
                     text = recentActivityLabel,
@@ -232,7 +187,6 @@ private fun TodayCard(
                 )
             }
 
-            // Action buttons
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Button(onClick = onContinuePractice, modifier = Modifier.weight(1f)) {
                     Text("Continue")
