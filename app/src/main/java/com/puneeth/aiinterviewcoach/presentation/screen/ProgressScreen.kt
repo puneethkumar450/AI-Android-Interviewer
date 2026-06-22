@@ -36,6 +36,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.puneeth.aiinterviewcoach.domain.model.CategoryConfidenceSummary
 import com.puneeth.aiinterviewcoach.domain.model.CategoryProgress
 import com.puneeth.aiinterviewcoach.domain.model.DifficultyProgress
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import com.puneeth.aiinterviewcoach.presentation.viewmodel.ProgressViewModel
 
 @Composable
@@ -116,6 +118,17 @@ fun ProgressScreen(
                     totalOkay = totalOkay,
                     totalHard = totalHard,
                 )
+            }
+        }
+
+        val weakCategories = summary.categoryProgress
+            .filter { it.totalCount > 0 }
+            .sortedBy { it.completionPercent }
+            .take(3)
+
+        if (weakCategories.isNotEmpty()) {
+            item {
+                WeakAreasCard(categories = weakCategories)
             }
         }
 
@@ -528,6 +541,62 @@ private fun EmptyStateText() {
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
+}
+
+@Composable
+private fun WeakAreasCard(categories: List<CategoryProgress>) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)),
+        shape = MaterialTheme.shapes.extraLarge,
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+        ) {
+            Text(
+                text = "Weak areas",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+            Text(
+                text = "Topics needing the most attention",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            val weakAccents = listOf(Color(0xFFEF4444), Color(0xFFF97316), Color(0xFFF59E0B))
+            categories.forEachIndexed { index, progress ->
+                val accent = weakAccents[index % weakAccents.size]
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = progress.category.title,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Medium,
+                        )
+                        Text(
+                            text = "${progress.completionPercent}%",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    LinearProgressIndicator(
+                        progress = { progress.completionPercent / 100f },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(5.dp)
+                            .clip(RoundedCornerShape(999.dp)),
+                        color = accent,
+                        trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                    )
+                }
+            }
+        }
+    }
 }
 
 private val colorEasy = Color(0xFF34D399)

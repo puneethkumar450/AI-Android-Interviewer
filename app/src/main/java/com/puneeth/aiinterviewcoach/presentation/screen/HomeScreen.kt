@@ -39,7 +39,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.puneeth.aiinterviewcoach.domain.model.CategoryProgress
 import com.puneeth.aiinterviewcoach.domain.model.InterviewCategory
 import com.puneeth.aiinterviewcoach.domain.model.InterviewDifficulty
 import com.puneeth.aiinterviewcoach.presentation.viewmodel.HomeViewModel
@@ -86,13 +85,6 @@ fun HomeScreen(
                     }
                 },
             )
-        }
-
-        // Weak areas
-        if (uiState.weakCategories.isNotEmpty()) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                WeakAreasCard(categories = uiState.weakCategories)
-            }
         }
 
         // Quick filters
@@ -277,70 +269,6 @@ private fun StreakBadge(streak: Int) {
     }
 }
 
-@Composable
-private fun WeakAreasCard(categories: List<CategoryProgress>) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        shape = MaterialTheme.shapes.extraLarge,
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Text(
-                text = "Weak areas",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-            )
-            Text(
-                text = "Topics needing the most attention",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            categories.forEachIndexed { index, progress ->
-                WeakAreaRow(
-                    categoryTitle = progress.category.title,
-                    completionPercent = progress.completionPercent,
-                    accent = weakAreaAccent(index),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun WeakAreaRow(
-    categoryTitle: String,
-    completionPercent: Int,
-    accent: Color,
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(
-                text = categoryTitle,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-            )
-            Text(
-                text = "$completionPercent%",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-        LinearProgressIndicator(
-            progress = { completionPercent / 100f },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(4.dp)
-                .clip(MaterialTheme.shapes.small),
-            color = accent,
-            trackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-        )
-    }
-}
 
 @Composable
 private fun QuickFiltersRow(
@@ -538,11 +466,3 @@ private fun categoryAccent(index: Int): Color {
     return palette[index % palette.size]
 }
 
-private fun weakAreaAccent(index: Int): Color {
-    val palette = listOf(
-        Color(0xFFEF4444),
-        Color(0xFFF97316),
-        Color(0xFFF59E0B),
-    )
-    return palette[index % palette.size]
-}
