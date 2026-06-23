@@ -2,11 +2,13 @@ package com.puneeth.aiinterviewcoach.di
 
 import com.puneeth.aiinterviewcoach.data.repository.AiInterviewRepositoryImpl
 import com.puneeth.aiinterviewcoach.data.repository.InterviewRepositoryImpl
+import com.puneeth.aiinterviewcoach.data.repository.MockInterviewRepositoryImpl
 import com.puneeth.aiinterviewcoach.data.repository.ProgressRepositoryImpl
 import com.puneeth.aiinterviewcoach.data.repository.QuestionRepositoryImpl
 import com.puneeth.aiinterviewcoach.data.repository.UserPreferencesRepositoryImpl
 import com.puneeth.aiinterviewcoach.domain.repository.AiInterviewRepository
 import com.puneeth.aiinterviewcoach.domain.repository.InterviewRepository
+import com.puneeth.aiinterviewcoach.domain.repository.MockInterviewRepository
 import com.puneeth.aiinterviewcoach.domain.repository.ProgressRepository
 import com.puneeth.aiinterviewcoach.domain.repository.QuestionRepository
 import com.puneeth.aiinterviewcoach.domain.repository.UserPreferencesRepository
@@ -34,4 +36,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindUserPreferencesRepository(impl: UserPreferencesRepositoryImpl): UserPreferencesRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindMockInterviewRepository(impl: MockInterviewRepositoryImpl): MockInterviewRepository
 }

@@ -55,6 +55,12 @@ sealed class CoachDestination(
         title = "Questions",
         icon = Icons.Outlined.MenuBook,
     )
+
+    data object MockInterview : CoachDestination(
+        route = "mock_interview",
+        title = "Mock Interview",
+        icon = Icons.Outlined.MenuBook,
+    )
 }
 
 val topLevelDestinations = listOf(

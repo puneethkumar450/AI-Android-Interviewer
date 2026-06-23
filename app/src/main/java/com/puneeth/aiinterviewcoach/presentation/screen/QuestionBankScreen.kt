@@ -9,5 +9,6 @@ fun QuestionBankScreen() {
         onOpenCategories = {},
         onOpenDifficulty = {},
         onOpenCategory = {},
+        onStartMockInterview = {},
     )
 }

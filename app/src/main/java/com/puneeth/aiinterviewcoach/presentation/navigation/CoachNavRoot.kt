@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.puneeth.aiinterviewcoach.presentation.screen.BookmarksScreen
 import com.puneeth.aiinterviewcoach.presentation.screen.CategoriesScreen
 import com.puneeth.aiinterviewcoach.presentation.screen.HomeScreen
+import com.puneeth.aiinterviewcoach.presentation.screen.MockInterviewScreen
 import com.puneeth.aiinterviewcoach.presentation.screen.ProgressScreen
 import com.puneeth.aiinterviewcoach.presentation.screen.QuestionsScreen
 import com.puneeth.aiinterviewcoach.presentation.screen.SearchScreen
@@ -99,6 +100,9 @@ fun CoachNavRoot(
                     onOpenCategory = { category ->
                         navController.navigate(questionRoute(category = category.title))
                     },
+                    onStartMockInterview = {
+                        navController.navigate(CoachDestination.MockInterview.route)
+                    },
                 )
             }
             composable(CoachDestination.Search.route) {
@@ -140,6 +144,9 @@ fun CoachNavRoot(
                 ),
             ) {
                 QuestionsScreen(onNavigateBack = navController::navigateUp)
+            }
+            composable(CoachDestination.MockInterview.route) {
+                MockInterviewScreen(onNavigateBack = navController::navigateUp)
             }
         }
     }

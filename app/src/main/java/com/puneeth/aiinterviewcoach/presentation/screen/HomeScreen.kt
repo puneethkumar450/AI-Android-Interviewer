@@ -33,7 +33,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.puneeth.aiinterviewcoach.domain.model.InterviewCategory
 import com.puneeth.aiinterviewcoach.domain.model.InterviewDifficulty
+import com.puneeth.aiinterviewcoach.domain.model.MockInterviewSession
 import com.puneeth.aiinterviewcoach.presentation.viewmodel.HomeViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun HomeScreen(
@@ -41,6 +45,7 @@ fun HomeScreen(
     onOpenCategories: () -> Unit,
     onOpenDifficulty: (InterviewDifficulty) -> Unit,
     onOpenCategory: (InterviewCategory) -> Unit,
+    onStartMockInterview: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -61,6 +66,12 @@ fun HomeScreen(
                 bookmarks = summary.bookmarksCount,
                 onContinuePractice = { onContinuePractice(summary.continueQuestionId) },
                 onOpenCategories = onOpenCategories,
+            )
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            MockInterviewCard(
+                lastSession = uiState.lastMockSession,
+                onStartMockInterview = onStartMockInterview,
             )
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
@@ -104,6 +115,106 @@ fun HomeScreen(
                 accent = categoryAccent(index),
                 onClick = { onOpenCategory(item.category) },
             )
+        }
+    }
+}
+
+@Composable
+private fun MockInterviewCard(
+    lastSession: MockInterviewSession?,
+    onStartMockInterview: () -> Unit,
+) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+        shape = MaterialTheme.shapes.extraLarge,
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Text(
+                        text = "🎯 Mock Interview",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Text(
+                        text = "Timed session — no answer reveal",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            if (lastSession != null) {
+                val scoreColor = when {
+                    lastSession.scorePercent >= 80 -> Color(0xFF34D399)
+                    lastSession.scorePercent >= 50 -> Color(0xFFF59E0B)
+                    else -> Color(0xFFEF4444)
+                }
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    shape = MaterialTheme.shapes.large,
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text(
+                                text = "Last session",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                            Text(
+                                text = "${lastSession.answeredCount}/${lastSession.totalQuestions} answered",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.SemiBold,
+                            )
+                            if (lastSession.category != null) {
+                                Text(
+                                    text = lastSession.category,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
+                        }
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(2.dp),
+                        ) {
+                            Text(
+                                text = "${lastSession.scorePercent}%",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = scoreColor,
+                            )
+                            Text(
+                                text = SimpleDateFormat("MMM d", Locale.getDefault())
+                                    .format(Date(lastSession.completedAt)),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                }
+            }
+
+            Button(
+                onClick = onStartMockInterview,
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.extraLarge,
+            ) {
+                Text(if (lastSession != null) "Start New Session" else "Start Mock Interview")
+            }
         }
     }
 }
@@ -178,124 +289,57 @@ private fun HeroCard(
 }
 
 @Composable
-private fun SectionHeader(
-    title: String,
-    subtitle: String,
-) {
+private fun SectionHeader(title: String, subtitle: String) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-        )
-        Text(
-            text = subtitle,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodyMedium,
-        )
+        Text(text = title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold)
+        Text(text = subtitle, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
     }
 }
 
 @Composable
-private fun DifficultyCard(
-    title: String,
-    count: Int,
-    accent: Color,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-) {
+private fun DifficultyCard(title: String, count: Int, accent: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Card(
         modifier = modifier.clickable(onClick = onClick),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = MaterialTheme.shapes.extraLarge,
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(4.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .background(accent),
-            )
-            Box(
-                modifier = Modifier
-                    .size(12.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .background(accent),
-            )
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Box(modifier = Modifier.fillMaxWidth().height(4.dp).clip(MaterialTheme.shapes.small).background(accent))
+            Box(modifier = Modifier.size(12.dp).clip(MaterialTheme.shapes.small).background(accent))
             Text(title, fontWeight = FontWeight.SemiBold)
-            Text(
-                text = "$count questions",
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+            Text(text = "$count questions", color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
 
 @Composable
-private fun CategoryCard(
-    title: String,
-    count: Int,
-    accent: Color,
-    onClick: () -> Unit,
-) {
+private fun CategoryCard(title: String, count: Int, accent: Color, onClick: () -> Unit) {
     Card(
         modifier = Modifier.clickable(onClick = onClick),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = MaterialTheme.shapes.extraLarge,
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(4.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .background(accent),
-            )
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Box(modifier = Modifier.fillMaxWidth().height(4.dp).clip(MaterialTheme.shapes.small).background(accent))
             Text(title, fontWeight = FontWeight.SemiBold)
-            Text(
-                text = "$count questions",
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+            Text(text = "$count questions", color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
 
-private data class DifficultyPalette(
-    val accent: Color,
-)
+private data class DifficultyPalette(val accent: Color)
 
-private fun difficultyPalette(difficulty: InterviewDifficulty): DifficultyPalette {
-    return when (difficulty) {
-        InterviewDifficulty.BEGINNER -> DifficultyPalette(
-            accent = Color(0xFF2DD4BF),
-        )
-        InterviewDifficulty.INTERMEDIATE -> DifficultyPalette(
-            accent = Color(0xFFF59E0B),
-        )
-        InterviewDifficulty.ADVANCED -> DifficultyPalette(
-            accent = Color(0xFFF97316),
-        )
-        InterviewDifficulty.EXPERT -> DifficultyPalette(
-            accent = Color(0xFF8B5CF6),
-        )
-    }
+private fun difficultyPalette(difficulty: InterviewDifficulty): DifficultyPalette = when (difficulty) {
+    InterviewDifficulty.BEGINNER -> DifficultyPalette(Color(0xFF2DD4BF))
+    InterviewDifficulty.INTERMEDIATE -> DifficultyPalette(Color(0xFFF59E0B))
+    InterviewDifficulty.ADVANCED -> DifficultyPalette(Color(0xFFF97316))
+    InterviewDifficulty.EXPERT -> DifficultyPalette(Color(0xFF8B5CF6))
 }
 
 private fun categoryAccent(index: Int): Color {
     val palette = listOf(
-        Color(0xFF60A5FA),
-        Color(0xFF34D399),
-        Color(0xFFF472B6),
-        Color(0xFFFBBF24),
-        Color(0xFFA78BFA),
-        Color(0xFF22D3EE),
+        Color(0xFF60A5FA), Color(0xFF34D399), Color(0xFFF472B6),
+        Color(0xFFFBBF24), Color(0xFFA78BFA), Color(0xFF22D3EE),
     )
     return palette[index % palette.size]
 }
